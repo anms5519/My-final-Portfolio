@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Quiz</title>
+    <style>
+        :root {
+            --primary-color: #6b7b9c;
+            --secondary-color: #4ecca3;
+            --dark-color: #1f243a;
+            --darker-color: #12151e;
+            --light-color: #e0e0e0;
+            --accent-color: #ff8c42;
+            --gradient-start: rgba(31, 36, 58, 0.95);
+            --gradient-end: rgba(18, 21, 30, 0.98);
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --info-color: #3498db;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(78, 204, 163, 0.05) 0%, transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(107, 123, 156, 0.05) 0%, transparent 30%);
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            flex: 1;
+        }
+        
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .quiz-header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .quiz-header p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .home-screen,
+        .quiz-screen,
+        .results-screen {
+            opacity: 0;
+            visibility: hidden;
+            height: 0;
+            overflow: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+            transform: translateY(20px);
+        }
+        
+        .active-screen {
+            opacity: 1;
+            visibility: visible;
+            height: auto;
+            overflow: visible;
+            transform: translateY(0);
+        }
+        
+        /* Home Screen */
+        .category-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .category-card {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.05);
+            transform: rotate(45deg);
+            z-index: 0;
+            transition: all 0.5s ease;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .category-card:hover::before {
+            transform: rotate(45deg) translateY(-20%);
+        }
+        
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+            color: var(--secondary-color);
+        }
+        
+        .category-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .category-description {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .category-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            margin-top: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .difficulty-selection {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .difficulty-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+        
+        .difficulty-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .difficulty-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .easy-btn {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+        
+        .easy-btn:hover, .easy-btn.active {
+            background-color: rgba(46, 204, 113, 0.4);
+        }
+        
+        .medium-btn {
+            background-color: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+            border: 1px solid rgba(243, 156, 18, 0.3);
+        }
+        
+        .medium-btn:hover, .medium-btn.active {
+            background-color: rgba(243, 156, 18, 0.4);
+        }
+        
+        .hard-btn {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+        
+        .hard-btn:hover, .hard-btn.active {
+            background-color: rgba(231, 76, 60, 0.4);
+        }
+        
+        .expert-btn {
+            background-color: rgba(155, 89, 182, 0.2);
+            color: #9b59b6;
+            border: 1px solid rgba(155, 89, 182, 0.3);
+        }
+        
+        .expert-btn:hover, .expert-btn.active {
+            background-color: rgba(155, 89, 182, 0.4);
+        }
+        
+        .settings-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .settings-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+        
+        .settings-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .settings-option:last-child {
+            border-bottom: none;
+        }
+        
+        .settings-label {
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--secondary-color);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .question-count {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .count-input {
+            width: 80px;
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--light-color);
+            font-size: 1rem;
+            text-align: center;
+        }
+        
+        .start-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .start-btn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .start-btn:disabled {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.3);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Quiz Screen */
+        .quiz-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .quiz-info-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .category-chip {
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .difficulty-chip {
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .difficulty-easy {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+        }
+        
+        .difficulty-medium {
+            background-color: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+        }
+        
+        .difficulty-hard {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+        
+        .difficulty-expert {
+            background-color: rgba(155, 89, 182, 0.2);
+            color: #9b59b6;
+        }
+        
+        .quiz-info-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .progress-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .progress-text {
+            font-size: 1rem;
+            color: var(--light-color);
+        }
+        
+        .timer {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--light-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .timer.warning {
+            color: var(--warning-color);
+        }
+        
+        .timer.danger {
+            color: var(--danger-color);
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: var(--secondary-color);
+            width: 0;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+        
+        .question-container {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .question-number {
+            font-size: 1rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .question-text {
+            font-size: 1.5rem;
+            color: var(--light-color);
+            margin-bottom: 2rem;
+            line-height: 1.4;
+        }
+        
+        .answers-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .answer-btn {
+            padding: 1rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--light-color);
+            font-size: 1rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .answer-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .answer-btn.selected {
+            background-color: rgba(107, 123, 156, 0.3);
+            border-color: var(--primary-color);
+        }
+        
+        .answer-btn.correct {
+            background-color: rgba(46, 204, 113, 0.3);
+            border-color: var(--success-color);
+        }
+        
+        .answer-btn.incorrect {
+            background-color: rgba(231, 76, 60, 0.3);
+            border-color: var(--danger-color);
+        }
+        
+        .hint-container {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: rgba(52, 152, 219, 0.1);
+            border-left: 4px solid var(--info-color);
+            display: none;
+        }
+        
+        .hint-container.visible {
+            display: block;
+        }
+        
+        .hint-text {
+            color: var(--light-color);
+            font-style: italic;
+        }
+        
+        .quiz-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+        
+        .action-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .hint-btn {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: var(--info-color);
+            border: 1px solid rgba(52, 152, 219, 0.3);
+        }
+        
+        .hint-btn:hover {
+            background-color: rgba(52, 152, 219, 0.3);
+        }
+        
+        .next-btn {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+        }
+        
+        .next-btn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .next-btn:disabled {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.3);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Results Screen */
+        .results-container {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .results-header {
+            margin-bottom: 2rem;
+        }
+        
+        .results-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .score-container {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .score-label {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+        }
+        
+        .score-value {
+            font-size: 4rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .score-message {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .score-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-item {
+            padding: 1rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .correct-value {
+            color: var(--success-color);
+        }
+        
+        .incorrect-value {
+            color: var(--danger-color);
+        }
+        
+        .time-value {
+            color: var(--warning-color);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f0f;
+            opacity: 0;
+            animation: confetti-fall 5s linear infinite;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(500px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .results-summary {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        
+        .summary-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+        
+        .question-summary {
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.05);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .question-summary:last-child {
+            margin-bottom: 0;
+        }
+        
+        .summary-question {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            padding-right: 30px;
+        }
+        
+        .summary-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+        
+        .status-correct {
+            background-color: var(--success-color);
+        }
+        
+        .status-incorrect {
+            background-color: var(--danger-color);
+        }
+        
+        .summary-answer {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+        
+        .your-answer {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .your-answer.correct {
+            background-color: rgba(46, 204, 113, 0.2);
+        }
+        
+        .your-answer.incorrect {
+            background-color: rgba(231, 76, 60, 0.2);
+        }
+        
+        .correct-answer {
+            background-color: rgba(46, 204, 113, 0.2);
+        }
+        
+        .results-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .action-btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .restart-btn {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+        }
+        
+        .restart-btn:hover {
+            background-color: var(--accent-color);
+        }
+        
+        .home-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--light-color);
+        }
+        
+        .home-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .quiz-header h1 {
+                font-size: 2rem;
+            }
+            
+            .quiz-header p {
+                font-size: 1rem;
+            }
+            
+            .difficulty-buttons {
+                flex-direction: column;
+            }
+            
+            .quiz-info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .quiz-info-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .question-text {
+                font-size: 1.2rem;
+            }
+            
+            .score-value {
+                font-size: 3rem;
+            }
+            
+            .results-actions {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .quiz-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .score-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Home Screen -->
+        <div id="home-screen" class="home-screen active-screen">
+            <div class="quiz-header">
+                <h1>Knowledge Quiz</h1>
+                <p>Test your knowledge across various categories! Choose a category, set difficulty, and start answering questions.</p>
+            </div>
+            
+            <div class="category-selection" id="category-container">
+                <!-- Categories will be dynamically populated -->
+            </div>
+            
+            <div class="difficulty-selection">
+                <h2 class="difficulty-title">Select Difficulty</h2>
+                <div class="difficulty-buttons">
+                    <button class="difficulty-btn easy-btn" data-difficulty="easy">Easy</button>
+                    <button class="difficulty-btn medium-btn" data-difficulty="medium">Medium</button>
+                    <button class="difficulty-btn hard-btn" data-difficulty="hard">Hard</button>
+                    <button class="difficulty-btn expert-btn" data-difficulty="expert">Expert</button>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h2 class="settings-title">Quiz Settings</h2>
+                
+                <div class="settings-option">
+                    <span class="settings-label">
+                        <i class="fas fa-clock"></i>
+                        Timer
+                    </span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="timer-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="settings-option">
+                    <span class="settings-label">
+                        <i class="fas fa-lightbulb"></i>
+                        Hints Available
+                    </span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="hints-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="settings-option">
+                    <span class="settings-label">
+                        <i class="fas fa-question"></i>
+                        Number of Questions
+                    </span>
+                    <div class="question-count">
+                        <input type="number" id="question-count" class="count-input" min="5" max="50" value="10">
+                    </div>
+                </div>
+            </div>
+            
+            <button id="start-quiz-btn" class="start-btn" disabled>Start Quiz</button>
+        </div>
+        
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="quiz-screen">
+            <div class="quiz-info">
+                <div class="quiz-info-left">
+                    <div class="category-chip" id="quiz-category">
+                        <i class="fas fa-globe"></i>
+                        <span>General Knowledge</span>
+                    </div>
+                    <div class="difficulty-chip difficulty-medium" id="quiz-difficulty">Medium</div>
+                </div>
+                <div class="quiz-info-right">
+                    <div class="progress-info">
+                        <span class="progress-text" id="progress-text">Question 1/10</span>
+                    </div>
+                    <div class="timer" id="timer">00:30</div>
+                </div>
+            </div>
+            
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question-number" id="question-number">Question 1</div>
+                <div class="question-text" id="question-text">Which planet is known as the Red Planet?</div>
+                
+                <div class="answers-container" id="answers-container">
+                    <!-- Answers will be dynamically populated -->
+                </div>
+                
+                <div class="hint-container" id="hint-container">
+                    <p class="hint-text" id="hint-text">The planet is named after the Roman god of war.</p>
+                </div>
+            </div>
+            
+            <div class="quiz-actions">
+                <button class="action-btn hint-btn" id="hint-btn">
+                    <i class="fas fa-lightbulb"></i>
+                    Show Hint
+                </button>
+                <button class="action-btn next-btn" id="next-btn" disabled>
+                    Next Question
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Results Screen -->
+        <div id="results-screen" class="results-screen">
+            <div class="results-container">
+                <div class="results-header">
+                    <h1 class="results-title">Quiz Results</h1>
+                </div>
+                
+                <div class="score-container" id="score-container">
+                    <div class="score-label">Your Score</div>
+                    <div class="score-value" id="score-percentage">80%</div>
+                    <div class="score-message" id="score-message">Great job! You know your stuff!</div>
+                    
+                    <div class="score-stats">
+                        <div class="stat-item">
+                            <div class="stat-value correct-value" id="correct-count">8</div>
+                            <div class="stat-label">Correct</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value incorrect-value" id="incorrect-count">2</div>
+                            <div class="stat-label">Incorrect</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="total-questions">10</div>
+                            <div class="stat-label">Questions</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value time-value" id="time-taken">02:30</div>
+                            <div class="stat-label">Time</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="results-summary" id="results-summary">
+                    <h2 class="summary-title">Question Summary</h2>
+                    <!-- Question summaries will be dynamically populated -->
+                </div>
+                
+                <div class="results-actions">
+                    <button class="action-btn action-btn-lg restart-btn" id="restart-btn">
+                        <i class="fas fa-redo"></i>
+                        Restart Quiz
+                    </button>
+                    <button class="action-btn action-btn-lg home-btn" id="home-btn">
+                        <i class="fas fa-home"></i>
+                        Back to Home
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const homeScreen = document.getElementById('home-screen');
+            const quizScreen = document.getElementById('quiz-screen');
+            const resultsScreen = document.getElementById('results-screen');
+            
+            const categoryContainer = document.getElementById('category-container');
+            const difficultyBtns = document.querySelectorAll('.difficulty-btn');
+            const timerToggle = document.getElementById('timer-toggle');
+            const hintsToggle = document.getElementById('hints-toggle');
+            const questionCountInput = document.getElementById('question-count');
+            const startQuizBtn = document.getElementById('start-quiz-btn');
+            
+            const quizCategory = document.getElementById('quiz-category');
+            const quizDifficulty = document.getElementById('quiz-difficulty');
+            const progressText = document.getElementById('progress-text');
+            const timerElement = document.getElementById('timer');
+            const progressBar = document.getElementById('progress-bar');
+            const questionNumber = document.getElementById('question-number');
+            const questionText = document.getElementById('question-text');
+            const answersContainer = document.getElementById('answers-container');
+            const hintContainer = document.getElementById('hint-container');
+            const hintText = document.getElementById('hint-text');
+            const hintBtn = document.getElementById('hint-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            const scorePercentage = document.getElementById('score-percentage');
+            const scoreMessage = document.getElementById('score-message');
+            const correctCount = document.getElementById('correct-count');
+            const incorrectCount = document.getElementById('incorrect-count');
+            const totalQuestions = document.getElementById('total-questions');
+            const timeTaken = document.getElementById('time-taken');
+            const resultsSummary = document.getElementById('results-summary');
+            const restartBtn = document.getElementById('restart-btn');
+            const homeBtn = document.getElementById('home-btn');
+            
+            // Quiz State
+            let state = {
+                categories: [],
+                selectedCategory: null,
+                selectedDifficulty: 'medium',
+                timerEnabled: true,
+                hintsEnabled: true,
+                questionCount: 10,
+                questions: [],
+                currentQuestionIndex: 0,
+                selectedAnswer: null,
+                usedHint: false,
+                answers: [],
+                timer: null,
+                timeRemaining: 30,
+                totalTime: 0,
+                correctAnswers: 0,
+                incorrectAnswers: 0
+            };
+            
+            // Categories
+            const categories = [
+                {
+                    id: 'general',
+                    name: 'General Knowledge',
+                    icon: 'fas fa-globe',
+                    description: 'Test your knowledge on a wide range of topics.',
+                    count: 50
+                },
+                {
+                    id: 'science',
+                    name: 'Science & Nature',
+                    icon: 'fas fa-flask',
+                    description: 'Questions about scientific facts and natural phenomena.',
+                    count: 40
+                },
+                {
+                    id: 'history',
+                    name: 'History',
+                    icon: 'fas fa-landmark',
+                    description: 'Important events, figures and periods from the past.',
+                    count: 35
+                },
+                {
+                    id: 'geography',
+                    name: 'Geography',
+                    icon: 'fas fa-mountain',
+                    description: 'Countries, cities, landmarks and physical features.',
+                    count: 30
+                },
+                {
+                    id: 'entertainment',
+                    name: 'Entertainment',
+                    icon: 'fas fa-film',
+                    description: 'Movies, TV shows, music, books and pop culture.',
+                    count: 45
+                },
+                {
+                    id: 'sports',
+                    name: 'Sports',
+                    icon: 'fas fa-basketball-ball',
+                    description: 'Athletes, teams, competitions and sporting events.',
+                    count: 25
+                },
+                {
+                    id: 'tech',
+                    name: 'Technology',
+                    icon: 'fas fa-microchip',
+                    description: 'Computers, gadgets, programming and internet.',
+                    count: 35
+                },
+                {
+                    id: 'arts',
+                    name: 'Arts & Literature',
+                    icon: 'fas fa-palette',
+                    description: 'Paintings, sculptures, artists, writers and books.',
+                    count: 30
+                }
+            ];
+            
+            // Quiz questions
+            const quizQuestions = {
+                general: {
+                    easy: [
+                        {
+                            question: "What is the capital of France?",
+                            answers: ["Paris", "London", "Berlin", "Madrid"],
+                            correctAnswer: 0,
+                            hint: "This city is known as the 'City of Love' and has a famous tower."
+                        },
+                        {
+                            question: "Who painted the Mona Lisa?",
+                            answers: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
+                            correctAnswer: 2,
+                            hint: "This Italian Renaissance artist also created 'The Last Supper'."
+                        },
+                        {
+                            question: "Which planet is closest to the Sun?",
+                            answers: ["Venus", "Mars", "Earth", "Mercury"],
+                            correctAnswer: 3,
+                            hint: "It's named after the Roman messenger god."
+                        },
+                        {
+                            question: "How many sides does a hexagon have?",
+                            answers: ["5", "6", "7", "8"],
+                            correctAnswer: 1,
+                            hint: "The prefix 'hex' comes from Greek, meaning six."
+                        },
+                        {
+                            question: "Which animal is known as the 'King of the Jungle'?",
+                            answers: ["Tiger", "Elephant", "Lion", "Gorilla"],
+                            correctAnswer: 2,
+                            hint: "This big cat is featured in 'The Lion King' movie."
+                        }
+                    ],
+                    medium: [
+                        {
+                            question: "In which year did World War II end?",
+                            answers: ["1943", "1945", "1947", "1950"],
+                            correctAnswer: 1,
+                            hint: "The atomic bombs were dropped on Japan in this year."
+                        },
+                        {
+                            question: "Which element has the chemical symbol 'Au'?",
+                            answers: ["Silver", "Gold", "Aluminum", "Argon"],
+                            correctAnswer: 1,
+                            hint: "It comes from the Latin word 'aurum'."
+                        },
+                        {
+                            question: "Who wrote 'Romeo and Juliet'?",
+                            answers: ["Charles Dickens", "Jane Austen", "William Shakespeare", "Mark Twain"],
+                            correctAnswer: 2,
+                            hint: "This English playwright also wrote 'Hamlet' and 'Macbeth'."
+                        },
+                        {
+                            question: "What is the largest ocean on Earth?",
+                            answers: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+                            correctAnswer: 3,
+                            hint: "It covers more than 30% of the Earth's surface."
+                        },
+                        {
+                            question: "Which country is home to the Great Barrier Reef?",
+                            answers: ["Brazil", "Australia", "Thailand", "Mexico"],
+                            correctAnswer: 1,
+                            hint: "This country is also a continent."
+                        }
+                    ],
+                    hard: [
+                        {
+                            question: "What is the smallest prime number?",
+                            answers: ["0", "1", "2", "3"],
+                            correctAnswer: 2,
+                            hint: "It's the only even prime number."
+                        },
+                        {
+                            question: "Who was the first woman to win a Nobel Prize?",
+                            answers: ["Marie Curie", "Rosalind Franklin", "Ada Lovelace", "Dorothy Hodgkin"],
+                            correctAnswer: 0,
+                            hint: "She won Nobel Prizes in both Physics and Chemistry."
+                        },
+                        {
+                            question: "Which country has the most islands in the world?",
+                            answers: ["Indonesia", "Philippines", "Sweden", "Norway"],
+                            correctAnswer: 2,
+                            hint: "This Scandinavian country has over 267,000 islands."
+                        },
+                        {
+                            question: "In computing, what does the acronym 'URL' stand for?",
+                            answers: ["Universal Resource Locator", "Uniform Resource Locator", "United Resource Link", "Universal Rendering Language"],
+                            correctAnswer: 1,
+                            hint: "It's the address used to access websites on the internet."
+                        },
+                        {
+                            question: "Which mountain is known as the 'Savage Mountain'?",
+                            answers: ["Mount Everest", "K2", "Kangchenjunga", "Annapurna"],
+                            correctAnswer: 1,
+                            hint: "It's the second-highest mountain in the world."
+                        }
+                    ],
+                    expert: [
+                        {
+                            question: "What is the rarest blood type in humans?",
+                            answers: ["AB negative", "B negative", "A negative", "O negative"],
+                            correctAnswer: 0,
+                            hint: "Less than 1% of the population has this blood type."
+                        },
+                        {
+                            question: "Who discovered penicillin?",
+                            answers: ["Louis Pasteur", "Alexander Fleming", "Robert Koch", "Joseph Lister"],
+                            correctAnswer: 1,
+                            hint: "This Scottish bacteriologist made the discovery accidentally when a mold contaminated his petri dishes."
+                        },
+                        {
+                            question: "What is the only planet in our solar system that rotates clockwise?",
+                            answers: ["Jupiter", "Neptune", "Venus", "Uranus"],
+                            correctAnswer: 2,
+                            hint: "It's the second planet from the Sun."
+                        },
+                        {
+                            question: "Which of these countries was never part of the British Empire?",
+                            answers: ["Thailand", "Egypt", "Pakistan", "Zimbabwe"],
+                            correctAnswer: 0,
+                            hint: "This Southeast Asian country was formerly known as Siam."
+                        },
+                        {
+                            question: "What is the hardest natural substance on Earth?",
+                            answers: ["Titanium", "Diamond", "Platinum", "Tungsten"],
+                            correctAnswer: 1,
+                            hint: "It's made of carbon atoms arranged in a crystal structure."
+                        }
+                    ]
+                },
+                science: {
+                    easy: [
+                        {
+                            question: "What is the chemical symbol for water?",
+                            answers: ["HO", "H2O", "OH2", "W"],
+                            correctAnswer: 1,
+                            hint: "It has 2 hydrogen atoms and 1 oxygen atom."
+                        },
+                        {
+                            question: "Which planet is known as the Red Planet?",
+                            answers: ["Venus", "Jupiter", "Mars", "Saturn"],
+                            correctAnswer: 2,
+                            hint: "It's named after the Roman god of war."
+                        },
+                        {
+                            question: "What is the human body's largest organ?",
+                            answers: ["Heart", "Liver", "Brain", "Skin"],
+                            correctAnswer: 3,
+                            hint: "It covers your entire body and protects you from the environment."
+                        },
+                        {
+                            question: "Which gas do plants absorb from the atmosphere?",
+                            answers: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"],
+                            correctAnswer: 2,
+                            hint: "Plants use this gas during photosynthesis."
+                        },
+                        {
+                            question: "What is the center of an atom called?",
+                            answers: ["Nucleus", "Core", "Center", "Proton"],
+                            correctAnswer: 0,
+                            hint: "It contains protons and neutrons."
+                        }
+                    ],
+                    medium: [
+                        {
+                            question: "What is the hardest natural substance on Earth?",
+                            answers: ["Gold", "Iron", "Diamond", "Platinum"],
+                            correctAnswer: 2,
+                            hint: "It's made of carbon atoms arranged in a crystal structure."
+                        },
+                        {
+                            question: "Which element has the atomic number 1?",
+                            answers: ["Helium", "Oxygen", "Carbon", "Hydrogen"],
+                            correctAnswer: 3,
+                            hint: "It's the lightest and most abundant element in the universe."
+                        },
+                        {
+                            question: "What is the name of the process by which plants make their own food?",
+                            answers: ["Respiration", "Photosynthesis", "Digestion", "Assimilation"],
+                            correctAnswer: 1,
+                            hint: "This process uses sunlight to convert carbon dioxide and water into food."
+                        },
+                        {
+                            question: "Which planet has the Great Red Spot?",
+                            answers: ["Mars", "Venus", "Jupiter", "Saturn"],
+                            correctAnswer: 2,
+                            hint: "It's the largest planet in our solar system."
+                        },
+                        {
+                            question: "What is the unit of electric current?",
+                            answers: ["Volt", "Watt", "Ohm", "Ampere"],
+                            correctAnswer: 3,
+                            hint: "It's named after a French mathematician and physicist."
+                        }
+                    ],
+                    hard: [
+                        {
+                            question: "What is the number of chromosomes in human DNA?",
+                            answers: ["23", "42", "46", "48"],
+                            correctAnswer: 2,
+                            hint: "It's 23 pairs of chromosomes."
+                        },
+                        {
+                            question: "Which subatomic particle has a positive charge?",
+                            answers: ["Electron", "Neutron", "Proton", "Positron"],
+                            correctAnswer: 2,
+                            hint: "It's found in the nucleus of an atom."
+                        },
+                        {
+                            question: "What is the chemical formula for sulfuric acid?",
+                            answers: ["H2SO3", "HSO4", "H2SO4", "H2S2O7"],
+                            correctAnswer: 2,
+                            hint: "It's one of the most important industrial chemicals."
+                        },
+                        {
+                            question: "Which scientist proposed the theory of general relativity?",
+                            answers: ["Isaac Newton", "Niels Bohr", "Albert Einstein", "Stephen Hawking"],
+                            correctAnswer: 2,
+                            hint: "E = mc² is one of his famous equations."
+                        },
+                        {
+                            question: "What is the speed of light in a vacuum?",
+                            answers: ["300,000 km/s", "350,000 km/s", "250,000 km/s", "200,000 km/s"],
+                            correctAnswer: 0,
+                            hint: "It's approximately 186,282 miles per second."
+                        }
+                    ],
+                    expert: [
+                        {
+                            question: "What is the half-life of Carbon-14?",
+                            answers: ["2,500 years", "5,730 years", "10,000 years", "15,000 years"],
+                            correctAnswer: 1,
+                            hint: "It's used in radiocarbon dating of archaeological artifacts."
+                        },
+                        {
+                            question: "Which particle is known as the 'God particle'?",
+                            answers: ["Graviton", "Higgs Boson", "Muon", "Tachyon"],
+                            correctAnswer: 1,
+                            hint: "Its discovery was confirmed by CERN in 2012."
+                        },
+                        {
+                            question: "What is the name for the process whereby a cell engulfs material?",
+                            answers: ["Exocytosis", "Osmosis", "Endocytosis", "Diffusion"],
+                            correctAnswer: 2,
+                            hint: "It's a form of active transport that moves particles into the cell."
+                        },
+                        {
+                            question: "Which disease is caused by a prion?",
+                            answers: ["Malaria", "Influenza", "Tuberculosis", "Creutzfeldt-Jakob Disease"],
+                            correctAnswer: 3,
+                            hint: "It's related to Mad Cow Disease."
+                        },
+                        {
+                            question: "What is the name of the phenomenon where light waves change frequency when their source moves relative to an observer?",
+                            answers: ["Doppler Effect", "Photoelectric Effect", "Compton Effect", "Heisenberg Principle"],
+                            correctAnswer: 0,
+                            hint: "It explains why the siren of an approaching ambulance sounds higher pitched."
+                        }
+                    ]
+                },
+                // Additional categories and questions follow the same format
+            };
+            
+            // Difficulty settings
+            const difficultySettings = {
+                easy: {
+                    timePerQuestion: 30,
+                    hintPenalty: 0,
+                    answerPoints: 10
+                },
+                medium: {
+                    timePerQuestion: 25,
+                    hintPenalty: 2,
+                    answerPoints: 15
+                },
+                hard: {
+                    timePerQuestion: 20,
+                    hintPenalty: 3,
+                    answerPoints: 20
+                },
+                expert: {
+                    timePerQuestion: 15,
+                    hintPenalty: 5,
+                    answerPoints: 25
+                }
+            };
+            
+            // Initialize categories
+            function initCategories() {
+                state.categories = categories;
+                
+                categoryContainer.innerHTML = '';
+                categories.forEach(category => {
+                    const categoryCard = document.createElement('div');
+                    categoryCard.className = 'category-card';
+                    categoryCard.dataset.category = category.id;
+                    
+                    categoryCard.innerHTML = `
+                        <div class="category-icon">
+                            <i class="${category.icon}"></i>
+                        </div>
+                        <h3 class="category-title">${category.name}</h3>
+                        <p class="category-description">${category.description}</p>
+                        <div class="category-badge">${category.count} Questions</div>
+                    `;
+                    
+                    categoryCard.addEventListener('click', () => selectCategory(category.id));
+                    categoryContainer.appendChild(categoryCard);
+                });
+            }
+            
+            // Select category
+            function selectCategory(categoryId) {
+                // Remove selected class from all category cards
+                document.querySelectorAll('.category-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked category
+                const selectedCard = document.querySelector(`.category-card[data-category="${categoryId}"]`);
+                if (selectedCard) {
+                    selectedCard.classList.add('selected');
+                }
+                
+                state.selectedCategory = categoryId;
+                updateStartButton();
+            }
+            
+            // Select difficulty
+            difficultyBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all difficulty buttons
+                    difficultyBtns.forEach(b => b.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+                    
+                    state.selectedDifficulty = btn.dataset.difficulty;
+                    updateStartButton();
+                });
+            });
+            
+            // Update settings
+            timerToggle.addEventListener('change', () => {
+                state.timerEnabled = timerToggle.checked;
+            });
+            
+            hintsToggle.addEventListener('change', () => {
+                state.hintsEnabled = hintsToggle.checked;
+            });
+            
+            questionCountInput.addEventListener('input', () => {
+                const count = parseInt(questionCountInput.value);
+                if (count >= 5 && count <= 50) {
+                    state.questionCount = count;
+                }
+            });
+            
+            // Update start button
+            function updateStartButton() {
+                if (state.selectedCategory) {
+                    startQuizBtn.disabled = false;
+                } else {
+                    startQuizBtn.disabled = true;
+                }
+            }
+            
+            // Start Quiz
+            startQuizBtn.addEventListener('click', startQuiz);
+            
+            function startQuiz() {
+                // Get quiz questions
+                const categoryQuestions = quizQuestions[state.selectedCategory] || quizQuestions.general;
+                const difficultyQuestions = categoryQuestions[state.selectedDifficulty] || categoryQuestions.medium;
+                
+                // Shuffle and limit questions
+                state.questions = shuffleArray(difficultyQuestions).slice(0, state.questionCount);
+                
+                if (state.questions.length === 0) {
+                    alert('No questions available for this category and difficulty. Please try another combination.');
+                    return;
+                }
+                
+                // Reset quiz state
+                state.currentQuestionIndex = 0;
+                state.answers = [];
+                state.correctAnswers = 0;
+                state.incorrectAnswers = 0;
+                state.totalTime = 0;
+                
+                // Update UI
+                const category = categories.find(c => c.id === state.selectedCategory);
+                quizCategory.innerHTML = `
+                    <i class="${category.icon}"></i>
+                    <span>${category.name}</span>
+                `;
+                
+                quizDifficulty.textContent = state.selectedDifficulty.charAt(0).toUpperCase() + state.selectedDifficulty.slice(1);
+                quizDifficulty.className = `difficulty-chip difficulty-${state.selectedDifficulty}`;
+                
+                // Show quiz screen
+                homeScreen.classList.remove('active-screen');
+                quizScreen.classList.add('active-screen');
+                resultsScreen.classList.remove('active-screen');
+                
+                // Load first question
+                loadQuestion();
+            }
+            
+            // Load Question
+            function loadQuestion() {
+                const currentQuestion = state.questions[state.currentQuestionIndex];
+                
+                // Update progress
+                progressText.textContent = `Question ${state.currentQuestionIndex + 1}/${state.questions.length}`;
+                progressBar.style.width = `${((state.currentQuestionIndex + 1) / state.questions.length) * 100}%`;
+                
+                // Update question
+                questionNumber.textContent = `Question ${state.currentQuestionIndex + 1}`;
+                questionText.textContent = currentQuestion.question;
+                
+                // Clear previous answers
+                answersContainer.innerHTML = '';
+                state.selectedAnswer = null;
+                nextBtn.disabled = true;
+                
+                // Add answers
+                currentQuestion.answers.forEach((answer, index) => {
+                    const answerBtn = document.createElement('button');
+                    answerBtn.className = 'answer-btn';
+                    answerBtn.textContent = answer;
+                    answerBtn.dataset.index = index;
+                    
+                    answerBtn.addEventListener('click', () => selectAnswer(index));
+                    answersContainer.appendChild(answerBtn);
+                });
+                
+                // Hide hint
+                hintContainer.classList.remove('visible');
+                state.usedHint = false;
+                
+                // Set up timer
+                if (state.timerEnabled) {
+                    state.timeRemaining = difficultySettings[state.selectedDifficulty].timePerQuestion;
+                    updateTimer();
+                    
+                    if (state.timer) clearInterval(state.timer);
+                    state.timer = setInterval(() => {
+                        state.timeRemaining--;
+                        state.totalTime++;
+                        updateTimer();
+                        
+                        if (state.timeRemaining <= 0) {
+                            clearInterval(state.timer);
+                            timeUp();
+                        }
+                    }, 1000);
+                } else {
+                    timerElement.textContent = 'No Timer';
+                }
+                
+                // Update hint button
+                if (state.hintsEnabled) {
+                    hintBtn.style.display = 'block';
+                } else {
+                    hintBtn.style.display = 'none';
+                }
+            }
+            
+            // Select Answer
+            function selectAnswer(index) {
+                // If already answered, do nothing
+                if (state.selectedAnswer !== null) return;
+                
+                state.selectedAnswer = index;
+                const currentQuestion = state.questions[state.currentQuestionIndex];
+                const isCorrect = index === currentQuestion.correctAnswer;
+                
+                // Update answer buttons
+                const answerBtns = answersContainer.querySelectorAll('.answer-btn');
+                answerBtns.forEach(btn => {
+                    const btnIndex = parseInt(btn.dataset.index);
+                    
+                    if (btnIndex === index) {
+                        btn.classList.add('selected');
+                        if (isCorrect) {
+                            btn.classList.add('correct');
+                        } else {
+                            btn.classList.add('incorrect');
+                        }
+                    }
+                    
+                    if (!isCorrect && btnIndex === currentQuestion.correctAnswer) {
+                        btn.classList.add('correct');
+                    }
+                });
+                
+                // Update stats
+                if (isCorrect) {
+                    state.correctAnswers++;
+                } else {
+                    state.incorrectAnswers++;
+                }
+                
+                // Store answer
+                state.answers.push({
+                    questionIndex: state.currentQuestionIndex,
+                    selectedAnswer: index,
+                    correctAnswer: currentQuestion.correctAnswer,
+                    isCorrect: isCorrect,
+                    usedHint: state.usedHint,
+                    timeRemaining: state.timeRemaining
+                });
+                
+                // Stop timer
+                if (state.timer) {
+                    clearInterval(state.timer);
+                }
+                
+                // Enable next button
+                nextBtn.disabled = false;
+            }
+            
+            // Time Up
+            function timeUp() {
+                const currentQuestion = state.questions[state.currentQuestionIndex];
+                
+                // If not answered, count as incorrect
+                if (state.selectedAnswer === null) {
+                    state.incorrectAnswers++;
+                    
+                    // Store answer
+                    state.answers.push({
+                        questionIndex: state.currentQuestionIndex,
+                        selectedAnswer: null,
+                        correctAnswer: currentQuestion.correctAnswer,
+                        isCorrect: false,
+                        usedHint: state.usedHint,
+                        timeRemaining: 0
+                    });
+                    
+                    // Highlight correct answer
+                    const answerBtns = answersContainer.querySelectorAll('.answer-btn');
+                    answerBtns.forEach(btn => {
+                        const btnIndex = parseInt(btn.dataset.index);
+                        if (btnIndex === currentQuestion.correctAnswer) {
+                            btn.classList.add('correct');
+                        }
+                    });
+                }
+                
+                // Enable next button
+                nextBtn.disabled = false;
+            }
+            
+            // Show Hint
+            hintBtn.addEventListener('click', showHint);
+            
+            function showHint() {
+                if (!state.hintsEnabled || state.usedHint) return;
+                
+                const currentQuestion = state.questions[state.currentQuestionIndex];
+                hintText.textContent = currentQuestion.hint;
+                hintContainer.classList.add('visible');
+                state.usedHint = true;
+            }
+            
+            // Next Question
+            nextBtn.addEventListener('click', nextQuestion);
+            
+            function nextQuestion() {
+                // If last question, show results
+                if (state.currentQuestionIndex >= state.questions.length - 1) {
+                    showResults();
+                    return;
+                }
+                
+                // Load next question
+                state.currentQuestionIndex++;
+                loadQuestion();
+            }
+            
+            // Show Results
+            function showResults() {
+                // Stop timer
+                if (state.timer) {
+                    clearInterval(state.timer);
+                }
+                
+                // Calculate score
+                const score = calculateScore();
+                const percentage = Math.round((state.correctAnswers / state.questions.length) * 100);
+                
+                // Update UI
+                scorePercentage.textContent = `${percentage}%`;
+                correctCount.textContent = state.correctAnswers;
+                incorrectCount.textContent = state.incorrectAnswers;
+                totalQuestions.textContent = state.questions.length;
+                timeTaken.textContent = formatTime(state.totalTime);
+                
+                // Set score message
+                if (percentage >= 90) {
+                    scoreMessage.textContent = "Outstanding! You're a true knowledge master!";
+                    createConfetti();
+                } else if (percentage >= 70) {
+                    scoreMessage.textContent = "Great job! You know your stuff!";
+                } else if (percentage >= 50) {
+                    scoreMessage.textContent = "Good effort! Keep learning!";
+                } else {
+                    scoreMessage.textContent = "Nice try! More studying will help!";
+                }
+                
+                // Show question summary
+                showQuestionSummary();
+                
+                // Show results screen
+                homeScreen.classList.remove('active-screen');
+                quizScreen.classList.remove('active-screen');
+                resultsScreen.classList.add('active-screen');
+            }
+            
+            // Calculate Score
+            function calculateScore() {
+                let score = 0;
+                state.answers.forEach(answer => {
+                    if (answer.isCorrect) {
+                        let points = difficultySettings[state.selectedDifficulty].answerPoints;
+                        // Bonus for quick answers
+                        if (state.timerEnabled && answer.timeRemaining > 0) {
+                            const timeBonus = Math.floor(answer.timeRemaining / 5);
+                            points += timeBonus;
+                        }
+                        // Penalty for hint
+                        if (answer.usedHint) {
+                            points -= difficultySettings[state.selectedDifficulty].hintPenalty;
+                        }
+                        score += Math.max(points, 1); // Minimum 1 point for correct answer
+                    }
+                });
+                return score;
+            }
+            
+            // Show Question Summary
+            function showQuestionSummary() {
+                resultsSummary.innerHTML = '<h2 class="summary-title">Question Summary</h2>';
+                
+                state.answers.forEach((answer, index) => {
+                    const question = state.questions[answer.questionIndex];
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question-summary';
+                    
+                    // Status indicator
+                    const statusClass = answer.isCorrect ? 'status-correct' : 'status-incorrect';
+                    
+                    questionDiv.innerHTML = `
+                        <div class="summary-status ${statusClass}"></div>
+                        <div class="summary-question">${question.question}</div>
+                        ${answer.selectedAnswer !== null ? `
+                            <div class="summary-answer your-answer ${answer.isCorrect ? 'correct' : 'incorrect'}">
+                                Your answer: ${question.answers[answer.selectedAnswer]}
+                            </div>
+                        ` : `
+                            <div class="summary-answer your-answer incorrect">
+                                Your answer: No answer (Time up)
+                            </div>
+                        `}
+                        ${!answer.isCorrect ? `
+                            <div class="summary-answer correct-answer">
+                                Correct answer: ${question.answers[answer.correctAnswer]}
+                            </div>
+                        ` : ''}
+                    `;
+                    
+                    resultsSummary.appendChild(questionDiv);
+                });
+            }
+            
+            // Create Confetti Effect
+            function createConfetti() {
+                const scoreContainer = document.getElementById('score-container');
+                
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    
+                    // Random position, color, size, and delay
+                    const left = Math.random() * 100;
+                    const backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+                    const size = Math.random() * 10 + 5;
+                    const delay = Math.random() * 5;
+                    
+                    confetti.style.left = `${left}%`;
+                    confetti.style.backgroundColor = backgroundColor;
+                    confetti.style.width = `${size}px`;
+                    confetti.style.height = `${size}px`;
+                    confetti.style.animationDelay = `${delay}s`;
+                    
+                    scoreContainer.appendChild(confetti);
+                }
+            }
+            
+            // Restart Quiz
+            restartBtn.addEventListener('click', startQuiz);
+            
+            // Back to Home
+            homeBtn.addEventListener('click', goToHome);
+            
+            function goToHome() {
+                homeScreen.classList.add('active-screen');
+                quizScreen.classList.remove('active-screen');
+                resultsScreen.classList.remove('active-screen');
+                
+                // Reset quiz state
+                if (state.timer) {
+                    clearInterval(state.timer);
+                }
+            }
+            
+            // Helper Functions
+            function updateTimer() {
+                if (!state.timerEnabled) return;
+                
+                timerElement.textContent = formatTime(state.timeRemaining);
+                
+                // Add warning class when time is running low
+                if (state.timeRemaining <= 10 && state.timeRemaining > 5) {
+                    timerElement.className = 'timer warning';
+                } else if (state.timeRemaining <= 5) {
+                    timerElement.className = 'timer danger';
+                } else {
+                    timerElement.className = 'timer';
+                }
+            }
+            
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+            }
+            
+            function shuffleArray(array) {
+                const newArray = [...array];
+                for (let i = newArray.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+                }
+                return newArray;
+            }
+            
+            // Initialize quiz
+            initCategories();
+            difficultyBtns[1].classList.add('active'); // Select medium by default
+        });
+    </script>
+</body>
+</html>

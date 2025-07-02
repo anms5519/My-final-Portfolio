@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Invaders</title>
+    <style>
+        :root {
+            --primary-color: #4ecca3;
+            --secondary-color: #6b7b9c;
+            --dark-color: #1f243a;
+            --darker-color: #12151e;
+            --light-color: #e0e0e0;
+            --accent-color: #ff8c42;
+            --enemy-color: #ff5252;
+            --player-color: #4ecca3;
+            --bullet-color: #e0e0e0;
+            --powerup-color: #ffc107;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--darker-color);
+            color: var(--light-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(109, 140, 191, 0.1) 0%, transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(78, 204, 163, 0.1) 0%, transparent 30%);
+        }
+        
+        .game-container {
+            position: relative;
+            width: 800px;
+            max-width: 100%;
+            margin-bottom: 1rem;
+            border: 2px solid rgba(107, 123, 156, 0.5);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(31, 36, 58, 0.8);
+        }
+        
+        canvas {
+            display: block;
+            background-color: var(--dark-color);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px rgba(78, 204, 163, 0.5);
+            letter-spacing: 2px;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 800px;
+            max-width: 100%;
+            margin-bottom: 1rem;
+        }
+        
+        .info {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            min-width: 80px;
+        }
+        
+        .info-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .info-label {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        button {
+            background-color: var(--secondary-color);
+            color: var(--light-color);
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .start-btn {
+            background-color: var(--primary-color);
+            color: var(--darker-color);
+        }
+        
+        .instructions {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            width: 800px;
+            max-width: 100%;
+            margin-bottom: 1rem;
+        }
+        
+        .instructions h2 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .instruction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .instruction-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .key {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+        
+        .modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(18, 21, 30, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        .modal-content {
+            background-color: var(--dark-color);
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--secondary-color);
+            max-width: 90%;
+        }
+        
+        .modal-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .modal-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+        
+        .modal-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 2rem;
+        }
+        
+        .modal-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .modal-stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .modal-stat-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .restart-btn {
+            background-color: var(--primary-color);
+            color: var(--darker-color);
+            font-size: 1.1rem;
+            padding: 0.8rem 1.5rem;
+        }
+        
+        .mobile-controls {
+            display: none;
+            width: 800px;
+            max-width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .mobile-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .mobile-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            touch-action: manipulation;
+        }
+        
+        .mobile-controls-group {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        @media (max-width: 800px) {
+            .game-container {
+                width: 100%;
+            }
+            
+            .controls {
+                width: 100%;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .instructions {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .mobile-controls {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 500px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .info {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .info-item {
+                min-width: 60px;
+            }
+            
+            .instruction-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="header">
+        <h1>SPACE INVADERS</h1>
+    </div>
+    
+    <div class="controls">
+        <div class="info">
+            <div class="info-item">
+                <div class="info-value" id="score">0</div>
+                <div class="info-label">SCORE</div>
+            </div>
+            <div class="info-item">
+                <div class="info-value" id="high-score">0</div>
+                <div class="info-label">HIGH SCORE</div>
+            </div>
+            <div class="info-item">
+                <div class="info-value" id="level">1</div>
+                <div class="info-label">LEVEL</div>
+            </div>
+            <div class="info-item">
+                <div class="info-value" id="lives">3</div>
+                <div class="info-label">LIVES</div>
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <button class="start-btn" id="start-btn">
+                <i class="fas fa-play"></i>
+                Start Game
+            </button>
+            <button class="mute-btn" id="mute-btn">
+                <i class="fas fa-volume-up"></i>
+                Sound
+            </button>
+        </div>
+    </div>
+    
+    <div class="game-container">
+        <canvas id="game-canvas"></canvas>
+        <div class="modal" id="start-modal">
+            <div class="modal-content">
+                <h2 class="modal-title">SPACE INVADERS</h2>
+                <p class="modal-subtitle">Defend Earth from the alien invasion!</p>
+                <div class="instruction-grid">
+                    <div class="instruction-item">
+                        <span class="key">←</span>
+                        <span>Move Left</span>
+                    </div>
+                    <div class="instruction-item">
+                        <span class="key">→</span>
+                        <span>Move Right</span>
+                    </div>
+                    <div class="instruction-item">
+                        <span class="key">Space</span>
+                        <span>Fire</span>
+                    </div>
+                    <div class="instruction-item">
+                        <span class="key">P</span>
+                        <span>Pause</span>
+                    </div>
+                </div>
+                <button class="restart-btn" id="start-game-btn">
+                    <i class="fas fa-play"></i>
+                    Start Game
+                </button>
+            </div>
+        </div>
+        
+        <div class="modal" id="game-over-modal" style="display: none;">
+            <div class="modal-content">
+                <h2 class="modal-title">GAME OVER</h2>
+                <p class="modal-subtitle">Earth has been invaded!</p>
+                <div class="modal-stats">
+                    <div class="modal-stat">
+                        <div class="modal-stat-value" id="final-score">0</div>
+                        <div class="modal-stat-label">SCORE</div>
+                    </div>
+                    <div class="modal-stat">
+                        <div class="modal-stat-value" id="final-level">1</div>
+                        <div class="modal-stat-label">LEVEL</div>
+                    </div>
+                    <div class="modal-stat">
+                        <div class="modal-stat-value" id="final-aliens">0</div>
+                        <div class="modal-stat-label">ALIENS DEFEATED</div>
+                    </div>
+                </div>
+                <button class="restart-btn" id="restart-btn">
+                    <i class="fas fa-redo"></i>
+                    Play Again
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="instructions">
+        <h2>Instructions</h2>
+        <div class="instruction-grid">
+            <div class="instruction-item">
+                <i class="fas fa-rocket" style="color: var(--player-color);"></i>
+                <span>Your Ship: Defend Earth!</span>
+            </div>
+            <div class="instruction-item">
+                <i class="fas fa-user-astronaut" style="color: var(--enemy-color);"></i>
+                <span>Aliens: Destroy them!</span>
+            </div>
+            <div class="instruction-item">
+                <i class="fas fa-meteor" style="color: var(--powerup-color);"></i>
+                <span>Power-ups: Collect for special abilities!</span>
+            </div>
+            <div class="instruction-item">
+                <i class="fas fa-shield-alt" style="color: var(--secondary-color);"></i>
+                <span>Bunkers: Take cover behind them!</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mobile-controls">
+        <div class="mobile-buttons">
+            <div class="mobile-controls-group">
+                <div class="mobile-btn" id="mobile-left">
+                    <i class="fas fa-arrow-left"></i>
+                </div>
+                <div class="mobile-btn" id="mobile-right">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
+            <div class="mobile-btn" id="mobile-fire">
+                <i class="fas fa-fire"></i>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get DOM elements
+            const canvas = document.getElementById('game-canvas');
+            const ctx = canvas.getContext('2d');
+            const startBtn = document.getElementById('start-btn');
+            const muteBtn = document.getElementById('mute-btn');
+            const startModal = document.getElementById('start-modal');
+            const gameOverModal = document.getElementById('game-over-modal');
+            const startGameBtn = document.getElementById('start-game-btn');
+            const restartBtn = document.getElementById('restart-btn');
+            const scoreElement = document.getElementById('score');
+            const highScoreElement = document.getElementById('high-score');
+            const levelElement = document.getElementById('level');
+            const livesElement = document.getElementById('lives');
+            const finalScoreElement = document.getElementById('final-score');
+            const finalLevelElement = document.getElementById('final-level');
+            const finalAliensElement = document.getElementById('final-aliens');
+            
+            // Mobile controls
+            const mobileLeftBtn = document.getElementById('mobile-left');
+            const mobileRightBtn = document.getElementById('mobile-right');
+            const mobileFireBtn = document.getElementById('mobile-fire');
+            
+            // Game variables
+            const GAME_WIDTH = 800;
+            const GAME_HEIGHT = 600;
+            const PLAYER_WIDTH = 60;
+            const PLAYER_HEIGHT = 30;
+            const PLAYER_SPEED = 5;
+            const ALIEN_ROWS = 5;
+            const ALIEN_COLS = 10;
+            const ALIEN_WIDTH = 40;
+            const ALIEN_HEIGHT = 40;
+            const ALIEN_H_SPACING = 15;
+            const ALIEN_V_SPACING = 15;
+            const ALIEN_H_PADDING = 60;
+            const ALIEN_V_PADDING = 60;
+            const BULLET_WIDTH = 4;
+            const BULLET_HEIGHT = 15;
+            const BULLET_SPEED = 8;
+            const ALIEN_BULLET_SPEED = 4;
+            const BUNKER_COUNT = 4;
+            const BUNKER_WIDTH = 80;
+            const BUNKER_HEIGHT = 60;
+            const BUNKER_SEGMENTS = 8;
+            const POWER_UP_SIZE = 30;
+            const POWER_UP_SPEED = 2;
+            
+            // Game state
+            let gameRunning = false;
+            let gamePaused = false;
+            let player;
+            let playerBullets = [];
+            let aliens = [];
+            let alienBullets = [];
+            let bunkers = [];
+            let powerUps = [];
+            let explosions = [];
+            let particles = [];
+            let stars = [];
+            let score = 0;
+            let highScore = localStorage.getItem('spaceInvadersHighScore') || 0;
+            let level = 1;
+            let lives = 3;
+            let alienDirection = 1;
+            let alienMoveDownFlag = false;
+            let alienMoveSpeed = 1;
+            let alienShootingFrequency = 0.02;
+            let powerUpFrequency = 0.001;
+            let lastTime = 0;
+            let aliensDefeated = 0;
+            let muted = false;
+            
+            // Power-up types
+            const POWER_UP_TYPES = {
+                RAPID_FIRE: { color: '#ff8c42', duration: 5000, symbol: 'R' },
+                SHIELD: { color: '#3498db', duration: 8000, symbol: 'S' },
+                MULTI_SHOT: { color: '#e74c3c', duration: 5000, symbol: 'M' },
+                EXTRA_LIFE: { color: '#2ecc71', duration: 0, symbol: 'L' }
+            };
+            
+            // Active power-ups
+            let activePowerUps = {
+                RAPID_FIRE: { active: false, timeLeft: 0 },
+                SHIELD: { active: false, timeLeft: 0 },
+                MULTI_SHOT: { active: false, timeLeft: 0 }
+            };
+            
+            // Control states
+            let keys = {
+                left: false,
+                right: false,
+                fire: false
+            };
+            
+            // Audio
+            let shootSound, explosionSound, powerUpSound, gameOverSound, levelUpSound;
+            
+            // Setup canvas size
+            function setupCanvas() {
+                // Scale canvas to fit window width while maintaining aspect ratio
+                const containerWidth = Math.min(GAME_WIDTH, window.innerWidth - 40);
+                const scale = containerWidth / GAME_WIDTH;
+                
+                canvas.width = GAME_WIDTH;
+                canvas.height = GAME_HEIGHT;
+                canvas.style.width = `${containerWidth}px`;
+                canvas.style.height = `${GAME_HEIGHT * scale}px`;
+            }
+            
+            // Initialize audio
+            function initAudio() {
+                shootSound = new Audio('data:audio/wav;base64,UklGRlwPAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YTgPAABI/Pj4+Pj3+Pj58/j39/f5+vr49/b2+Pj5+vr8/v/+/Pr5+fr7/P3+/v37+vr8/v8AAQD9+/r7/P3///79/P3///8AAQD+/f3+//8A//79/f7//wD///8AAAAAAAD//wECAgAAAPz59/b29vb3+Pn8/v8BAv/9+vj39vb3+Pr8/f/8+vj39vb3+Pj6+/v49/X19fb3+v3//fz7+vr7/P39/v78+vn6+/z9/v79/Pz8/f7//wAA/v39/v8AAAEA//7+//8AAAD///8AAQEBAAEBAgICAgIBAQEBAQEAAAAAAAAAAQEBAQEBAAABAAAAAAD//wAA/v/+/v7+/v7+//7//v7+//8AAP7+/v4AAP////8AAP/+/f3+/v///v7+/f39/v7//////v39/f7+//8AAP/+/v7+/v///v7+/f3+//8A//7+/v7///8A/v7+/v7+/v///v39/v7///8A/v7+/v7+/////v7+/v///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwQFBggKDQ0PDxAQERAQEBAPDg4ODg4PDxARERAPDg4ODg4PDxAQDw4ODQwMDA0ODxAQERERERERERERERAPDg0MDAsLDA0ODw8QEBEREhISExMTEhIRERAQDw8ODQwMCwsKCgoJCQkJCQoLDA0ODxAREhISEhITExMTEhIRERAQDw8ODQwLCwoJCQgICAgICQkKCgsMDQ4PEBEREhMTFBQUFBQUExIREA8ODQwKCQgHBgUEAwMCAgEBAQICAwQFBggJCgwNDxAREhMUFBUWFhYWFhYVFRQTEhEQDw0MCgkHBgQDAQAAAAAAAQMEBQcJCgwODxETFBUWFxgYGRkZGRgYFxcWFBMSEA8NDAoIBwUEAgEAAAAAAAABAgMFBgcJCgwNDxARExQVFhcYGRoaGhoaGRkYFxYVFBMREA4NCwoIBwUEAwIAAAAAAAAAAAECAwQGBwkKDA0PEBITFBUXGBkZGhoaGhoaGRkYFxYVFBIREA8NDAoJBwYEAwIBAAAAAAAAAAABAgMEBQcICgsMDg8REhQVFhcYGRkaGhoaGhkZGBcWFRQTERAPDgwLCQgHBQQDAgEAAAAAAAAAAQIDBAUGCAkLDA4PERITFBYXGBkaGhoaGhoZGRgXFhUUExEQDw0MCgkIBgUDAgEAAAAAAAAAAAECAwQFBwgKCwwODxESExQWFxgZGRoaGhoaGRgYFxYVFBIREA8NDAoJCAYFBAIBAAAAAAAAAAABAgMEBQcICgsNDg8REhMUFRcXGRkaGhoaGhkYGBcWFRQTEhAPDgwLCQgHBQQDAgEAAAAAAAAAAQIDBAUGCAkLDA4PERITFBUWGBgZGRoaGhoZGBgXFhUUExIRDw4NCwoIBwUEAwIBAAAAAAAAAAECAwQFBggJCwwODxARExQVFhcYGRoaGhoaGRkYFxYVFBMSEA8ODQsKCAcFBAMCAQAAAAAAAAABAgMEBQYICQsMDQ8QEhMUFRYYGBkaGhoaGhkYGBcWFRQTEhEPDgwLCggHBQQDAgEAAAAAAAAAAQIDBAUGCAkLDA0PEBITFBUWFxgZGRoaGhoZGRgXFhYUExIRDw4NCwoJBwYEAwIBAAAAAAAAAAECAwQFBgcJCgsNDxARExQVFhcYGRoaGhoaGRkYFxYVFBMSEQ8ODQsKCQcGBAMCAQAAAAAAAAABAgMEBQYICQoMDQ8QEhMUFRYXGBkZGhoaGhoZGBgXFhUUExIQDw4NCwoIBwUEAwIBAAAAAAAAAAECAwQFBgcJCgwNDxARExQVFhcYGRkaGhoaGhkYGBcWFRQTEhAPDg0LCgkHBgQDAgEAAAAAAAAAAAABAgMEBQcICgwNDg8REhQVFhcYGRoaGxsbGhoZGBgXFRUTEhEPDgwLCQgGBQQCAgEAAAAAAAAAAAABAgMEBQcICgsMDg8REhQVFhcYGRobGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgAAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQcICgsMDg8REhMUFhcYGRobGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQcICgsMDg8REhMUFhcYGRobGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQcICgsMDg8REhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQcICgsMDg8REhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQcICgsMDg8REhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQcICgsMDg8REhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQcICgsMDg8REhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQcICgsMDg8REhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQcICgsMDg8REhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQcICgsMDg8REhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAQEAAAAAAAAAAAABAgMEBQcICgsMDg8REhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQcICgsMDg8REhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAQEAAAAAAAAAAAABAgMEBQcICgsMDg8REhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQcICgsMDg8REhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAAAAAAAAAABAgMEBQYICgsMDg8QEhMUFRcYGRoaGxsbGhoZGBcWFRQTEhEPDg0LCggHBQQDAgEAAAA=');
+                explosionSound = new Audio('data:audio/wav;base64,UklGRsQ2AABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0Ya42AAAAAAA7Owhhh4eHZwwAADsOB2KHiIiKZQoAOhAHXYiIiYpnCgA4EghXh4iKi2kLADUSClOHiIuMawwAMRMLTYeJjIxtDQAtFA1Eh4mMjXAOACYVDz6Gio6PcxAAHBURNIWJjo90EQAWFhMug4qPkHcTABEXFCiCipCQeRUADRcVIoCLkZJ7FwAJGBYdf4uSkn0ZAAUZFxh9jJKTfxsAARoYE3yMk5KBHQAAHBkReIyTk4MgAAAdGg92jJOThSMAAB0bDHWMk5OGJgAAHhwIc4yTk4coAAAeHQZyjJOTiCsAAB4eBHGMk5OJLQAAHh8Cb4yTk4ovAAAfHwFvjJOTijEAAB8gAW6Mk5OLMQAAH6ABboyTk4syAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW6Mk5OLMwAAH6ABboyTk4szAAAfoAFujJOTizMAAB+gAW+Mk5OLMgAAH6ABb4yTk4syAAAfoAFwjJOTijEAAB8fAXCMk5OKMAAAHx8Cco2Tk4guAAAfHQNzjZOTiC0AAB4dBXSNk5OGKgAAHhwHdY2Tk4UoAAAeGwl3jZOTgiYAAB0aCniNkpKBIwAAHRkMeo2SknwgAAAcGQ55jJKSeR4AABwYEHqMkpJ2GwAAGxcSe4uRkXQZAAAaFhR9i5GRcRcAABkVF36LkZBtFQAAGBQZgIqQj2oTAAAYExt/io+PZxEAABcSHYGJj49lDwAAFhEegYmOjmIMAAAWEB+CiI6NXwoAABUOIYKIjYxcBwAAFA0jg4eNjFoFAAATCySDh4yLVwQAABMKJoOGi4pUAgAAEgkogoaLik8AAAARByqChYqJSQEAABAGKoGEiYg/AAAADgUsf4SIhyYAAAAMBC19g4eGGQAAAAsCLXuChYEAAAAABQAreIF/AAAAAAUAAABiAAAAAAAA');
+                powerUpSound = new Audio('data:audio/wav;base64,UklGRmQIAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YUAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABDTnAegNZKUk1cbnR7g4uTm6Oqs7u8w8TIzM3O0tHOzdLQzM3HxcC9urSvqqOclZCHgXl0bWVeVk9GPjIpIBgPBvz07ejg2dLKw7y0raSckouDe3NqYVhPRjwzKyIaCwMBAP//AQMGCg4TGB0jJy0xNjk9P0JDRUdHR0dIR0dFREM/PTk1MS0oJCAbFxMMBwMAAP37+Pby7+zoZWN1fYWNlJyiq7K5wMbLz9bd3uLm6Ojt7vDx8fP19Pb19vb09PPx8O7s6unn5OLf3tvX1NHNycXAvru2sq2oo52YlI6Ih4F5c21mYFpTTEU+OCwiGhILBAAAAAADBQkMERUYHiAnLDAzODw+QkRGR0lLS0tLTEtKSklIRkVDQT89PDg2MzEuKigmIyAcGhcUERMMCgcGAwIA//79/Pv6+fj29vX09PPy8vHw7+/u7e3t7Ozr6+vq6unp6ejo6Ojo6Ojp6erp6unq6+vs7O3u7u/w8fLy8/T19vf4+fr7/P3+/wABAgMEBQYHCQoLDA0ODxAREhMUFRUWFxgYGRkZGhsbGxwcHB0dHR0eHh4eHx8fICAgICEhISEiIiIiIyMjIyMjJCQkJCQkJCUlJSUlJSUlJSUlJSUlJSUlJSUlJSUlJSUlJCQkJCQkJCMjIyMjIyMiIiIiIiIiISEhISEhICAg//7+/fz7+/r59/b19PPz8fDv7u3s6+rp6Ojn5ubl5OTj4uLh4eHg4ODf39/f39/f3+Dg4ODg4eHh4uLj4+Pk5eXm5+fo6enq6+vs7e7v8PHy8/T19vf4+fr7/P3+//8AAQICAwQFBgYHCAgJCgoLCwwMDQ0ODg8PEBAQEREREhISExMTExQUFBQUFRUVFRYWFhYWFxcXFxcYGBgYGBkZGRkZGhoaGhoaGxsbGxsbHBwcHBwcHR0dHR0dHh4eHh4eHx8fHx8fICAe8e7r6ejl4+Hf3dvZ19XU0tHPzcvKyMfFxMTDw8PDw8TFxsfJy8zO0NLU1tjZ297g4uTn6evu8fP2+Pn8/v8BAwQGCQsNDhAREhMUFRUWFxcYGBgYGRgYGBgXFxYWFRUUExIREA8ODQsKCQgGBQQDAQD//v38+/r5+fj39vb19PTz8/Ly8fHw8PDv7+/v7u7u7u7u7u7t7e3t7e3t7ezs7Ozs7Ozr6+vr6+vr6uvq6urq6urq6uvr6+vs7O3t7u7v7/Dw8fLz8/T19vf3+Pn6+/z9/v8AAQIDBAUGBwgJCQoLDAwNDg8PEBERERISExMUFBUVFRYWFhcXGBgYGRkZGhobGxwcHB0dHh4eHx8gICEhIiIjIyQkJSUlJiYnJygBAfz8+vn29fPy8O7s6+rp5+bl5OPi4uHg4ODf39/f39/f39/g4ODh4eLj4+Tl5ufn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7/AAECAgMEBQYGBwgICQoKCwsMDA0NDg4PDxAQEBEREhISExMTExQUFBQVFRUVFhYWFhYXFxcXFxgYGBgYGRkZGRkaGhoaGhobGxsbGxwcHBwcHB0dHR0dHR4eHh4eHh8fHx8fHyAeBGJmeohiMDJibgsKHFMbIGVeITg9PDRaNz1EWVBSS1hRH1EnERwYIAA0Tx0VITYxNQwYNCA/NC5JTig8MDV3V8Q8JSwHFh8yFTU3KDpWISQhOUorN0FRXFNUITgiLRszHiMoJCNEQVMwMBQ3GxcXETwzOSlcLCguIwpRUCxRFhgwEBkSDgkNDwsICw8TFhoiJz1CR0gqIxhJcU1aWE1JOkxUUVJiTVNVU1taXWZiY2ZqaG1xam5sbGtrb2pzd3d6fYB/foGCfoGCfXt8d3d0b2dkX1pVU1JQUFVYWlZSUE1TTVVZXWJpbW5ra2dhW1xYWl5iZmlxc3NybnFxdXmBiIqJhYJ+e3p3dnR0cnR6foSFh4aGgHx3dXV7foiOkpOSkIiDfXp7eoCFjZGVlZWQioV/fX19goiOk5aZlJCNioeFh4iLkJSZmZqXkY2JhYSDhYqOlJiZmpaSjYqGhYOFiI2TmZmamJSNiIKAfHyAhIqRlpqZlI6Ig3x5eHuBho6Vm5qXko2JhIF/gYWMkZebmZORiYaAfX6BhYuRlZeWk4+JhYKBgoWIjZOWlpWQjoiEgX9/gISIjpOVlJKNi4mIh4qNj5KTkZCNiomIiImLjpCSkY+MioiIiImKi42PkJCOjYuKiYiIiImKi42Oj42MjIsLCw0NDw8QERITExQVFRYXFxgYGRkZGhobGxscHBwdHR0eHh4fHx8gICAhISEiIiIjIyMkJCQlJSUmJiYnJycoKCgpKSkqKiorKyssLCwtLS0uLi4vLy8wMDAxMTEyMjIzMzM0NDQ1NTU2NjY3Nzc4ODg5OTk6Ojo7Ozs8PDw9PT0+Pj4/Pz9AQEBDQ0NEREREREVFRUVFRUVGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRUVFRQ==');
+                gameOverSound = new Audio('data:audio/wav;base64,UklGRjwKAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YRgKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICAgH9/f4CAgH9/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f39/f4AABwoQFBgcICQnKi0vMjQ2ODo8PUA/QkBBQUE/Pj07ODUyLispJiMfHBgUEQ0JBgIA+/j08u/s6ebl4+De3NnY1dTR0M7My8nIx8XFw8PCwcHAwL/Av7+/v8C/wMDBwcLDw8TFxsfIycvLzc7Q0dPU1tfa3N3f4eTm6evt7/Hy9ff5+/0BBQgMDxIVGBseISQmKSstLzEzNTY4OTo7PD0+Pj8/Pz8/Pz4+PT07Ozo4NzY0MzEvLiwqKCYkIiAfHRsZFxUTEQ8NCwoIBgUDAgAAAAAAAgQICw8SFhofIyYqLTAzNjk8PkFCQ0NDQ0JBPz07ODUyLispJSIfGxcTDwoHAwD7+Pby7+zp5ePh3tvZ19TR0M7My8nIx8XFxMPCwcHAwMDAwMDAwcHCw8PExcbHyMnKy8zOz9DR09TV1tjZ293e4OLj5efo6uvt7u/x8vP09fb3+Pn6+/z9/v8AAQIDBAUGBwgJCgsLDA0NDg8PEBARERISEhMTExQUFBQVFRUVFRYWFhYXFxcXGBgYGBkZGRkaGhoaGxsbGxwcHB0dHR0eHh4eHx8fHyAgICAhISEhIiIiIiMjIyMkJCQkJSUlJSYmJiYnJycnKCgoKCkpKSkqKioqKysrKywsLCwtLS0tLi4uLi8vLy8wMDAwMTExMTIyMjIzMzMzNDQ0NDU1NTU2NjY2Nzc3Nzg4ODg5OTk5Ojo6Ojs7Ozs8PDw8PT09PT4+Pj4/Pz8/QEBAQEFBQUFCQkJCQ0NDQ0REREJBQkJAPz8+PDs7OTg2NTQyMS8tLCopJyYkIyEgHh0bGhgXFRQSEQ8ODAsKCAcFBAMBAP/9/Pv6+fj39vX08/Lx8PDv7u3s7OvqqXZvZFdOQzwxKSIdGRYTEREQERIVGBodICQnKi0wMzY5Oz0/QEJDREVFRUZFRURDQkE/Pj06ODUyLywpJiMgHRoXFBEOCwgFAv75/ffy7+zo5uTi4N7c2tfV09HPzcvJx8bEw8LBwMC/v7+/v8DAwMHCw8TFx8jJy8zOz9HS1NXX2drd3uDi5Obo6uzv8PP19/n7/f8CBQgLDhEUFxodICMmKCstLzI0Njg5Ozw9Pj8/QEBAQEBAQEBAPz8+Pj07Ozk4NjY0MzEwLi0rKSgmJCMhIB4dGxoYFxYUExEQDw0MCgkIBgUEAwIBAAD//wABAwUIDA8TFhkdICQnKy4xNDc6PD9BQkRFRkdGRkVEQ0FAPTs5NjMwLSonJCAdGRYSEAsIBQIA/fv49/Ty8O7s6ujn5ePh4N7d29rZ19bV1NPS0dDQz8/Ozs7Ozs3Ozs7Oz8/P0NDR0dLS09TV1dbX2Nja29zd3t/g4ePk5ebm5+oCBgoOEhccICQoLDAzNzs+QUNGSElLTU1OTk9OTk1MS0pIR0VEQkA+PDo4NTMwLispJiMgHRoXFBEOCwgFAv75/Pn28/Hu7Orn5ePh39za2NbU0tDOzMrJx8bFxMPCwsHBwcHBwsLDxMXGx8nKzM3P0dLU1tjZ293f4ePl5+ns7vDy9Pb4+v0AAwYJDBATFhkbHiEjJScoKisGBwkLDQ4QERITFBUWFhcXGBkZGhoaGxscHBwdHR0eHh4fHx8gICAhISEiIiIjIyMkJCQlJSUmJiYnJycoKCgpKSkqKioqKysrLCwsLS0tLi4uLy8vMDAwMTExMjIyMzMzNDQ0NTU1NjY2Nzc3ODg4OTk5OTk5NDQ0MzMzMzIyMjIxMTExMDAwMC8vLy8uLi4uLS0tLCwsLCsrKysqKioqKSkpKSkpKSgvLy0rKScmIyEfHBoXFRMQDgsJBwQCAP77+fj18/Hw7u3r6ujn5eTj4eDf397e3d3c3Nzb29vb29vc3Nzd3d7e3+Dg4eHi4+Tl5ufo6enq6+zt7u/w8fL09fb3+fr7/P3+/wECAwQFBggJCgsNDg8QERITFBUWFxgZGhscHR4eHyAhIiIjJCUlJicoKSkqKystLS4uLzAwMTEyMjIzIhwhHRkTDgkE//r18u7q5ePf3NnW09DMycbEwcC+vby8u7u7vL2+v8HDxcjKzM/S1Nfa3N/i5enr7vH09/r9AQQHCw4RFBcaHSAiJSgrLjEzNjg7PT9BQkRFRkdHSEhISEhIR0dGRURDQkA/PTw6ODY0MzEwLiwrKSgnJSQiISAfHh0cGxoZGBcmJSMhHx0aGBYTEQ8MCggGAwEA/vz7+fj29fTz8vHw7+7u7e3s7Ozs7O3t7u7v8PHy8/T19vf5+vv9/gABAwQGBwkLDA4PERITFRYXGBkaGxwdHh4fICEiIiMkJCUlJiYnJygfHhovLCgkIBsXEw8KBgIA/fr28e3p5eDc2NTQzMjFwb68ubi3trW1tbW1trW192JWSzwnGhAJBQEGDxkoOkdVZHJ8hYyRlZmdnp+goaKio6SjpKSjpKOioqGgoJ+enZybmpiXlZOSkI6Mi4mHhYOBf317enh3dXNycG9ta2ppZ2ZlZGJhYF9eXFtaWVhXVlVUUlFQT05NTEtKSUhIR0ZGRUREREVJSUhHRkVEQ0JBQEBAQUJDRUZISktMTU5PUFFSUlNUVFVVVlZXV1hYWVlaWltbXFxdXV5eX2BhYmNkZWZnaGlqa2xtbm9wcXJzc3R1dnZ3eHl5enp7fHx9fX5+f3+AgICrqaeko6GhoqKjpKWmqKmrrK2ur7GysrO0tba2t7e4uLm5urq6u7u7u7y8vLy9vby8vLy8u7u7u7u6urm5uLi3t7a2tbWzsrKxsK+urKuqqainpqWko6KhoJ+enZybmpmYl5aVlJOSkZCPjo2Mi4qJiIeGhYSEg4KCgYB/f359fHt6eXh3d3Z1dHNycXFwb25tbGtrakdFQ0A+PDo4NjU0MzMzMzQ1Njc5Ojw9P0FCRUZISktNTk9QUVJTVFVVVVZWV1dXWFhYWFhYWFhXV1dXV1ZWVVVUVFNTUlJRUVBQT05OTUxMTEtLSkoLDQ8REhQVFhcYGBkaGhsbHBwcHB0dHR0dHR0dHBwcHBsbGxsaGhoZGRkZGRgYGBgYGBgYGBgYGBgZGRkZGRkaGhobGxscHBwdHR0eHh4fHx8gICAhISEiIiIjIyMkJCQlJSUlJiYmJiYnJycnJycnJycnJycnJycnJycnJycnJycnJyYmJiYmJiYmJSUlJSUlJSUlJSUlJSUlJSUlJSUlJSUlJSUmJiYmJiYmJyYnKCcnJygoKCgoKCkpKSkpKSkpKSkoKCgoKCgnJyYmJiUlJCQjIyIiIiEhICAhISEhISIiIiIiIiMjIyMkJCQkJSUlJSYmJiYnJycoKCgoKSkpKSkpKikpKSkpKCgoKCcnJyYmJSUkJAA=');
+                levelUpSound = new Audio('data:audio/wav;base64,UklGRuYGAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YcIGAAAAAP//AQEAAAEBBQT+/gIDBQQFBAoIBQUJCQwKDAoPDw0MEhAPDhIRFBITEhcVExMWFRgWFRUaGRgXGBcbGRoYHRsdGxsaHhwdGyAdIB0eHCIfIB4gHiMhIB8kIiMgISElIyIiJiQlIyMkKCUlIygoJyUlKCcnJiYqKSgmKSgsKCcqKiwpKSotKyssKy8tLCosMDAuLjExMjAwMjMzMTI1NDIxNDQ2MzM1NjU0NDY3NjQ1Nzc2NTY4NzU1NTc3NjU1Nzc1NDU4NzU1NTc2NTU1NjY1NDU3NjU0NDY2NTQ0NTY1MzQ0NTUzMzM0NDMyMTM0MjEyMjMyMTEyMzMxMTIyMzExMDAyMjAwMDExLy8vMS8vLi4wLy4tLS8uLSwsMC0sLCwvLSwsKy0tLCsrLS0rKissLCoqKywrKikrLCoqKSsrKikoKioqKSgpKSkoKCgpKSgoJycpKCgnJygoKCcnKCgnJycnKCgnJyYoKCcnJycoJycnJygnJycnKCcnJycnKCcnJycnKCcnJycnKCcnJicnJycnJycnJycoKCcnKCkpKCgoKSopKSorKiorKiwtLS0uLzAwMDE0NDU1Njg5Ojo7PT4/QEFFRU9PT09WVVVWW1tbXGJhYWJoZ2doaWdoaGhnZ2ZmZWRjYmJhYF5eXVxbWllYV1ZVVlVUU1JRUU9OTk1MS0tKSUhIR0ZFRENCQUA/Pz49PDw7Ojk5ODc2NjUzMzIxMjEvLi4tLCsrKikoKCcmJSUkIyMiISAgHx4eHRwcGxoaGRgYFxcWFRUUExMSEREQDw8ODQ0MCwoKCQkIBwcGBQUEBAMDAgIBAQAAAAD//////v7+/v39/f39/Pz8/Pz7+/v7+/r6+vr6+fr5+fn5+Pj4+Pj39/f39/b29vb29fX19fX09PT09PPz8/Pz8vLy8vLx8fHx8fDw8PDw7+/v7+/u7u7u7u3t7e3t7Ozs7Ozr6+vr6+rq6urq6urq6urq6enp6enp6enp6enp6enp6enp6enp6enp6enp6enp6urq6urq6urq6urq6+vr6+vr6+vr6+vs7Ozs7Ozs7Ozs7O3t7e3t7e3t7e3t7u7u7u7u7u7u7u7v7+/v7+/v7+/v7/Dw8PDw8PDw8PDw8fHx8fHx8fHx8fHy8vLy8vLy8vLy8vPz8/Pz8/Pz8/Pz9PT09PT09PT09PT19fX19fX19fX19fb29vb29vb29vb29/f39/f39/f39/f4+Pj4+Pj4+Pj4+Pn5+fn5+fn5+fn5+vr6+vr6+vr6+vr7+/v7+/v7+/v7+/z8/Pz8/Pz8/Pz8/f39/f39/f39/f3+/v7+/v7+/v7+/v////////////////////////////////////////////////////////////////////////////////////jyEVD//1+wBQF9tgUAV7AFAV+wBQFfsPv4X7EFBV+wBQVfsAUFX7AFP1+wBQdfsAUHX7AFB1+wBQdfsHsFX7AFBj4FAAVfsAUDX7AFAx5QBQJfsAUCX7AFAl+wfwJfsAUAX7AFAp/F9QBfsAWiX7AFAl+wBQJfsAUCX7AFAl5QBAJfsAP+XlAD/l5QA/5eUAP+XlAD/l5QA/5eUAP+XlAD/l5QA/5eUAtXXlhYW1RYWFV9hQVX2FBVfnUFR/dQVH5wVFR+cFRUfnBUVH5wA/5eUAP+XlAD/l5QA/5eUAP+XlAD/l5QA/5eUAP+XlAD/l5QA/5eUAP+XlAD/l5QA/5eUAP+XlAD/l5QA/5eUAP+XlAD/l5QA/5eUAP+XlAD/l5QA/5eUAP+XlAD/l5QA/5eUAP+XlAD/l5QA/5eUAP+XlAD/l5QA/5eUAP+XlAD/l5QA/5eUAP+XlAAAAAEAAAAA9QAgAQ==');
+            
+            // Initialize game
+            function init() {
+                setupCanvas();
+                loadSounds();
+                createStars();
+                highScore = localStorage.getItem('spaceInvadersHighScore') || 0;
+                highScoreElement.textContent = highScore;
+                
+                // Show start modal
+                startModal.style.display = 'flex';
+                gameOverModal.style.display = 'none';
+                
+                // Add event listeners
+                document.addEventListener('keydown', handleKeyDown);
+                document.addEventListener('keyup', handleKeyUp);
+                window.addEventListener('resize', setupCanvas);
+                
+                startBtn.addEventListener('click', startGame);
+                startGameBtn.addEventListener('click', startGame);
+                restartBtn.addEventListener('click', restartGame);
+                muteBtn.addEventListener('click', toggleMute);
+                
+                // Mobile controls
+                mobileLeftBtn.addEventListener('touchstart', () => {
+                    keys.left = true;
+                });
+                mobileLeftBtn.addEventListener('touchend', () => {
+                    keys.left = false;
+                });
+                mobileRightBtn.addEventListener('touchstart', () => {
+                    keys.right = true;
+                });
+                mobileRightBtn.addEventListener('touchend', () => {
+                    keys.right = false;
+                });
+                mobileFireBtn.addEventListener('touchstart', () => {
+                    keys.fire = true;
+                });
+                mobileFireBtn.addEventListener('touchend', () => {
+                    keys.fire = false;
+                });
+                
+                // Create stars background
+                createStars();
+                
+                // Start animation loop
+                requestAnimationFrame(gameLoop);
+            }
+            
+            // Load game sounds
+            function loadSounds() {
+                // Mute button initial state
+                muteBtn.innerHTML = '<i class="fas fa-volume-up"></i> Sound';
+            }
+            
+            // Toggle sound mute
+            function toggleMute() {
+                muted = !muted;
+                if (muted) {
+                    muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i> Muted';
+                } else {
+                    muteBtn.innerHTML = '<i class="fas fa-volume-up"></i> Sound';
+                }
+            }
+            
+            // Play sound
+            function playSound(sound) {
+                if (!muted) {
+                    sound.currentTime = 0;
+                    sound.play();
+                }
+            }
+            
+            // Create background stars
+            function createStars() {
+                stars = [];
+                for (let i = 0; i < 200; i++) {
+                    stars.push({
+                        x: Math.random() * GAME_WIDTH,
+                        y: Math.random() * GAME_HEIGHT,
+                        radius: Math.random() * 1.5,
+                        alpha: Math.random(),
+                        speed: Math.random() * 0.5
+                    });
+                }
+            }
+            
+            // Update stars
+            function updateStars() {
+                stars.forEach(star => {
+                    star.y += star.speed;
+                    if (star.y > GAME_HEIGHT) {
+                        star.y = 0;
+                        star.x = Math.random() * GAME_WIDTH;
+                    }
+                });
+            }
+            
+            // Draw stars
+            function drawStars() {
+                ctx.save();
+                stars.forEach(star => {
+                    ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                ctx.restore();
+            }
+            
+            // Start a new game
+            function startGame() {
+                resetGame();
+                startModal.style.display = 'none';
+                gameOverModal.style.display = 'none';
+                gameRunning = true;
+                gamePaused = false;
+                startBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+            }
+            
+            // Restart game after game over
+            function restartGame() {
+                resetGame();
+                gameOverModal.style.display = 'none';
+                gameRunning = true;
+                gamePaused = false;
+                startBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+            }
+            
+            // Pause game
+            function pauseGame() {
+                gamePaused = !gamePaused;
+                if (gamePaused) {
+                    startBtn.innerHTML = '<i class="fas fa-play"></i> Resume';
+                } else {
+                    startBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                }
+            }
+            
+            // Reset game state for a new game
+            function resetGame() {
+                // Reset game variables
+                score = 0;
+                level = 1;
+                lives = 3;
+                alienDirection = 1;
+                alienMoveDownFlag = false;
+                alienMoveSpeed = 1;
+                alienShootingFrequency = 0.02;
+                powerUpFrequency = 0.001;
+                aliensDefeated = 0;
+                
+                // Reset player
+                player = {
+                    x: GAME_WIDTH / 2 - PLAYER_WIDTH / 2,
+                    y: GAME_HEIGHT - PLAYER_HEIGHT - 30,
+                    width: PLAYER_WIDTH,
+                    height: PLAYER_HEIGHT,
+                    speed: PLAYER_SPEED,
+                    color: 'var(--player-color)',
+                    lives: 3,
+                    invulnerable: false,
+                    invulnerableTime: 0
+                };
+                
+                // Reset bullets, aliens, and power-ups
+                playerBullets = [];
+                alienBullets = [];
+                powerUps = [];
+                explosions = [];
+                particles = [];
+                activePowerUps = {
+                    RAPID_FIRE: { active: false, timeLeft: 0 },
+                    SHIELD: { active: false, timeLeft: 0 },
+                    MULTI_SHOT: { active: false, timeLeft: 0 }
+                };
+                
+                // Create aliens
+                createAliens();
+                
+                // Create bunkers
+                createBunkers();
+                
+                // Update UI
+                scoreElement.textContent = score;
+                levelElement.textContent = level;
+                livesElement.textContent = lives;
+            }
+            
+            // Create aliens for current level
+            function createAliens() {
+                aliens = [];
+                
+                for (let row = 0; row < ALIEN_ROWS; row++) {
+                    for (let col = 0; col < ALIEN_COLS; col++) {
+                        let alienType;
+                        if (row === 0) {
+                            alienType = 3; // Top row - highest points
+                        } else if (row <= 2) {
+                            alienType = 2; // Middle rows
+                        } else {
+                            alienType = 1; // Bottom rows
+                        }
+                        
+                        aliens.push({
+                            x: col * (ALIEN_WIDTH + ALIEN_H_SPACING) + ALIEN_H_PADDING,
+                            y: row * (ALIEN_HEIGHT + ALIEN_V_SPACING) + ALIEN_V_PADDING,
+                            width: ALIEN_WIDTH,
+                            height: ALIEN_HEIGHT,
+                            type: alienType,
+                            alive: true,
+                            animationFrame: 0,
+                            animationDirection: 1
+                        });
+                    }
+                }
+            }
+            
+            // Create bunkers for player to hide behind
+            function createBunkers() {
+                bunkers = [];
+                
+                const bunkerSpacing = (GAME_WIDTH - (BUNKER_COUNT * BUNKER_WIDTH)) / (BUNKER_COUNT + 1);
+                
+                for (let i = 0; i < BUNKER_COUNT; i++) {
+                    const bunkerX = bunkerSpacing + i * (BUNKER_WIDTH + bunkerSpacing);
+                    const bunkerY = GAME_HEIGHT - PLAYER_HEIGHT - 100;
+                    
+                    // Create bunker segments
+                    const segments = [];
+                    const segmentWidth = BUNKER_WIDTH / BUNKER_SEGMENTS;
+                    const segmentHeight = BUNKER_HEIGHT / 3;
+                    
+                    for (let row = 0; row < 3; row++) {
+                        for (let col = 0; col < BUNKER_SEGMENTS; col++) {
+                            // Skip some segments to create bunker shape
+                            if (
+                                (row === 2 && col >= 3 && col <= 4) || // Bottom center opening
+                                (row === 0 && (col === 0 || col === BUNKER_SEGMENTS - 1)) // Top corners
+                            ) {
+                                continue;
+                            }
+                            
+                            segments.push({
+                                x: bunkerX + col * segmentWidth,
+                                y: bunkerY + row * segmentHeight,
+                                width: segmentWidth,
+                                height: segmentHeight,
+                                health: 4 // Health of each segment
+                            });
+                        }
+                    }
+                    
+                    bunkers.push({
+                        x: bunkerX,
+                        y: bunkerY,
+                        width: BUNKER_WIDTH,
+                        height: BUNKER_HEIGHT,
+                        segments: segments
+                    });
+                }
+            }
+            
+            // Handle keydown events
+            function handleKeyDown(e) {
+                if (e.key === 'ArrowLeft') {
+                    keys.left = true;
+                } else if (e.key === 'ArrowRight') {
+                    keys.right = true;
+                } else if (e.key === ' ') {
+                    keys.fire = true;
+                } else if (e.key === 'p' || e.key === 'P') {
+                    if (gameRunning) {
+                        pauseGame();
+                    }
+                }
+            }
+            
+            // Handle keyup events
+            function handleKeyUp(e) {
+                if (e.key === 'ArrowLeft') {
+                    keys.left = false;
+                } else if (e.key === 'ArrowRight') {
+                    keys.right = false;
+                } else if (e.key === ' ') {
+                    keys.fire = false;
+                }
+            }
+            
+            // Update player position
+            function updatePlayer() {
+                // Move player based on key input
+                if (keys.left) {
+                    player.x -= player.speed;
+                }
+                if (keys.right) {
+                    player.x += player.speed;
+                }
+                
+                // Keep player within game boundaries
+                if (player.x < 0) {
+                    player.x = 0;
+                } else if (player.x + player.width > GAME_WIDTH) {
+                    player.x = GAME_WIDTH - player.width;
+                }
+                
+                // Handle player invulnerability state
+                if (player.invulnerable) {
+                    player.invulnerableTime--;
+                    if (player.invulnerableTime <= 0) {
+                        player.invulnerable = false;
+                    }
+                }
+                
+                // Fire bullets
+                if (keys.fire) {
+                    fireBullet();
+                }
+            }
+            
+            // Fire a bullet from the player's ship
+            function fireBullet() {
+                const now = performance.now();
+                
+                // Check if we can fire (based on rapid fire power-up)
+                const fireRate = activePowerUps.RAPID_FIRE.active ? 150 : 300;
+                
+                if (!playerBullets.lastFired || now - playerBullets.lastFired > fireRate) {
+                    if (activePowerUps.MULTI_SHOT.active) {
+                        // Multi-shot power-up: fire 3 bullets
+                        playerBullets.push({
+                            x: player.x + player.width / 2 - BULLET_WIDTH / 2,
+                            y: player.y,
+                            width: BULLET_WIDTH,
+                            height: BULLET_HEIGHT,
+                            speed: BULLET_SPEED,
+                            color: 'var(--bullet-color)'
+                        });
+                        
+                        playerBullets.push({
+                            x: player.x + player.width / 2 - BULLET_WIDTH / 2 - 15,
+                            y: player.y + 10,
+                            width: BULLET_WIDTH,
+                            height: BULLET_HEIGHT,
+                            speed: BULLET_SPEED,
+                            color: 'var(--bullet-color)'
+                        });
+                        
+                        playerBullets.push({
+                            x: player.x + player.width / 2 - BULLET_WIDTH / 2 + 15,
+                            y: player.y + 10,
+                            width: BULLET_WIDTH,
+                            height: BULLET_HEIGHT,
+                            speed: BULLET_SPEED,
+                            color: 'var(--bullet-color)'
+                        });
+                    } else {
+                        // Regular shot: fire 1 bullet
+                        playerBullets.push({
+                            x: player.x + player.width / 2 - BULLET_WIDTH / 2,
+                            y: player.y,
+                            width: BULLET_WIDTH,
+                            height: BULLET_HEIGHT,
+                            speed: BULLET_SPEED,
+                            color: 'var(--bullet-color)'
+                        });
+                    }
+                    
+                    playerBullets.lastFired = now;
+                    playSound(shootSound);
+                }
+            }
+            
+            // Update player bullets
+            function updatePlayerBullets() {
+                for (let i = playerBullets.length - 1; i >= 0; i--) {
+                    const bullet = playerBullets[i];
+                    
+                    // Move bullet
+                    bullet.y -= bullet.speed;
+                    
+                    // Remove bullet if it goes off screen
+                    if (bullet.y + bullet.height < 0) {
+                        playerBullets.splice(i, 1);
+                        continue;
+                    }
+                    
+                    // Check collision with aliens
+                    checkBulletAlienCollision(bullet, i);
+                    
+                    // Check collision with bunker segments
+                    checkBulletBunkerCollision(bullet, i, playerBullets);
+                }
+            }
+            
+            // Update aliens
+            function updateAliens() {
+                let moveDown = false;
+                let direction = alienDirection;
+                
+                // Check if any alien reached the edge
+                aliens.forEach(alien => {
+                    if (!alien.alive) return;
+                    
+                    if (alien.x + alien.width + alienMoveSpeed > GAME_WIDTH) {
+                        direction = -1;
+                        moveDown = true;
+                    } else if (alien.x - alienMoveSpeed < 0) {
+                        direction = 1;
+                        moveDown = true;
+                    }
+                    
+                    // Animate aliens
+                    if (Math.random() < 0.05) {
+                        alien.animationFrame = (alien.animationFrame + alien.animationDirection) % 2;
+                        if (alien.animationFrame === 0 || alien.animationFrame === 1) {
+                            alien.animationDirection *= -1;
+                        }
+                    }
+                    
+                    // Random chance for aliens to shoot
+                    if (Math.random() < alienShootingFrequency && alien.alive) {
+                        alienShoot(alien);
+                    }
+                });
+                
+                alienDirection = direction;
+                alienMoveDownFlag = moveDown;
+                
+                // Move aliens
+                aliens.forEach(alien => {
+                    if (!alien.alive) return;
+                    
+                    alien.x += alienDirection * alienMoveSpeed;
+                    
+                    if (alienMoveDownFlag) {
+                        alien.y += ALIEN_HEIGHT / 2;
+                    }
+                    
+                    // Check if aliens reached the bottom
+                    if (alien.y + alien.height > GAME_HEIGHT - 50) {
+                        gameOver();
+                    }
+                });
+            }
+            
+            // Alien shoots
+            function alienShoot(alien) {
+                // Only living aliens can shoot
+                if (!alien.alive) return;
+                
+                alienBullets.push({
+                    x: alien.x + alien.width / 2 - BULLET_WIDTH / 2,
+                    y: alien.y + alien.height,
+                    width: BULLET_WIDTH,
+                    height: BULLET_HEIGHT,
+                    speed: ALIEN_BULLET_SPEED,
+                    color: 'var(--enemy-color)'
+                });
+            }
+            
+            // Update alien bullets
+            function updateAlienBullets() {
+                for (let i = alienBullets.length - 1; i >= 0; i--) {
+                    const bullet = alienBullets[i];
+                    
+                    // Move bullet
+                    bullet.y += bullet.speed;
+                    
+                    // Remove bullet if it goes off screen
+                    if (bullet.y > GAME_HEIGHT) {
+                        alienBullets.splice(i, 1);
+                        continue;
+                    }
+                    
+                    // Check collision with player
+                    if (
+                        !player.invulnerable &&
+                        bullet.x < player.x + player.width &&
+                        bullet.x + bullet.width > player.x &&
+                        bullet.y < player.y + player.height &&
+                        bullet.y + bullet.height > player.y
+                    ) {
+                        // Player hit by alien bullet
+                        alienBullets.splice(i, 1);
+                        playerHit();
+                        continue;
+                    }
+                    
+                    // Check collision with bunker segments
+                    checkBulletBunkerCollision(bullet, i, alienBullets);
+                }
+            }
+            
+            // Check bullet collision with alien
+            function checkBulletAlienCollision(bullet, bulletIndex) {
+                for (let i = 0; i < aliens.length; i++) {
+                    const alien = aliens[i];
+                    
+                    if (
+                        alien.alive &&
+                        bullet.x < alien.x + alien.width &&
+                        bullet.x + bullet.width > alien.x &&
+                        bullet.y < alien.y + alien.height &&
+                        bullet.y + bullet.height > alien.y
+                    ) {
+                        // Bullet hit alien
+                        alien.alive = false;
+                        playerBullets.splice(bulletIndex, 1);
+                        
+                        // Add score based on alien type
+                        const points = alien.type * 10;
+                        score += points;
+                        scoreElement.textContent = score;
+                        aliensDefeated++;
+                        
+                        // Create explosion
+                        createExplosion(
+                            alien.x + alien.width / 2,
+                            alien.y + alien.height / 2,
+                            'var(--enemy-color)'
+                        );
+                        
+                        // Play explosion sound
+                        playSound(explosionSound);
+                        
+                        // Random chance for power-up
+                        if (Math.random() < powerUpFrequency * 50) {
+                            spawnPowerUp(alien.x + alien.width / 2, alien.y + alien.height / 2);
+                        }
+                        
+                        // Check if all aliens are defeated
+                        checkLevelComplete();
+                        
+                        return true;
+                    }
+                }
+                
+                return false;
+            }
+            
+            // Check bullet collision with bunker segment
+            function checkBulletBunkerCollision(bullet, bulletIndex, bulletsArray) {
+                for (let i = 0; i < bunkers.length; i++) {
+                    const bunker = bunkers[i];
+                    
+                    for (let j = bunker.segments.length - 1; j >= 0; j--) {
+                        const segment = bunker.segments[j];
+                        
+                        if (
+                            bullet.x < segment.x + segment.width &&
+                            bullet.x + bullet.width > segment.x &&
+                            bullet.y < segment.y + segment.height &&
+                            bullet.y + bullet.height > segment.y
+                        ) {
+                            // Bullet hit bunker segment
+                            segment.health--;
+                            
+                            // Remove bullet
+                            bulletsArray.splice(bulletIndex, 1);
+                            
+                            // Remove segment if health depleted
+                            if (segment.health <= 0) {
+                                bunker.segments.splice(j, 1);
+                                // Create particles for destroyed segment
+                                createParticles(
+                                    segment.x + segment.width / 2,
+                                    segment.y + segment.height / 2,
+                                    10,
+                                    'var(--secondary-color)'
+                                );
+                            }
+                            
+                            return true;
+                        }
+                    }
+                }
+                
+                return false;
+            }
+            
+            // Spawn power-up
+            function spawnPowerUp(x, y) {
+                const powerUpTypes = Object.keys(POWER_UP_TYPES);
+                const randomType = powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)];
+                const powerUpInfo = POWER_UP_TYPES[randomType];
+                
+                powerUps.push({
+                    x: x - POWER_UP_SIZE / 2,
+                    y: y - POWER_UP_SIZE / 2,
+                    width: POWER_UP_SIZE,
+                    height: POWER_UP_SIZE,
+                    type: randomType,
+                    color: powerUpInfo.color,
+                    symbol: powerUpInfo.symbol
+                });
+            }
+            
+            // Update power-ups
+            function updatePowerUps() {
+                for (let i = powerUps.length - 1; i >= 0; i--) {
+                    const powerUp = powerUps[i];
+                    
+                    // Move power-up down
+                    powerUp.y += POWER_UP_SPEED;
+                    
+                    // Remove if off screen
+                    if (powerUp.y > GAME_HEIGHT) {
+                        powerUps.splice(i, 1);
+                        continue;
+                    }
+                    
+                    // Check collision with player
+                    if (
+                        powerUp.x < player.x + player.width &&
+                        powerUp.x + powerUp.width > player.x &&
+                        powerUp.y < player.y + player.height &&
+                        powerUp.y + powerUp.height > player.y
+                    ) {
+                        // Player collected power-up
+                        collectPowerUp(powerUp.type);
+                        powerUps.splice(i, 1);
+                        
+                        // Play power-up sound
+                        playSound(powerUpSound);
+                    }
+                }
+            }
+            
+            // Collect power-up
+            function collectPowerUp(type) {
+                const powerUpInfo = POWER_UP_TYPES[type];
+                
+                switch (type) {
+                    case 'RAPID_FIRE':
+                        activePowerUps.RAPID_FIRE.active = true;
+                        activePowerUps.RAPID_FIRE.timeLeft = powerUpInfo.duration;
+                        break;
+                    case 'SHIELD':
+                        activePowerUps.SHIELD.active = true;
+                        activePowerUps.SHIELD.timeLeft = powerUpInfo.duration;
+                        player.invulnerable = true;
+                        player.invulnerableTime = powerUpInfo.duration;
+                        break;
+                    case 'MULTI_SHOT':
+                        activePowerUps.MULTI_SHOT.active = true;
+                        activePowerUps.MULTI_SHOT.timeLeft = powerUpInfo.duration;
+                        break;
+                    case 'EXTRA_LIFE':
+                        if (lives < 5) {
+                            lives++;
+                            livesElement.textContent = lives;
+                        }
+                        break;
+                }
+            }
+            
+            // Update active power-ups
+            function updateActivePowerUps(dt) {
+                // Update power-up timers
+                Object.keys(activePowerUps).forEach(key => {
+                    const powerUp = activePowerUps[key];
+                    if (powerUp.active) {
+                        powerUp.timeLeft -= dt;
+                        if (powerUp.timeLeft <= 0) {
+                            powerUp.active = false;
+                        }
+                    }
+                });
+            }
+            
+            // Create explosion effect
+            function createExplosion(x, y, color) {
+                explosions.push({
+                    x,
+                    y,
+                    radius: 5,
+                    maxRadius: 30,
+                    alpha: 1,
+                    color
+                });
+                
+                // Create particles
+                createParticles(x, y, 20, color);
+            }
+            
+            // Create particles
+            function createParticles(x, y, count, color) {
+                for (let i = 0; i < count; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = 1 + Math.random() * 3;
+                    
+                    particles.push({
+                        x,
+                        y,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed,
+                        radius: 1 + Math.random() * 3,
+                        alpha: 1,
+                        color
+                    });
+                }
+            }
+            
+            // Update explosions
+            function updateExplosions() {
+                for (let i = explosions.length - 1; i >= 0; i--) {
+                    const explosion = explosions[i];
+                    
+                    explosion.radius += 2;
+                    explosion.alpha -= 0.05;
+                    
+                    if (explosion.alpha <= 0 || explosion.radius >= explosion.maxRadius) {
+                        explosions.splice(i, 1);
+                    }
+                }
+            }
+            
+            // Update particles
+            function updateParticles() {
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const particle = particles[i];
+                    
+                    particle.x += particle.vx;
+                    particle.y += particle.vy;
+                    particle.alpha -= 0.02;
+                    
+                    if (particle.alpha <= 0) {
+                        particles.splice(i, 1);
+                    }
+                }
+            }
+            
+            // Player hit by alien bullet
+            function playerHit() {
+                // If player has shield power-up, don't take damage
+                if (activePowerUps.SHIELD.active) {
+                    return;
+                }
+                
+                // Reduce lives
+                lives--;
+                livesElement.textContent = lives;
+                
+                // Create explosion
+                createExplosion(
+                    player.x + player.width / 2,
+                    player.y + player.height / 2,
+                    'var(--player-color)'
+                );
+                
+                // Play explosion sound
+                playSound(explosionSound);
+                
+                // Check if game over
+                if (lives <= 0) {
+                    gameOver();
+                } else {
+                    // Make player temporarily invulnerable
+                    player.invulnerable = true;
+                    player.invulnerableTime = 120; // 2 seconds at 60fps
+                }
+            }
+            
+            // Check if all aliens are defeated
+            function checkLevelComplete() {
+                const remainingAliens = aliens.filter(alien => alien.alive).length;
+                
+                if (remainingAliens === 0) {
+                    // Level complete
+                    level++;
+                    levelElement.textContent = level;
+                    
+                    // Play level-up sound
+                    playSound(levelUpSound);
+                    
+                    // Increase difficulty
+                    alienMoveSpeed = Math.min(alienMoveSpeed + 0.2, 3);
+                    alienShootingFrequency = Math.min(alienShootingFrequency + 0.003, 0.05);
+                    powerUpFrequency = Math.min(powerUpFrequency + 0.0005, 0.003);
+                    
+                    // Reset aliens and bullets
+                    createAliens();
+                    playerBullets = [];
+                    alienBullets = [];
+                    
+                    // Repair bunkers slightly
+                    repairBunkers();
+                }
+            }
+            
+            // Repair bunkers slightly between levels
+            function repairBunkers() {
+                bunkers.forEach(bunker => {
+                    bunker.segments.forEach(segment => {
+                        segment.health = Math.min(segment.health + 1, 4);
+                    });
+                });
+            }
+            
+            // Game over
+            function gameOver() {
+                gameRunning = false;
+                
+                // Play game over sound
+                playSound(gameOverSound);
+                
+                // Update high score
+                if (score > highScore) {
+                    highScore = score;
+                    localStorage.setItem('spaceInvadersHighScore', highScore);
+                    highScoreElement.textContent = highScore;
+                }
+                
+                // Show game over modal
+                finalScoreElement.textContent = score;
+                finalLevelElement.textContent = level;
+                finalAliensElement.textContent = aliensDefeated;
+                gameOverModal.style.display = 'flex';
+                
+                // Update start button text
+                startBtn.innerHTML = '<i class="fas fa-play"></i> New Game';
+            }
+            
+            // Draw player
+            function drawPlayer() {
+                ctx.save();
+                
+                // Draw player ship
+                const playerColor = player.invulnerable ? 
+                    `rgba(${hexToRgb('4ecca3')}, ${Math.sin(Date.now() / 100) * 0.5 + 0.5})` : 
+                    'var(--player-color)';
+                
+                ctx.fillStyle = playerColor;
+                
+                // Player base
+                ctx.fillRect(player.x, player.y, player.width, player.height);
+                
+                // Player ship details
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.fillRect(player.x + player.width / 2 - 2, player.y - 5, 4, 5);
+                
+                // Shield effect if active
+                if (activePowerUps.SHIELD.active) {
+                    ctx.strokeStyle = 'var(--secondary-color)';
+                    ctx.lineWidth = 2;
+                    ctx.globalAlpha = 0.7;
+                    ctx.beginPath();
+                    ctx.arc(
+                        player.x + player.width / 2,
+                        player.y + player.height / 2,
+                        player.width / 2 + 10,
+                        0,
+                        Math.PI * 2
+                    );
+                    ctx.stroke();
+                }
+                
+                ctx.restore();
+            }
+            
+            // Draw aliens
+            function drawAliens() {
+                ctx.save();
+                
+                aliens.forEach(alien => {
+                    if (!alien.alive) return;
+                    
+                    ctx.fillStyle = 'var(--enemy-color)';
+                    
+                    // Different alien shapes based on type
+                    if (alien.type === 3) {
+                        // Top row alien
+                        drawTypeThreeAlien(alien);
+                    } else if (alien.type === 2) {
+                        // Middle row alien
+                        drawTypeTwoAlien(alien);
+                    } else {
+                        // Bottom row alien
+                        drawTypeOneAlien(alien);
+                    }
+                });
+                
+                ctx.restore();
+            }
+            
+            // Draw type three alien (top row)
+            function drawTypeThreeAlien(alien) {
+                const x = alien.x;
+                const y = alien.y;
+                const w = alien.width;
+                const h = alien.height;
+                
+                ctx.beginPath();
+                
+                // Base shape
+                ctx.fillRect(x + w/4, y, w/2, h);
+                
+                // Arms based on animation frame
+                if (alien.animationFrame === 0) {
+                    // Arms down
+                    ctx.fillRect(x, y + h/3, w/4, h/2);
+                    ctx.fillRect(x + w*3/4, y + h/3, w/4, h/2);
+                } else {
+                    // Arms up
+                    ctx.fillRect(x, y + h/6, w/4, h/2);
+                    ctx.fillRect(x + w*3/4, y + h/6, w/4, h/2);
+                }
+                
+                // Eyes
+                ctx.fillStyle = 'var(--dark-color)';
+                ctx.fillRect(x + w/4, y + h/4, w/6, h/6);
+                ctx.fillRect(x + w*3/5, y + h/4, w/6, h/6);
+                
+                // Antenna
+                ctx.fillStyle = 'var(--enemy-color)';
+                ctx.fillRect(x + w/2 - 2, y - h/4, 4, h/4);
+            }
+            
+            // Draw type two alien (middle rows)
+            function drawTypeTwoAlien(alien) {
+                const x = alien.x;
+                const y = alien.y;
+                const w = alien.width;
+                const h = alien.height;
+                
+                ctx.beginPath();
+                
+                // Base shape
+                ctx.fillRect(x + w/6, y, w*2/3, h*2/3);
+                
+                // Tentacles based on animation frame
+                if (alien.animationFrame === 0) {
+                    // Tentacles extended
+                    ctx.fillRect(x, y + h/3, w/6, h/2);
+                    ctx.fillRect(x + w*5/6, y + h/3, w/6, h/2);
+                    ctx.fillRect(x + w/6, y + h*2/3, w/6, h/3);
+                    ctx.fillRect(x + w*2/3, y + h*2/3, w/6, h/3);
+                } else {
+                    // Tentacles retracted
+                    ctx.fillRect(x, y + h/6, w/6, h/2);
+                    ctx.fillRect(x + w*5/6, y + h/6, w/6, h/2);
+                    ctx.fillRect(x + w/6, y + h*2/3, w/6, h/6);
+                    ctx.fillRect(x + w*2/3, y + h*2/3, w/6, h/6);
+                }
+                
+                // Eyes
+                ctx.fillStyle = 'var(--dark-color)';
+                ctx.fillRect(x + w/3, y + h/6, w/8, h/8);
+                ctx.fillRect(x + w*5/8, y + h/6, w/8, h/8);
+            }
+            
+            // Draw type one alien (bottom rows)
+            function drawTypeOneAlien(alien) {
+                const x = alien.x;
+                const y = alien.y;
+                const w = alien.width;
+                const h = alien.height;
+                
+                // Base shape
+                ctx.fillRect(x + w/6, y + h/6, w*2/3, h*2/3);
+                
+                // Legs based on animation frame
+                if (alien.animationFrame === 0) {
+                    // Legs position 1
+                    ctx.fillRect(x, y + h/2, w/6, h/3);
+                    ctx.fillRect(x + w*5/6, y + h/2, w/6, h/3);
+                    ctx.fillRect(x + w/4, y, w/6, h/6);
+                    ctx.fillRect(x + w*3/5, y, w/6, h/6);
+                } else {
+                    // Legs position 2
+                    ctx.fillRect(x, y + h/3, w/6, h/3);
+                    ctx.fillRect(x + w*5/6, y + h/3, w/6, h/3);
+                    ctx.fillRect(x + w/4, y + h/6, w/6, h/6);
+                    ctx.fillRect(x + w*3/5, y + h/6, w/6, h/6);
+                }
+                
+                // Eyes
+                ctx.fillStyle = 'var(--dark-color)';
+                ctx.fillRect(x + w/3, y + h/3, w/8, h/8);
+                ctx.fillRect(x + w*5/8, y + h/3, w/8, h/8);
+            }
+            
+            // Draw bullets
+            function drawBullets() {
+                ctx.save();
+                
+                // Draw player bullets
+                ctx.fillStyle = 'var(--bullet-color)';
+                playerBullets.forEach(bullet => {
+                    ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                });
+                
+                // Draw alien bullets
+                ctx.fillStyle = 'var(--enemy-color)';
+                alienBullets.forEach(bullet => {
+                    // Draw zigzag alien bullets
+                    const zigzagOffset = Math.sin(Date.now() / 100 + bullet.y / 10) * 3;
+                    ctx.fillRect(bullet.x + zigzagOffset, bullet.y, bullet.width, bullet.height);
+                });
+                
+                ctx.restore();
+            }
+            
+            // Draw bunkers
+            function drawBunkers() {
+                ctx.save();
+                
+                bunkers.forEach(bunker => {
+                    bunker.segments.forEach(segment => {
+                        // Color based on health
+                        let alpha;
+                        switch (segment.health) {
+                            case 4: alpha = 1; break;
+                            case 3: alpha = 0.8; break;
+                            case 2: alpha = 0.6; break;
+                            case 1: alpha = 0.4; break;
+                            default: alpha = 0.2;
+                        }
+                        
+                        ctx.fillStyle = `rgba(107, 123, 156, ${alpha})`;
+                        ctx.fillRect(segment.x, segment.y, segment.width, segment.height);
+                    });
+                });
+                
+                ctx.restore();
+            }
+            
+            // Draw power-ups
+            function drawPowerUps() {
+                ctx.save();
+                
+                powerUps.forEach(powerUp => {
+                    // Draw power-up circle
+                    ctx.fillStyle = powerUp.color;
+                    ctx.beginPath();
+                    ctx.arc(
+                        powerUp.x + powerUp.width / 2,
+                        powerUp.y + powerUp.height / 2,
+                        powerUp.width / 2,
+                        0,
+                        Math.PI * 2
+                    );
+                    ctx.fill();
+                    
+                    // Draw symbol
+                    ctx.fillStyle = 'white';
+                    ctx.font = 'bold 16px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(
+                        powerUp.symbol,
+                        powerUp.x + powerUp.width / 2,
+                        powerUp.y + powerUp.height / 2
+                    );
+                });
+                
+                ctx.restore();
+            }
+            
+            // Draw explosions
+            function drawExplosions() {
+                ctx.save();
+                
+                explosions.forEach(explosion => {
+                    ctx.globalAlpha = explosion.alpha;
+                    ctx.fillStyle = explosion.color;
+                    ctx.beginPath();
+                    ctx.arc(explosion.x, explosion.y, explosion.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Draw inner circle
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                    ctx.beginPath();
+                    ctx.arc(explosion.x, explosion.y, explosion.radius / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                
+                ctx.restore();
+            }
+            
+            // Draw particles
+            function drawParticles() {
+                ctx.save();
+                
+                particles.forEach(particle => {
+                    ctx.globalAlpha = particle.alpha;
+                    ctx.fillStyle = particle.color;
+                    ctx.beginPath();
+                    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                
+                ctx.restore();
+            }
+            
+            // Draw active power-up indicators
+            function drawPowerUpIndicators() {
+                ctx.save();
+                
+                let y = 10;
+                Object.keys(activePowerUps).forEach(key => {
+                    const powerUp = activePowerUps[key];
+                    if (powerUp.active) {
+                        const info = POWER_UP_TYPES[key];
+                        const timeLeft = Math.ceil(powerUp.timeLeft / 1000);
+                        
+                        // Draw background
+                        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                        ctx.fillRect(10, y, 150, 25);
+                        
+                        // Draw power-up name and time left
+                        ctx.fillStyle = info.color;
+                        ctx.font = '12px Arial';
+                        ctx.textAlign = 'left';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(info.effect, 15, y + 12);
+                        
+                        // Draw time bar
+                        const barWidth = 40;
+                        const fillWidth = (powerUp.timeLeft / POWER_UP_TYPES[key].duration) * barWidth;
+                        
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                        ctx.fillRect(100, y + 7, barWidth, 10);
+                        
+                        ctx.fillStyle = info.color;
+                        ctx.fillRect(100, y + 7, fillWidth, 10);
+                        
+                        // Draw time text
+                        ctx.fillStyle = 'white';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(`${timeLeft}s`, 120, y + 12);
+                        
+                        y += 30;
+                    }
+                });
+                
+                ctx.restore();
+            }
+            
+            // Main game loop
+            function gameLoop(timestamp) {
+                // Calculate delta time
+                const dt = lastTime ? timestamp - lastTime : 0;
+                lastTime = timestamp;
+                
+                // Clear canvas
+                ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+                
+                // Draw stars background
+                drawStars();
+                updateStars();
+                
+                // Update and draw game elements if game is running
+                if (gameRunning && !gamePaused) {
+                    // Update
+                    updatePlayer();
+                    updatePlayerBullets();
+                    updateAliens();
+                    updateAlienBullets();
+                    updateBunkers();
+                    updatePowerUps();
+                    updateActivePowerUps(dt);
+                    updateExplosions();
+                    updateParticles();
+                    
+                    // Draw
+                    drawBunkers();
+                    drawPowerUps();
+                    drawAliens();
+                    drawPlayer();
+                    drawBullets();
+                    drawExplosions();
+                    drawParticles();
+                    drawPowerUpIndicators();
+                } else {
+                    // If game is not running, just draw the player, aliens and bunkers
+                    drawBunkers();
+                    drawAliens();
+                    drawPlayer();
+                }
+                
+                requestAnimationFrame(gameLoop);
+            }
+            
+            // Update bunkers
+            function updateBunkers() {
+                // Nothing to update for bunkers
+            }
+            
+            // Convert hex color to RGB
+            function hexToRgb(hex) {
+                // Remove # if present
+                hex = hex.replace('#', '');
+                
+                // Convert shorthand format
+                if (hex.length === 3) {
+                    hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+                }
+                
+                // Parse the components
+                const r = parseInt(hex.substring(0, 2), 16);
+                const g = parseInt(hex.substring(2, 4), 16);
+                const b = parseInt(hex.substring(4, 6), 16);
+                
+                return `${r}, ${g}, ${b}`;
+            }
+            
+            // Initialize the game
+            init();
+        });
+    </script>
+</body>
+</html>

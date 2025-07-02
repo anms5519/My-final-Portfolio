@@ -1,0 +1,340 @@
+.footer {
+    position: relative;
+    background-color: var(--bg-color-alt);
+    color: var(--text-color);
+    overflow: hidden;
+    padding-top: 10vh; /* Increased padding for wave */
+    z-index: 10; /* Ensure footer is above some elements if needed */
+}
+
+/* Footer Particles & Waves */
+.footer-particles {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: -1; /* Behind content */
+}
+.footer-particle { /* Individual particle styling */
+    position: absolute;
+    border-radius: var(--border-radius-circle);
+    opacity: 0; /* Start invisible */
+    animation: floatParticle-footer var(--duration, 20s) infinite linear both;
+    background-color: var(--particle-color); /* Themed particle color */
+    filter: blur(0.05vh);
+}
+@keyframes floatParticle-footer {
+    0% { transform: translate(var(--x-start, vh), var(--y-start, vh)) scale(0.5); opacity: 0; }
+    20%, 80% { opacity: var(--max-opacity, 0.5); }
+    100% { transform: translate(var(--x-end, vh), var(--y-end, vh)) scale(var(--scale-end, 1)); opacity: 0; }
+}
+
+.footer-wave-container {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 18vh; /* Increased height for more pronounced wave */
+    overflow: hidden;
+    line-height: 0;
+    transform: translateY(calc(-100% + 0.1vh)); /* Ensure it sits just above footer content */
+    z-index: 0;
+}
+.footer-wave { /* Base wave style */
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 200%; /* Wider for smoother animation */
+    height: 100%;
+    background-repeat: repeat-x;
+    animation: wave-animation var(--duration, 25s) linear infinite;
+}
+/* Theming SVG fill colors - this is tricky with data URIs.
+   Ideally, use inline SVGs or JS. For now, using theme-related colors. */
+.footer-wave-1 {
+    --duration: 25s;
+    background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.3-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="rgba(var(--primary-color-rgb),0.1)" opacity="0.4"></path></svg>');
+    animation-direction: normal;
+}
+.footer-wave-2 {
+    --duration: 18s;
+    background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.3-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="rgba(var(--secondary-color-rgb),0.1)" opacity="0.6"></path></svg>');
+    animation-direction: reverse;
+    bottom: -0.5vh; /* Slight offset */
+}
+.footer-wave-3 {
+    --duration: 15s;
+    background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.3-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="rgba(var(--accent-color-rgb),0.1)" opacity="0.8"></path></svg>');
+    animation-direction: normal;
+    bottom: -1vh; /* Further offset */
+}
+@keyframes wave-animation {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } /* Animate to half its width */
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(28vh, 1fr)); /* Responsive columns */
+    gap: 3.5rem; /* Increased gap */
+    padding: 3rem 0; /* Increased padding */
+    position: relative; z-index: 2;
+    max-width: 130vh; /* Consistent max-width */
+    margin: 0 auto;
+    padding-left: var(--container-padding, 2vh); /* Use container padding */
+    padding-right: var(--container-padding, 2vh);
+}
+.footer-section { display: flex; flex-direction: column; }
+.footer-section h4 { /* Title for footer sections */
+    font-family: var(--font-family-secondary);
+    font-size: 1.3rem;
+    color: var(--text-color-headings);
+    margin-bottom: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-normal);
+    position: relative;
+    padding-bottom: 0.8rem;
+}
+.footer-section h4::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 5vh; height: 0.25vh;
+    background: var(--primary-color);
+    box-shadow: 0 0 0.5vh var(--primary-color);
+}
+
+.about-footer-section { align-items: flex-start; text-align: left; } /* Align left */
+.footer-logo-container {
+    position: relative;
+    width: 12vh; height: 12vh; /* Larger logo */
+    margin-bottom: 2rem;
+}
+.footer-logo {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    /* Themed filter for logo if it's a single color SVG/PNG */
+    /* filter: drop-shadow(0 0 1vh var(--primary-color)); */
+    transition: transform var(--anim-speed-normal) ease;
+}
+.footer-logo:hover { transform: scale(1.05) rotate(3deg); }
+
+.logo-glow { /* Kept for visual effect */
+    position: absolute; width: 100%; height: 100%;
+    background: radial-gradient(circle, rgba(var(--primary-color-rgb), 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: pulse-glow-footer 3.5s infinite ease-in-out;
+    z-index: -1;
+}
+@keyframes pulse-glow-footer {
+    0% { transform: scale(0.9); opacity: 0.4; }
+    50% { transform: scale(1.3); opacity: 0.6; }
+    100% { transform: scale(0.9); opacity: 0.4; }
+}
+.footer-description { /* Added for a short bio/text */
+    font-size: 0.95rem;
+    color: var(--text-color-light);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.footer-stats {
+    display: flex;
+    justify-content: flex-start; /* Align left */
+    gap: 2.5rem;
+    margin-top: 1.5rem;
+}
+.stat-item {
+    display: flex; flex-direction: column;
+    align-items: flex-start; /* Align left */
+    transition: transform var(--anim-speed-fast) ease;
+}
+.stat-item:hover { transform: translateY(-0.5vh); }
+.stat-number {
+    font-family: var(--font-family-secondary);
+    font-size: 2.2rem; /* Larger number */
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.3rem;
+}
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-color-light);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-tight);
+}
+
+.nav-section { padding-top: 0; } /* Remove extra padding if h4 has it */
+.footer-menu-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 2.5rem;
+}
+.footer-links {
+    display: flex; flex-direction: column;
+    gap: 1.2rem; /* Increased gap */
+}
+.footer-links li { transition: transform var(--anim-speed-fast) ease; }
+.footer-links li:hover { transform: translateX(0.8vh); }
+.footer-links a {
+    display: flex; align-items: center;
+    gap: 1rem; /* Increased gap */
+    color: var(--text-color-light); /* Lighter for links */
+    font-size: 1rem;
+    transition: color var(--anim-speed-fast) ease, text-shadow var(--anim-speed-fast) ease;
+    position: relative;
+}
+.footer-links a:hover {
+    color: var(--primary-color);
+    text-shadow: 0 0 0.8vh rgba(var(--primary-color-rgb), 0.4);
+}
+.footer-links a i {
+    color: var(--primary-color);
+    font-size: 1.2em; /* Relative to link font size */
+    width: 2.2vh; text-align: center;
+    transition: transform var(--anim-speed-fast) ease;
+}
+.footer-links a:hover i { transform: scale(1.1) rotate(5deg); }
+
+.footer-view-all { /* "View All Projects" type link */
+    display: inline-flex; align-items: center;
+    gap: 0.8rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-top: 2rem;
+    transition: all var(--anim-speed-fast) ease;
+    font-size: 1rem;
+}
+.footer-view-all:hover {
+    color: var(--secondary-color);
+    transform: translateX(0.5vh);
+    text-shadow: 0 0 0.8vh rgba(var(--secondary-color-rgb),0.5);
+}
+.footer-view-all i { transition: transform var(--anim-speed-fast) ease; }
+.footer-view-all:hover i { transform: translateX(0.5vh) rotate(10deg); }
+
+.footer-cta { /* Call to action section */
+    background: var(--primary-color); /* Themed gradient */
+    padding: 4rem 2rem; /* Increased padding */
+    text-align: center;
+    position: relative; overflow: hidden;
+    margin-top: 4rem;
+    border-radius: var(--border-radius-soft) var(--border-radius-soft) 0 0; /* Rounded top */
+}
+.cta-content { position: relative; z-index: 2; }
+.footer-cta h3 {
+    font-family: var(--font-family-secondary);
+    color: var(--bg-color); /* Contrast text */
+    font-size: 2rem; /* Larger title */
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+.footer-cta p {
+    color: rgba(var(--bg-color-rgb), 0.85); /* Contrast text */
+    font-size: 1.15rem;
+    margin-bottom: 2rem;
+    max-width: 60vh; margin-left: auto; margin-right: auto; /* Center paragraph */
+}
+.footer-cta-btn { /* Re-use .btn styles */
+    background-color: var(--bg-color); /* Contrast bg */
+    color: var(--primary-color);
+    padding: 1rem 2.5rem;
+    border-radius: var(--border-radius-soft);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-normal);
+    transition: all var(--anim-speed-fast) ease;
+    box-shadow: 0 0.4vh 1.2vh rgba(0,0,0,0.2);
+    border: none;
+    font-size: 1rem;
+}
+.footer-cta-btn:hover {
+    transform: translateY(-0.4vh) scale(1.03);
+    box-shadow: 0 0.8vh 2vh rgba(0,0,0,0.3);
+    background-color: var(--secondary-color); /* Themed hover */
+    color: var(--bg-color);
+}
+
+.footer-bottom {
+    background-color: var(--bg-color); /* Slightly different from bg-color-alt */
+    padding: 2rem 0;
+    border-top: .1vh solid var(--card-border); /* Themed border */
+}
+.footer-bottom-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; gap: 1.5rem;
+    max-width: 130vh; margin: 0 auto;
+    padding-left: var(--container-padding, 2vh);
+    padding-right: var(--container-padding, 2vh);
+}
+.copyright {
+    font-size: 0.95rem;
+    color: var(--text-color-light);
+}
+.footer-tagline {
+    font-size: 0.95rem;
+    color: var(--text-color-light);
+    display: flex; align-items: center; gap: 0.6rem;
+}
+.footer-tagline i { /* Heart icon */
+    color: var(--secondary-color); /* Themed heart */
+    animation: pulse-heart 1.8s infinite ease-in-out;
+}
+@keyframes pulse-heart {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+}
+#footer-scroll-top {
+    display: flex; align-items: center; gap: 0.6rem;
+    background: transparent; border: none;
+    color: var(--primary-color);
+    font-size: 0.95rem; font-weight: 600;
+    cursor: pointer;
+    transition: all var(--anim-speed-fast) ease;
+}
+#footer-scroll-top i {
+    font-size: 1.3em;
+    transition: transform var(--anim-speed-fast) ease;
+}
+#footer-scroll-top:hover {
+    color: var(--secondary-color);
+    text-shadow: 0 0 0.8vh rgba(var(--secondary-color-rgb),0.5);
+}
+#footer-scroll-top:hover i { transform: translateY(-0.4vh) scale(1.1); }
+
+/* Rocket animation - kept for flair */
+#footer-scroll-top.scrolling i { animation: rocketLaunch-footer 1s forwards; }
+@keyframes rocketLaunch-footer {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    50% { transform: translateY(-15vh) rotate(-15deg) scale(1.3); opacity: 0.7; }
+    100% { transform: translateY(-40vh) rotate(-30deg) scale(0.5); opacity: 0; }
+}
+
+/* Project card specific styles from footer - if used elsewhere, move to a component CSS */
+.footer-project-card { /* Example, if you have project cards in footer */
+    perspective: 100vh;
+    transform-style: preserve-3d;
+    transition: transform var(--anim-speed-normal) ease;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius-soft);
+    box-shadow: var(--card-shadow);
+    border: 0.1vh solid var(--card-border);
+}
+.footer-project-card:hover {
+    transform: translateY(-0.5vh) rotateX(3deg) rotateY(-2deg);
+}
+.footer-project-card::before { /* Glow border effect */
+    content: ''; position: absolute;
+    top: -0.2vh; left: -0.2vh; right: -0.2vh; bottom: -0.2vh;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+    background-size: 300% 300%;
+    border-radius: calc(var(--border-radius-soft) + 0.2vh); /* Slightly larger */
+    z-index: -1;
+    animation: glowGradient-footer 6s ease infinite alternate;
+    opacity: 0; transition: opacity var(--anim-speed-fast) ease;
+}
+.footer-project-card:hover::before { opacity: 0.8; }
+@keyframes glowGradient-footer {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}

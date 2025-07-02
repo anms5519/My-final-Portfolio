@@ -1,0 +1,2826 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Supreme Coding Projects Showcase</title>
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <!-- Font Awesome for Icons -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <!-- GSAP Animation Library -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
+        <!-- Three.js for Background Effects -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+        <style>
+            :root {
+                --primary-color: #4ecca3;
+                --primary-gradient: linear-gradient(135deg, #4ecca3 0%, #2ab7ca 100%);
+                --secondary-color: #6b7b9c;
+                --accent-color: #ff6b6b;
+                --accent-color-secondary: #ffd166;
+                --dark-color: #151823;
+                --dark-color-secondary: #1c2035;
+                --light-color: #f8f9fd;
+                --text-color: #e0e0e0;
+                --heading-color: #ffffff;
+                --card-bg: rgba(28, 32, 53, 0.7);
+                --glass-effect: rgba(255, 255, 255, 0.1);
+                --glass-border: rgba(255, 255, 255, 0.18);
+                
+                --shadow-neon: 0 0 20px rgba(78, 204, 163, 0.4);
+                --shadow-color-light: rgba(78, 204, 163, 0.15);
+                --shadow-color-dark: rgba(0, 0, 0, 0.3);
+                --card-hover-transform: translateY(-12px) scale(1.03);
+                --border-radius-sm: 8px;
+                --border-radius-md: 12px;
+                --border-radius-lg: 20px;
+                --transition-speed: 0.4s;
+                --transition-speed-fast: 0.25s;
+                --transition-speed-slow: 0.7s;
+                --easing-func: cubic-bezier(0.25, 0.8, 0.25, 1);
+            }
+
+            /* Light Theme Variables */
+            body.light-theme {
+                --primary-color: #2a9d8f;
+                --primary-gradient: linear-gradient(135deg, #2a9d8f 0%, #1a6985 100%);
+                --secondary-color: #5a6f8f;
+                --accent-color: #e76f51;
+                --accent-color-secondary: #f4a261;
+                --dark-color: #f4f7fc;
+                --dark-color-secondary: #e9edf5;
+                --light-color: #151823;
+                --text-color: #2c3e50;
+                --heading-color: #1c2035;
+                --card-bg: rgba(255, 255, 255, 0.85);
+                --glass-effect: rgba(255, 255, 255, 0.7);
+                --glass-border: rgba(0, 0, 0, 0.1);
+                
+                --shadow-neon: 0 0 20px rgba(42, 157, 143, 0.4);
+                --shadow-color-light: rgba(42, 157, 143, 0.15);
+                --shadow-color-dark: rgba(0, 0, 0, 0.1);
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+                scrollbar-width: thin;
+                scrollbar-color: var(--primary-color) var(--dark-color);
+            }
+            
+            /* Custom Scrollbar */
+            ::-webkit-scrollbar {
+                width: 8px;
+                height: 8px;
+            }
+            ::-webkit-scrollbar-track {
+                background: var(--dark-color-secondary);
+            }
+            ::-webkit-scrollbar-thumb {
+                background: var(--primary-color);
+                border-radius: 10px;
+            }
+            ::-webkit-scrollbar-thumb:hover {
+                background: var(--accent-color);
+            }
+            
+            body {
+                font-family: 'Outfit', sans-serif;
+                background: var(--dark-color);
+                color: var(--text-color);
+                line-height: 1.7;
+                overflow-x: hidden;
+                transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
+                cursor: none; /* Hide default cursor */
+            }
+            
+            /* Gradient Text Effect */
+            .gradient-text {
+                background: var(--primary-gradient);
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                text-fill-color: transparent;
+            }
+            
+            .custom-cursor {
+                position: fixed;
+                left: 0;
+                top: 0;
+                width: 24px;
+                height: 24px;
+                border: 2px solid var(--primary-color);
+                border-radius: 50%;
+                pointer-events: none;
+                transform: translate(-50%, -50%);
+                transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease, opacity 0.2s ease, transform 0.1s ease;
+                z-index: 9999;
+                opacity: 0.8;
+                mix-blend-mode: difference;
+            }
+            .custom-cursor.pointer {
+                width: 36px;
+                height: 36px;
+                background-color: rgba(78, 204, 163, 0.2);
+                mix-blend-mode: normal;
+            }
+            .custom-cursor.active {
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            
+            .custom-cursor-trail {
+                position: fixed;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: var(--primary-color);
+                pointer-events: none;
+                opacity: 0.5;
+                z-index: 9998;
+                transition: opacity 0.3s ease;
+            }
+
+            #particle-canvas {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+                pointer-events: none;
+            }
+
+            .preloader {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: var(--dark-color);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+                opacity: 1;
+                transition: opacity 0.5s ease 0.5s, visibility 0.5s ease 0.5s;
+            }
+            .preloader.hidden {
+                opacity: 0;
+                visibility: hidden;
+            }
+            
+            .loader {
+                width: 80px;
+                height: 80px;
+                position: relative;
+            }
+            
+            .loader-circle {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                border: 4px solid transparent;
+                border-radius: 50%;
+                animation: rotate 2s linear infinite;
+            }
+            
+            .loader-circle:nth-child(1) {
+                border-top-color: var(--primary-color);
+                animation-delay: 0s;
+            }
+            
+            .loader-circle:nth-child(2) {
+                width: 70%;
+                height: 70%;
+                top: 15%;
+                left: 15%;
+                border-right-color: var(--accent-color);
+                animation-delay: 0.2s;
+                animation-direction: reverse;
+            }
+            
+            .loader-circle:nth-child(3) {
+                width: 40%;
+                height: 40%;
+                top: 30%;
+                left: 30%;
+                border-bottom-color: var(--accent-color-secondary);
+                animation-delay: 0.4s;
+            }
+            
+            @keyframes rotate {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            
+            .preloader-text {
+                position: absolute;
+                bottom: 80px;
+                color: var(--primary-color);
+                font-size: 18px;
+                letter-spacing: 2px;
+                opacity: 0;
+                animation: fadeInOut 2s ease infinite;
+            }
+            
+            @keyframes fadeInOut {
+                0%, 100% { opacity: 0.3; }
+                50% { opacity: 1; }
+            }
+
+            .container {
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 3rem 2rem;
+                position: relative;
+            }
+            
+            header {
+                text-align: center;
+                margin-bottom: 4rem;
+                opacity: 0;
+                transform: translateY(-30px);
+                animation: fadeInDown 0.8s 0.2s var(--easing-func) forwards;
+                position: relative;
+            }
+            
+            @keyframes fadeInDown {
+                to { opacity: 1; transform: translateY(0); }
+            }
+            
+            h1 {
+                font-size: 4rem;
+                font-weight: 700;
+                margin-bottom: 1rem;
+                color: var(--heading-color);
+                letter-spacing: 1px;
+                position: relative;
+                display: inline-block;
+            }
+            
+            h1::before, h1::after {
+                content: '';
+                position: absolute;
+                width: 100px;
+                height: 4px;
+                background: var(--primary-gradient);
+                top: 50%;
+                transform: translateY(-50%);
+                border-radius: var(--border-radius-sm);
+            }
+            
+            h1::before {
+                left: -120px;
+            }
+            
+            h1::after {
+                right: -120px;
+            }
+            
+            .header-line {
+                width: 100px;
+                height: 5px;
+                background: var(--primary-gradient);
+                margin: 0.5rem auto 1.5rem;
+                border-radius: var(--border-radius-sm);
+                transform: scaleX(0);
+                animation: scaleIn 1s 0.7s var(--easing-func) forwards;
+                position: relative;
+            }
+            
+            .header-line::before, .header-line::after {
+                content: '';
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                background: var(--primary-color);
+                border-radius: 50%;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            
+            .header-line::before {
+                left: -5px;
+            }
+            
+            .header-line::after {
+                right: -5px;
+            }
+            
+            @keyframes scaleIn {
+                to { transform: scaleX(1); }
+            }
+            
+            .subtitle {
+                color: var(--text-color);
+                opacity: 0.85;
+                margin-bottom: 1.5rem;
+                font-size: 1.25rem;
+                font-weight: 300;
+                max-width: 700px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .back-link {
+                display: inline-block;
+                margin-top: 1.5rem;
+                color: var(--light-color);
+                text-decoration: none;
+                transition: all var(--transition-speed) var(--easing-func);
+                border: 2px solid var(--primary-color);
+                padding: 0.8rem 1.8rem;
+                border-radius: var(--border-radius-sm);
+                font-weight: 600;
+                background: linear-gradient(to right, var(--primary-color) 0%, var(--primary-color) 50%, transparent 50%, transparent 100%);
+                background-size: 200% 100%;
+                background-position: 100% 0;
+                position: relative;
+                overflow: hidden;
+                z-index: 1;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+            
+            .back-link::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(45deg, var(--primary-color), transparent);
+                opacity: 0;
+                transition: opacity var(--transition-speed) var(--easing-func);
+                z-index: -1;
+            }
+            
+            .back-link:hover {
+                background-position: 0 0;
+                color: var(--dark-color);
+                transform: translateY(-3px);
+                box-shadow: 0 7px 20px rgba(78, 204, 163, 0.3);
+            }
+            
+            .back-link:hover::before {
+                opacity: 0.3;
+            }
+
+            .theme-toggle-button {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                background: transparent;
+                color: var(--text-color);
+                border: 2px solid var(--primary-color);
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all var(--transition-speed) var(--easing-func);
+                box-shadow: 0 2px 10px var(--shadow-color-dark);
+                z-index: 10;
+            }
+            
+            .theme-toggle-button:hover {
+                transform: scale(1.1) rotate(15deg);
+                border-color: var(--accent-color);
+                color: var(--accent-color);
+                box-shadow: 0 0 15px var(--shadow-neon);
+            }
+            
+            .theme-toggle-button .sun,
+            .theme-toggle-button .moon {
+                position: absolute;
+                transition: all var(--transition-speed) var(--easing-func);
+            }
+            
+            .theme-toggle-button .sun {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            
+            body.light-theme .theme-toggle-button .moon {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            
+            body.light-theme .theme-toggle-button .sun {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            /* Search and Filter Bar */
+            .search-filter-container {
+                margin-bottom: 2.5rem;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                background: var(--card-bg);
+                border-radius: var(--border-radius-md);
+                padding: 1.5rem;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid var(--glass-border);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+                opacity: 0;
+                transform: translateY(20px);
+                animation: fadeInUp 0.8s 0.5s var(--easing-func) forwards;
+            }
+            
+            @keyframes fadeInUp {
+                to { 
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            .search-box {
+                flex: 1;
+                position: relative;
+                min-width: 250px;
+            }
+            
+            .search-input {
+                width: 100%;
+                padding: 12px 20px;
+                padding-left: 45px;
+                border: 2px solid var(--glass-border);
+                border-radius: var(--border-radius-sm);
+                background: var(--glass-effect);
+                color: var(--text-color);
+                font-size: 16px;
+                transition: all var(--transition-speed-fast) ease;
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
+            }
+            
+            .search-input:focus {
+                outline: none;
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 3px var(--shadow-color-light);
+            }
+            
+            .search-icon {
+                position: absolute;
+                left: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--primary-color);
+                font-size: 18px;
+                pointer-events: none;
+            }
+            
+            .filter-options {
+                display: flex;
+                gap: 0.8rem;
+                flex-wrap: wrap;
+            }
+            
+            .filter-button {
+                padding: 12px 20px;
+                border: none;
+                background: var(--glass-effect);
+                color: var(--text-color);
+                border-radius: var(--border-radius-sm);
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: 500;
+                transition: all var(--transition-speed-fast) ease;
+                border: 1px solid var(--glass-border);
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .filter-button.active {
+                background: var(--primary-gradient);
+                color: var(--dark-color);
+                border-color: transparent;
+                box-shadow: 0 4px 15px var(--shadow-color-light);
+            }
+            
+            .filter-button:hover:not(.active) {
+                background: rgba(var(--primary-color-rgb, 78, 204, 163), 0.2);
+                transform: translateY(-2px);
+            }
+            
+            /* Favorite Button */
+            .favorite-btn {
+                position: absolute;
+                top: 15px;
+                left: 15px;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(5px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                z-index: 5;
+                transition: all 0.3s var(--easing-func);
+                color: var(--accent-color);
+                opacity: 0.7;
+            }
+            
+            .favorite-btn:hover {
+                opacity: 1;
+                transform: scale(1.1);
+                box-shadow: 0 0 15px rgba(255, 107, 107, 0.5);
+            }
+            
+            .favorite-btn i {
+                font-size: 18px;
+                transition: transform 0.3s var(--easing-func);
+            }
+            
+            .favorite-btn:hover i {
+                transform: scale(1.2);
+            }
+            
+            /* Favorites filter */
+            .filter-button.favorites-filter i {
+                color: var(--accent-color);
+            }
+            
+            /* Notification System */
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: var(--border-radius-md);
+                background: var(--card-bg);
+                border: 1px solid var(--glass-border);
+                color: var(--text-color);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                z-index: 9999;
+                transform: translateX(120%);
+                opacity: 0;
+                transition: all 0.3s var(--easing-func);
+                backdrop-filter: blur(10px);
+                max-width: 350px;
+            }
+            
+            .notification.show {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            
+            .notification.success {
+                border-left: 4px solid var(--primary-color);
+            }
+            
+            .notification.info {
+                border-left: 4px solid var(--accent-color-secondary);
+            }
+            
+            .notification-content {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+            
+            .notification-content i {
+                font-size: 20px;
+            }
+            
+            .notification.success i {
+                color: var(--primary-color);
+            }
+            
+            .notification.info i {
+                color: var(--accent-color-secondary);
+            }
+
+            .category-title {
+                margin: 4rem 0 2rem;
+                color: var(--heading-color);
+                font-size: 2.2rem;
+                font-weight: 600;
+                position: relative;
+                padding-bottom: 0.5rem;
+                border-bottom: 2px solid var(--glass-border);
+                display: inline-block;
+                opacity: 0;
+                transform: translateX(-20px);
+                animation: slideInLeft 0.7s var(--easing-func) forwards;
+            }
+            
+            @keyframes slideInLeft {
+                to { opacity: 1; transform: translateX(0); }
+            }
+            
+            .category-title::after {
+                content: '';
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                width: 50%;
+                height: 3px;
+                background: var(--primary-gradient);
+                border-radius: var(--border-radius-sm);
+            }
+            
+            /* Project Count Badge */
+            .category-count {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                margin-left: 15px;
+                background: var(--glass-effect);
+                color: var(--primary-color);
+                border-radius: 50px;
+                font-size: 0.9rem;
+                font-weight: 500;
+                padding: 5px 15px;
+                border: 1px solid var(--glass-border);
+                vertical-align: middle;
+            }
+            
+            .projects-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+                gap: 2.5rem;
+                margin-bottom: 4rem;
+            }
+            
+            .project-card {
+                background-color: var(--card-bg);
+                border-radius: var(--border-radius-lg);
+                overflow: hidden;
+                box-shadow: 0 10px 30px var(--shadow-color-dark);
+                transition: all var(--transition-speed) var(--easing-func);
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                border: 1px solid var(--glass-border);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                position: relative;
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            
+            .project-card:hover {
+                transform: var(--card-hover-transform);
+                box-shadow: 0 20px 50px var(--shadow-color-dark), 0 0 25px var(--shadow-color-light);
+                border-color: var(--primary-color);
+                z-index: 2;
+            }
+            
+            /* Card Shine Effect */
+            .project-card::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: linear-gradient(
+                    to bottom right,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.05) 50%,
+                    rgba(255, 255, 255, 0) 100%
+                );
+                transform: rotate(30deg);
+                transition: transform 1.5s var(--easing-func);
+                pointer-events: none;
+                z-index: 1;
+            }
+            
+            .project-card:hover::before {
+                transform: rotate(30deg) translate(25%, 25%);
+            }
+            
+            /* 3D Card Effect */
+            .project-card {
+                transform-style: preserve-3d;
+                perspective: 1000px;
+            }
+            
+            .project-card:hover {
+                transform: var(--card-hover-transform) rotateY(5deg);
+            }
+            
+            .project-card .project-content {
+                transform: translateZ(20px);
+                transition: transform var(--transition-speed) var(--easing-func);
+            }
+            
+            .project-card:hover .project-content {
+                transform: translateZ(30px);
+            }
+            
+            .project-card .project-image-container {
+                transform: translateZ(10px);
+                transition: transform var(--transition-speed) var(--easing-func);
+            }
+            
+            .project-card:hover .project-image-container {
+                transform: translateZ(15px);
+            }
+            
+            .project-image-container {
+                width: 100%;
+                height: 220px;
+                overflow: hidden;
+                position: relative;
+            }
+            
+            .project-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: all var(--transition-speed) var(--easing-func);
+            }
+            
+            .project-card:hover .project-image {
+                transform: scale(1.1);
+                filter: brightness(1.1) contrast(1.1);
+            }
+            
+            /* Image Overlay Gradient */
+            .project-image-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 50%);
+                opacity: 0.8;
+                transition: opacity var(--transition-speed) var(--easing-func);
+            }
+            
+            .project-card:hover .project-image-overlay {
+                opacity: 0.4;
+            }
+            
+            /* Status Badge */
+            .project-status {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                padding: 5px 15px;
+                border-radius: 50px;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 2;
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
+            }
+            
+            .project-status.completed {
+                background: rgba(78, 204, 163, 0.3);
+                color: #4ecca3;
+                border: 1px solid rgba(78, 204, 163, 0.5);
+            }
+            
+            .project-status.in-progress {
+                background: rgba(255, 209, 102, 0.3);
+                color: #ffd166;
+                border: 1px solid rgba(255, 209, 102, 0.5);
+            }
+            
+            .project-status.experimental {
+                background: rgba(255, 107, 107, 0.3);
+                color: #ff6b6b;
+                border: 1px solid rgba(255, 107, 107, 0.5);
+            }
+            
+            .project-content {
+                padding: 1.75rem;
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                z-index: 2;
+            }
+            
+            .project-title {
+                font-size: 1.7rem;
+                margin-bottom: 0.8rem;
+                color: var(--heading-color);
+                font-weight: 600;
+                position: relative;
+                display: inline-block;
+            }
+            
+            .project-description {
+                margin-bottom: 1.5rem;
+                opacity: 0.85;
+                flex-grow: 1;
+                font-weight: 300;
+                color: var(--text-color);
+                position: relative;
+            }
+            
+            .project-technologies {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.6rem;
+                margin-bottom: 1.75rem;
+            }
+            
+            .tech-tag {
+                background-color: rgba(var(--primary-color-rgb, 78, 204, 163), 0.1);
+                color: var(--primary-color);
+                padding: 0.4rem 0.9rem;
+                border-radius: 50px;
+                font-size: 0.85rem;
+                font-weight: 400;
+                border: 1px solid rgba(var(--primary-color-rgb, 78, 204, 163), 0.2);
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+            }
+            
+            .tech-tag:hover {
+                background-color: rgba(var(--primary-color-rgb, 78, 204, 163), 0.2);
+                transform: scale(1.05);
+                cursor: default;
+                box-shadow: 0 2px 8px var(--shadow-color-light);
+            }
+            
+            .project-links {
+                margin-top: auto;
+                display: flex;
+                gap: 1rem;
+            }
+            
+            .project-links a {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+                padding: 0.9rem 0;
+                background: var(--primary-gradient);
+                color: var(--dark-color);
+                text-decoration: none;
+                border-radius: var(--border-radius-sm);
+                font-weight: 600;
+                transition: all var(--transition-speed) var(--easing-func);
+                text-align: center;
+                position: relative;
+                overflow: hidden;
+                z-index: 1;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            }
+            
+            .project-links a::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, var(--accent-color), var(--accent-color-secondary));
+                opacity: 0;
+                transition: opacity var(--transition-speed) var(--easing-func);
+                z-index: -1;
+            }
+            
+            .project-links a:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(var(--primary-color-rgb, 78, 204, 163), 0.4);
+            }
+            
+            .project-links a:hover::before {
+                opacity: 1;
+            }
+            
+            /* No Results Message */
+            .no-results {
+                grid-column: 1 / -1;
+                text-align: center;
+                padding: 3rem;
+                background: var(--card-bg);
+                border-radius: var(--border-radius-md);
+                border: 1px solid var(--glass-border);
+            }
+            
+            .no-results i {
+                font-size: 3rem;
+                color: var(--secondary-color);
+                margin-bottom: 1rem;
+                display: block;
+            }
+            
+            .no-results h3 {
+                font-size: 1.8rem;
+                color: var(--heading-color);
+                margin-bottom: 1rem;
+            }
+            
+            .no-results p {
+                color: var(--text-color);
+                max-width: 600px;
+                margin: 0 auto;
+            }
+            
+            /* Frame Container Styles */
+            #frame-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.85);
+                z-index: 1000;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                opacity: 0;
+                visibility: hidden;
+                transition: all var(--transition-speed) var(--easing-func);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+            
+            #frame-container.visible {
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .frame-header {
+                width: 90%;
+                max-width: 1300px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1.2rem 1.5rem;
+                background-color: var(--dark-color-secondary);
+                border-top-left-radius: var(--border-radius-md);
+                border-top-right-radius: var(--border-radius-md);
+                border: 1px solid var(--glass-border);
+                border-bottom: 2px solid var(--primary-color);
+            }
+            
+            #frame-project-title {
+                color: var(--primary-color);
+                font-size: 1.5rem;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            #frame-project-title i {
+                font-size: 1.8rem;
+                opacity: 0.8;
+            }
+            
+            .frame-controls {
+                display: flex;
+                gap: 1rem;
+            }
+            
+            #frame-open-new-tab {
+                background-color: transparent;
+                color: var(--text-color);
+                border: 1px solid var(--primary-color);
+                padding: 0.6rem 1.2rem;
+                border-radius: var(--border-radius-sm);
+                font-size: 0.9rem;
+                cursor: pointer;
+                transition: all var(--transition-speed) var(--easing-func);
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            #frame-open-new-tab:hover {
+                background-color: var(--primary-color);
+                color: var(--dark-color);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px var(--shadow-color-light);
+            }
+            
+            #close-frame {
+                background-color: transparent;
+                color: var(--text-color);
+                border: none;
+                font-size: 1.8rem;
+                cursor: pointer;
+                transition: all var(--transition-speed) var(--easing-func);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+            }
+            
+            #close-frame:hover {
+                color: var(--accent-color);
+                background-color: rgba(255, 107, 107, 0.2);
+                transform: rotate(90deg);
+            }
+            
+            .frame-content {
+                width: 90%;
+                max-width: 1300px;
+                height: 80vh;
+                background-color: #fff;
+                border-bottom-left-radius: var(--border-radius-md);
+                border-bottom-right-radius: var(--border-radius-md);
+                overflow: hidden;
+                border: 1px solid var(--glass-border);
+                border-top: none;
+                position: relative;
+            }
+            
+            #project-frame {
+                width: 100%;
+                height: 100%;
+                border: none;
+            }
+            
+            /* Frame Loader */
+            .frame-loader {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #fff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                z-index: 2;
+                transition: opacity 0.3s ease;
+            }
+            
+            .frame-loader.hidden {
+                opacity: 0;
+                pointer-events: none;
+            }
+            
+            .frame-loader-spinner {
+                width: 50px;
+                height: 50px;
+                border: 3px solid #f3f3f3;
+                border-top: 3px solid var(--primary-color);
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin-bottom: 1rem;
+            }
+            
+            .frame-loader-text {
+                color: var(--primary-color);
+                font-size: 1rem;
+            }
+            
+            /* Responsive View Controls */
+            .responsive-controls {
+                position: absolute;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 0, 0, 0.7);
+                border-radius: 50px;
+                padding: 0.5rem;
+                display: flex;
+                gap: 0.5rem;
+                z-index: 3;
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .view-control {
+                background: transparent;
+                border: none;
+                color: var(--text-color);
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                font-size: 1.2rem;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .view-control.active {
+                background: var(--primary-color);
+                color: var(--dark-color);
+            }
+            
+            .view-control:hover:not(.active) {
+                background: rgba(255, 255, 255, 0.1);
+            }
+            
+            /* Back To Top Button */
+            .back-to-top {
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background: var(--primary-gradient);
+                color: var(--dark-color);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                opacity: 0;
+                visibility: hidden;
+                transition: all var(--transition-speed) var(--easing-func);
+                box-shadow: 0 5px 15px var(--shadow-color-dark);
+                z-index: 99;
+                border: none;
+            }
+            
+            .back-to-top.visible {
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .back-to-top:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px var(--shadow-color-light);
+            }
+            
+            /* Empty State */
+            .empty-state {
+                text-align: center;
+                padding: 3rem;
+                background: var(--card-bg);
+                border-radius: var(--border-radius-md);
+                margin-top: 2rem;
+                border: 1px solid var(--glass-border);
+            }
+            
+            .empty-state i {
+                font-size: 3rem;
+                color: var(--secondary-color);
+                margin-bottom: 1rem;
+            }
+            
+            .empty-state h3 {
+                font-size: 1.8rem;
+                color: var(--heading-color);
+                margin-bottom: 1rem;
+            }
+            
+            .empty-state p {
+                color: var(--text-color);
+                max-width: 600px;
+                margin: 0 auto 1.5rem;
+            }
+            
+            .empty-state button {
+                background: var(--primary-gradient);
+                color: var(--dark-color);
+                border: none;
+                padding: 0.8rem 1.5rem;
+                border-radius: var(--border-radius-sm);
+                font-size: 1rem;
+                cursor: pointer;
+                transition: all var(--transition-speed) var(--easing-func);
+            }
+            
+            .empty-state button:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 5px 15px var(--shadow-color-light);
+            }
+
+            /* Animation Keyframes */
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            
+            @keyframes fadeInUp {
+                from { 
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to { 
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* User Authentication Styles */
+            .user-info-section {
+                margin-top: 2rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            .login-button {
+                background: var(--primary-gradient);
+                color: var(--dark-color);
+                border: none;
+                padding: 0.8rem 1.5rem;
+                border-radius: var(--border-radius-sm);
+                font-size: 1rem;
+                cursor: pointer;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-weight: 500;
+            }
+            
+            .login-button:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 5px 15px var(--shadow-color-light);
+            }
+            
+            .user-profile {
+                display: flex;
+                gap: 1rem;
+                align-items: center;
+                padding: 1rem;
+                background: var(--card-bg);
+                border-radius: var(--border-radius-md);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid var(--glass-border);
+                max-width: 500px;
+            }
+            
+            .user-avatar, .user-avatar-placeholder {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                border: 2px solid var(--primary-color);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: var(--dark-color-secondary);
+                color: var(--primary-color);
+                font-size: 24px;
+            }
+            
+            .user-avatar {
+                object-fit: cover;
+            }
+            
+            .user-details {
+                flex: 1;
+            }
+            
+            .user-details h3 {
+                margin: 0;
+                color: var(--heading-color);
+                font-size: 1.2rem;
+            }
+            
+            .user-bio {
+                margin: 0.5rem 0 0;
+                font-size: 0.9rem;
+                opacity: 0.8;
+                max-width: 300px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            
+            /* Recently Viewed Projects */
+            .recently-viewed-container {
+                margin: 2rem 0;
+                display: none;
+            }
+            
+            .recent-title {
+                font-size: 1.8rem;
+                color: var(--heading-color);
+                margin-bottom: 1rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .recently-viewed-list {
+                display: flex;
+                gap: 1rem;
+                overflow-x: auto;
+                padding: 0.5rem 0.25rem;
+                scrollbar-width: thin;
+                scrollbar-color: var(--primary-color) var(--dark-color);
+            }
+            
+            .recently-viewed-list::-webkit-scrollbar {
+                height: 8px;
+            }
+            
+            .recently-viewed-list::-webkit-scrollbar-track {
+                background: var(--dark-color-secondary);
+                border-radius: 10px;
+            }
+            
+            .recently-viewed-list::-webkit-scrollbar-thumb {
+                background-color: var(--primary-color);
+                border-radius: 10px;
+            }
+            
+            .recent-project-card {
+                min-width: 250px;
+                max-width: 250px;
+                height: 150px;
+                background: var(--card-bg);
+                border-radius: var(--border-radius-md);
+                overflow: hidden;
+                display: flex;
+                border: 1px solid var(--glass-border);
+                transition: all var(--transition-speed) var(--easing-func);
+                position: relative;
+            }
+            
+            .recent-project-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px var(--shadow-color-dark), 0 0 15px var(--shadow-color-light);
+            }
+            
+            .recent-project-image {
+                width: 40%;
+                height: 100%;
+                object-fit: cover;
+            }
+            
+            .recent-project-content {
+                flex: 1;
+                padding: 0.75rem;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .recent-project-content h4 {
+                margin: 0;
+                font-size: 1rem;
+                color: var(--heading-color);
+            }
+            
+            .recent-project-content p {
+                margin: 0.25rem 0;
+                font-size: 0.8rem;
+                opacity: 0.7;
+                flex: 1;
+            }
+            
+            .recent-project-actions {
+                display: flex;
+                gap: 0.5rem;
+                margin-top: auto;
+            }
+            
+            .recent-action-btn {
+                background: var(--glass-effect);
+                border: 1px solid var(--glass-border);
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--primary-color);
+                font-size: 0.9rem;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+            
+            .recent-action-btn:hover {
+                background: var(--primary-color);
+                color: var(--dark-color);
+                transform: scale(1.1);
+            }
+
+            /* Media Queries */
+            @media (max-width: 1200px) {
+                .projects-grid {
+                    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                }
+                
+                h1 {
+                    font-size: 3.5rem;
+                }
+                
+                h1::before, h1::after {
+                    width: 60px;
+                }
+                
+                h1::before {
+                    left: -80px;
+                }
+                
+                h1::after {
+                    right: -80px;
+                }
+            }
+            
+            @media (max-width: 992px) {
+                .container {
+                    padding: 2rem 1.5rem;
+                }
+                
+                .search-filter-container {
+                    flex-direction: column;
+                }
+                
+                .search-box {
+                    width: 100%;
+                }
+                
+                .filter-options {
+                    width: 100%;
+                    justify-content: space-between;
+                }
+                
+                .projects-grid {
+                    gap: 2rem;
+                }
+                
+                .responsive-controls {
+                    bottom: 10px;
+                }
+            }
+            
+            @media (max-width: 768px) {
+                .projects-grid {
+                    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                }
+                
+                h1 {
+                    font-size: 3rem;
+                }
+                
+                h1::before, h1::after {
+                    display: none;
+                }
+                
+                .header-line {
+                    width: 80px;
+                }
+                
+                .subtitle {
+                    font-size: 1.1rem;
+                }
+                
+                .frame-header {
+                    flex-direction: column;
+                    gap: 1rem;
+                    align-items: flex-start;
+                }
+                
+                #close-frame {
+                    position: absolute;
+                    top: 0.5rem;
+                    right: 0.5rem;
+                    background-color: rgba(0, 0, 0, 0.5);
+                }
+                
+                .back-to-top {
+                    bottom: 20px;
+                    right: 20px;
+                    width: 45px;
+                    height: 45px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .container {
+                    padding: 1.5rem 1rem;
+                }
+                
+                h1 {
+                    font-size: 2.5rem;
+                }
+                
+                .subtitle {
+                    font-size: 1rem;
+                }
+                
+                .projects-grid {
+                    grid-template-columns: 1fr;
+                }
+                
+                .project-links {
+                    flex-direction: column;
+                }
+                
+                .frame-content {
+                    height: 70vh;
+                }
+                
+                .filter-button {
+                    padding: 8px 15px;
+                    font-size: 14px;
+                }
+                
+                .category-title {
+                    font-size: 1.8rem;
+                }
+                
+                .tech-tag {
+                    font-size: 0.8rem;
+                    padding: 0.3rem 0.7rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="preloader">
+            <div class="loader">
+                <div class="loader-circle"></div>
+                <div class="loader-circle"></div>
+                <div class="loader-circle"></div>
+            </div>
+            <div class="preloader-text">Initializing Projects...</div>
+        </div>
+
+        <canvas id="particle-canvas"></canvas>
+        <div class="custom-cursor"></div>
+        <div id="cursor-trails"></div>
+
+        <div class="container">
+            <header>
+                <button id="theme-toggle" class="theme-toggle-button" title="Toggle Theme">
+                    <i class="fas fa-moon moon"></i>
+                    <i class="fas fa-sun sun"></i>
+                </button>
+                <h1>Supreme Coding Projects</h1>
+                <div class="header-line"></div>
+                <p class="subtitle">
+                    Explore a meticulously crafted collection of interactive coding experiences, from games to utility applications
+                </p>
+                <a href="../index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Back to Portfolio
+                </a>
+                <div id="user-info-section" class="user-info-section"></div>
+            </header>
+            
+            <div id="recently-viewed-container" class="recently-viewed-container">
+                <h2 class="recent-title"><i class="fas fa-history"></i> Recently Viewed</h2>
+                <div id="recently-viewed-list" class="recently-viewed-list"></div>
+            </div>
+
+            <div class="search-filter-container">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="project-search" class="search-input" placeholder="Search projects by name, description or technology...">
+                </div>
+                <div class="filter-options">
+                    <button class="filter-button active" data-filter="all">
+                        <i class="fas fa-border-all"></i> All
+                    </button>
+                    <button class="filter-button" data-filter="html-games">
+                        <i class="fas fa-gamepad"></i> Games
+                    </button>
+                    <button class="filter-button" data-filter="utility-apps">
+                        <i class="fas fa-tools"></i> Utilities
+                    </button>
+                    <button class="filter-button" data-filter="completed">
+                        <i class="fas fa-check-circle"></i> Completed
+                    </button>
+                    <button class="filter-button" data-filter="in-progress">
+                        <i class="fas fa-clock"></i> In Progress
+                    </button>
+                    <button class="filter-button favorites-filter" data-filter="favorites">
+                        <i class="fas fa-heart"></i> Favorites
+                    </button>
+                </div>
+            </div>
+
+            <section id="html-games-section">
+                <h2 class="category-title">HTML5 Interactive Experiences <span class="category-count" id="games-count">0</span></h2>
+                <div class="projects-grid" id="html-games-grid">
+                    <!-- Project cards will be injected here by JavaScript -->
+                </div>
+            </section>
+
+            <section id="utility-apps-section">
+                <h2 class="category-title">Web Utility Applications <span class="category-count" id="utility-count">0</span></h2>
+                <div class="projects-grid" id="utility-apps-grid">
+                    <!-- Project cards will be injected here by JavaScript -->
+                </div>
+            </section>
+        </div>
+
+        <!-- Frame Container -->
+        <div id="frame-container">
+            <div class="frame-header">
+                <h3 id="frame-project-title"><i class="fas fa-code"></i> <span>Project Title</span></h3>
+                <div class="frame-controls">
+                    <a href="#" id="frame-open-new-tab" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> Open in New Tab
+                    </a>
+                    <button id="close-frame">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="frame-content">
+                <div class="frame-loader">
+                    <div class="frame-loader-spinner"></div>
+                    <div class="frame-loader-text">Loading project...</div>
+                </div>
+                <iframe id="project-frame" title="Project Frame"></iframe>
+                <div class="responsive-controls">
+                    <button class="view-control active" data-view="desktop" title="Desktop View">
+                        <i class="fas fa-desktop"></i>
+                    </button>
+                    <button class="view-control" data-view="tablet" title="Tablet View">
+                        <i class="fas fa-tablet-alt"></i>
+                    </button>
+                    <button class="view-control" data-view="mobile" title="Mobile View">
+                        <i class="fas fa-mobile-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to Top Button -->
+        <button class="back-to-top" id="backToTop" title="Back to Top">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+
+        <script>
+            // --- Project Data ---
+            const projectsData = [
+                {
+                  id: 'final-year-project-sugg',
+                  title: 'Final Year Project Suggestions',
+                  description: 'Interactive catalog of final‑year project ideas, filterable by category with copy‑to‑clipboard and search features.',
+                  imageSrc: 'https://placehold.co/600x400/1f243a/e0e0e0?text=FINAL+YEAR+PROJECTS',
+                  category: 'utility-apps',
+                  technologies: ['HTML5', 'CSS3', 'JavaScript', 'DOM Manipulation'],
+                  demoUrl: 'projectfiles/finalyearprojectsugg.html',
+                  frameUrl: 'projectfiles/finalyearprojectsugg.html',
+                  demoIcon: 'fa-lightbulb',
+                  demoText: 'Launch App',
+                  status: 'completed'
+                },
+                {
+                    id: 'snake',
+                    title: 'Snake Master',
+                    description: 'The timeless classic, reimagined. Guide the serpent, devour the targets, and climb the high score ladder in this slick HTML5 Canvas rendition.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/4ecca3?text=SNAKE+MASTER',
+                    category: 'html-games',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Canvas API'],
+                    demoUrl: 'projectfiles/snake.html',
+                    frameUrl: 'projectfiles/snake.html',
+                    demoIcon: 'fa-gamepad',
+                    demoText: 'Play Now',
+                    status: 'completed'
+                },
+                {
+                    id: 'tetris',
+                    title: 'Tetris Reloaded',
+                    description: 'Engage in the ultimate block-stacking challenge. Strategic placement and quick thinking are key in this addictive JavaScript & Canvas puzzle game.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/6b7b9c?text=TETRIS+RELOADED',
+                    category: 'html-games',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Canvas API'],
+                    demoUrl: 'projectfiles/tetris.html',
+                    frameUrl: 'projectfiles/tetris.html',
+                    demoIcon: 'fa-puzzle-piece',
+                    demoText: 'Play Now',
+                    status: 'completed'
+                },
+                {
+                    id: 'pong-classic',
+                    title: 'Pong Classic',
+                    description: 'Experience the original arcade sensation reimagined. This minimalist two-player game offers timeless entertainment with smooth controls and reactive gameplay.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/4ecca3?text=PONG+CLASSIC',
+                    category: 'html-games',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Canvas API'],
+                    demoUrl: 'projectfiles/pong-classic.html',
+                    frameUrl: 'projectfiles/pong-classic.html',
+                    demoIcon: 'fa-table-tennis',
+                    demoText: 'Play Now',
+                    status: 'completed'
+                },
+                {
+                    id: 'space-invaders',
+                    title: 'Space Invaders',
+                    description: 'Defend Earth from descending alien forces in this retro-inspired arcade shooter. Features smooth controls, escalating difficulty, and nostalgic pixel art.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/e0e0e0?text=SPACE+INVADERS',
+                    category: 'html-games',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Canvas API', 'Sprite Animation'],
+                    demoUrl: 'projectfiles/space-invaders.html',
+                    frameUrl: 'projectfiles/space-invaders.html',
+                    demoIcon: 'fa-rocket',
+                    demoText: 'Play Now',
+                    status: 'completed'
+                },
+                {
+                    id: 'memory-match',
+                    title: 'Memory Match',
+                    description: 'Test your recall skills with this captivating card-matching game. Find pairs, beat the clock, and challenge yourself with multiple difficulty levels.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/ff8c42?text=MEMORY+MATCH',
+                    category: 'html-games',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'CSS Animations'],
+                    demoUrl: 'projectfiles/memory-match.html',
+                    frameUrl: 'projectfiles/memory-match.html',
+                    demoIcon: 'fa-brain',
+                    demoText: 'Play Now',
+                    status: 'completed'
+                },
+                {
+                    id: 'breakout',
+                    title: 'Breakout Blitz',
+                    description: 'Smash through colorful brick walls in this addictive paddle-and-ball classic. Features multiple levels, power-ups, and responsive controls.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/6b7b9c?text=BREAKOUT+BLITZ',
+                    category: 'html-games',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Canvas API', 'Physics'],
+                    demoUrl: 'projectfiles/breakout-blitz.html',
+                    frameUrl: 'projectfiles/breakout-blitz.html',
+                    demoIcon: 'fa-cubes',
+                    demoText: 'Play Now',
+                    status: 'completed'
+                },
+                {
+                    id: 'platformer',
+                    title: 'Pixel Platformer',
+                    description: 'Navigate through challenging levels in this side-scrolling adventure. Features character physics, collectibles, and obstacle-filled environments.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/4ecca3?text=PIXEL+PLATFORMER',
+                    category: 'html-games',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Canvas API', 'Game Physics'],
+                    demoUrl: 'projectfiles/pixel-platformer.html',
+                    frameUrl: 'projectfiles/pixel-platformer.html',
+                    demoIcon: 'fa-running',
+                    demoText: 'Play Now',
+                    status: 'in-progress'
+                },
+                {
+                    id: 'chess',
+                    title: 'Web Chess Master',
+                    description: 'The classic game of strategy, beautifully rendered for browsers. Features legal move highlighting, game history, and potential AI opponent.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/e0e0e0?text=WEB+CHESS+MASTER',
+                    category: 'html-games',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Drag & Drop API'],
+                    demoUrl: 'projectfiles/web-chess.html',
+                    frameUrl: 'projectfiles/web-chess.html',
+                    demoIcon: 'fa-chess',
+                    demoText: 'Play Now',
+                    status: 'in-progress'
+                },
+                {
+                    id: 'gpa-wizard',
+                    title: 'GPA Wizard',
+                    description: 'A dynamic and user-friendly CGPA calculator for students. Track semester progress, calculate overall GPA, and plan your academic journey efficiently.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/ff8c42?text=GPA+WIZARD',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Responsive UI'],
+                    demoUrl: 'projectfiles/cgpa-calculator.html',
+                    frameUrl: 'projectfiles/cgpa-calculator.html',
+                    demoIcon: 'fa-calculator',
+                    demoText: 'Launch App',
+                    status: 'completed'
+                },
+                {
+                    id: 'my-details',
+                    title: 'My_Details',
+                    description: 'A simple page to showcase personal or project details. Easily customizable and presents information clearly.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/ff8c42?text=MY+DETAILS',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Responsive UI'],
+                    demoUrl: 'projectfiles/my_details.html',
+                    frameUrl: 'projectfiles/my_details.html',
+                    demoIcon: 'fa-user-circle',
+                    demoText: 'View Details',
+                    status: 'completed'
+                },
+                {
+                    id: 'report-forge',
+                    title: 'Report Forge',
+                    description: 'Streamline your academic writing. Generate structured lab reports and assignments using customizable templates and intuitive controls.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/e0e0e0?text=REPORT+FORGE',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'DOM Manipulation'],
+                    demoUrl: 'projectfiles/lab-report-creator.html',
+                    frameUrl: 'projectfiles/lab-report-creator.html',
+                    demoIcon: 'fa-file-alt',
+                    demoText: 'Launch App',
+                    status: 'completed'
+                },
+                {
+                    id: 'report-forge-2',
+                    title: 'Report Forge 2.0',
+                    description: 'An enhanced version for crafting academic documents. Features improved templates, real-time preview, and potential export options.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/4ecca3?text=REPORT+FORGE+2.0',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Advanced DOM'],
+                    demoUrl: 'projectfiles/labreport1.html',
+                    frameUrl: 'projectfiles/labreport1.html',
+                    demoIcon: 'fa-file-signature',
+                    demoText: 'Launch App',
+                    status: 'in-progress'
+                },
+                {
+                    id: 'pomodoro',
+                    title: 'Pomodoro Timer',
+                    description: 'Boost productivity with this elegant time management tool. Features customizable work/break intervals, notification system, and session tracking.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/ff8c42?text=POMODORO+TIMER',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Web Notifications'],
+                    demoUrl: 'projectfiles/pomodoro-timer.html',
+                    frameUrl: 'projectfiles/pomodoro-timer.html',
+                    demoIcon: 'fa-clock',
+                    demoText: 'Launch App',
+                    status: 'completed'
+                },
+                {
+                    id: 'markdown-editor',
+                    title: 'Markdown Editor',
+                    description: 'Create beautifully formatted documents with this real-time Markdown editor. Features live preview, syntax highlighting, and export capabilities.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/4ecca3?text=MARKDOWN+EDITOR',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Marked.js', 'LocalStorage API'],
+                    demoUrl: 'projectfiles/markdown-editor.html',
+                    frameUrl: 'projectfiles/markdown-editor.html',
+                    demoIcon: 'fa-edit',
+                    demoText: 'Launch App',
+                    status: 'completed'
+                },
+                {
+                    id: 'budget-tracker',
+                    title: 'Budget Tracker',
+                    description: 'Take control of your finances with this intuitive expense management tool. Features income/expense tracking, visualization, and budget planning.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/6b7b9c?text=BUDGET+TRACKER',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Chart.js', 'LocalStorage API'],
+                    demoUrl: 'projectfiles/budget-tracker.html',
+                    frameUrl: 'projectfiles/budget-tracker.html',
+                    demoIcon: 'fa-chart-pie',
+                    demoText: 'Launch App',
+                    status: 'in-progress'
+                },
+                {
+                    id: 'kanban-board',
+                    title: 'Kanban Task Board',
+                    description: 'Organize projects with this flexible task management system. Features drag-and-drop columns, customizable cards, and project status tracking.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/e0e0e0?text=KANBAN+BOARD',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Drag & Drop API', 'LocalStorage API'],
+                    demoUrl: 'projectfiles/kanban-board.html',
+                    frameUrl: 'projectfiles/kanban-board.html',
+                    demoIcon: 'fa-tasks',
+                    demoText: 'Launch App',
+                    status: 'experimental'
+                },
+                {
+                    id: 'weather-dashboard',
+                    title: 'Weather Dashboard',
+                    description: 'Stay informed with this elegant weather forecasting app. Features current conditions, 5-day forecast, and location-based weather updates.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/4ecca3?text=WEATHER+DASHBOARD',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Fetch API', 'Geolocation API'],
+                    demoUrl: 'projectfiles/weather-dashboard.html',
+                    frameUrl: 'projectfiles/weather-dashboard.html',
+                    demoIcon: 'fa-cloud-sun',
+                    demoText: 'Launch App',
+                    status: 'in-progress'
+                },
+                {
+                    id: 'code-editor',
+                    title: 'Web Code Playground',
+                    description: 'Experiment with HTML, CSS, and JavaScript in this interactive code editor. Features real-time preview, syntax highlighting, and code saving.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/ff8c42?text=CODE+PLAYGROUND',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'CodeMirror', 'LocalStorage API'],
+                    demoUrl: 'projectfiles/code-playground.html',
+                    frameUrl: 'projectfiles/code-playground.html',
+                    demoIcon: 'fa-code',
+                    demoText: 'Launch App',
+                    status: 'completed'
+                },
+                {
+                    id: 'todo-app',
+                    title: 'Todo Master',
+                    description: 'Manage daily tasks with this intuitive to-do list application. Features task categories, due dates, priority levels, and completion tracking.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/6b7b9c?text=TODO+MASTER',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'LocalStorage API'],
+                    demoUrl: 'projectfiles/todo-master.html',
+                    frameUrl: 'projectfiles/todo-master.html',
+                    demoIcon: 'fa-list-check',
+                    demoText: 'Launch App',
+                    status: 'completed'
+                },
+                {
+                    id: 'recipe-finder',
+                    title: 'Recipe Finder',
+                    description: 'Discover culinary inspiration with this recipe search tool. Features ingredient-based searching, step-by-step instructions, and nutrition information.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/e0e0e0?text=RECIPE+FINDER',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Fetch API'],
+                    demoUrl: 'projectfiles/recipe-finder.html',
+                    frameUrl: 'projectfiles/recipe-finder.html',
+                    demoIcon: 'fa-utensils',
+                    demoText: 'Launch App',
+                    status: 'experimental'
+                },
+                {
+                    id: 'music-player',
+                    title: 'Web Audio Player',
+                    description: 'Enjoy your favorite tunes with this sleek music player. Features playlist management, audio visualization, and playback controls.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/4ecca3?text=AUDIO+PLAYER',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Web Audio API', 'MediaElement API'],
+                    demoUrl: 'projectfiles/web-audio-player.html',
+                    frameUrl: 'projectfiles/web-audio-player.html',
+                    demoIcon: 'fa-music',
+                    demoText: 'Launch App',
+                    status: 'in-progress'
+                },
+                {
+                    id: 'drawing-board',
+                    title: 'Digital Canvas',
+                    description: 'Express your creativity with this feature-rich drawing application. Includes brush options, color palette, layers, and export functionality.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/ff8c42?text=DIGITAL+CANVAS',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Canvas API'],
+                    demoUrl: 'projectfiles/digital-canvas.html',
+                    frameUrl: 'projectfiles/digital-canvas.html',
+                    demoIcon: 'fa-paint-brush',
+                    demoText: 'Launch App',
+                    status: 'experimental'
+                },
+                {
+                    id: 'calculator',
+                    title: 'Scientific Calculator',
+                    description: 'Perform complex calculations with this comprehensive calculator tool. Features scientific functions, history tracking, and multiple themes.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/6b7b9c?text=SCIENTIFIC+CALCULATOR',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Math Functions'],
+                    demoUrl: 'projectfiles/calculator.html',
+                    frameUrl: 'projectfiles/calculator.html',
+                    demoIcon: 'fa-calculator',
+                    demoText: 'Launch App',
+                    status: 'completed'
+                },
+                {
+                    id: 'quiz-app',
+                    title: 'Knowledge Quiz',
+                    description: 'Test your knowledge with this interactive quiz application. Features multiple categories, difficulty levels, score tracking, and timing.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/e0e0e0?text=KNOWLEDGE+QUIZ',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Fetch API'],
+                    demoUrl: 'projectfiles/knowledge-quiz.html',
+                    frameUrl: 'projectfiles/knowledge-quiz.html',
+                    demoIcon: 'fa-question-circle',
+                    demoText: 'Launch App',
+                    status: 'in-progress'
+                },
+                {
+                    id: 'currency-converter',
+                    title: 'Currency Converter',
+                    description: 'Convert between world currencies with real-time exchange rates. Features 160+ currencies, historical data, and popular conversion shortcuts.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/4ecca3?text=CURRENCY+CONVERTER',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Exchange Rate API'],
+                    demoUrl: 'projectfiles/currency-converter.html',
+                    frameUrl: 'projectfiles/currency-converter.html',
+                    demoIcon: 'fa-money-bill-wave',
+                    demoText: 'Launch App',
+                    status: 'completed'
+                },
+                {
+                    id: 'password-generator',
+                    title: 'Password Generator',
+                    description: 'Create strong and secure passwords with customizable options. Features strength meter, history tracking, and security tips.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/ff8c42?text=PASSWORD+GENERATOR',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'Crypto API'],
+                    demoUrl: 'projectfiles/password-generator.html',
+                    frameUrl: 'projectfiles/password-generator.html',
+                    demoIcon: 'fa-key',
+                    demoText: 'Launch App',
+                    status: 'completed'
+                },
+                {
+                    id: 'note-taking',
+                    title: 'Note Taking App',
+                    description: 'Create, organize, and manage your notes efficiently. Features markdown support, categories, search, and auto-save functionality.',
+                    imageSrc: 'https://placehold.co/600x400/1f243a/6b7b9c?text=NOTE+TAKING',
+                    category: 'utility-apps',
+                    technologies: ['HTML5', 'CSS3', 'JavaScript', 'LocalStorage API'],
+                    demoUrl: 'projectfiles/note-taking.html',
+                    frameUrl: 'projectfiles/note-taking.html',
+                    demoIcon: 'fa-sticky-note',
+                    demoText: 'Launch App',
+                    status: 'completed'
+                }
+            ];
+
+            // --- DOM Elements ---
+            const frameContainer = document.getElementById('frame-container');
+            const projectFrame = document.getElementById('project-frame');
+            const frameProjectTitle = document.getElementById('frame-project-title').querySelector('span');
+            const frameOpenNewTab = document.getElementById('frame-open-new-tab');
+            const closeButton = document.getElementById('close-frame');
+            const themeToggleButton = document.getElementById('theme-toggle');
+            const preloader = document.querySelector('.preloader');
+            const customCursor = document.querySelector('.custom-cursor');
+            const backToTopButton = document.getElementById('backToTop');
+            const searchInput = document.getElementById('project-search');
+            const filterButtons = document.querySelectorAll('.filter-button');
+            const frameLoader = document.querySelector('.frame-loader');
+            const viewControls = document.querySelectorAll('.view-control');
+            const gamesCount = document.getElementById('games-count');
+            const utilityCount = document.getElementById('utility-count');
+
+            let originalBodyOverflow;
+            let cursorTrails = [];
+            let currentFilter = 'all';
+            let currentSearch = '';
+            let activeCards = [];
+
+            // --- Functions ---
+            // Favorites system
+            function getFavorites() {
+                const favorites = localStorage.getItem('favoriteProjects');
+                return favorites ? JSON.parse(favorites) : [];
+            }
+            
+            function addToFavorites(projectId) {
+                const favorites = getFavorites();
+                if (!favorites.includes(projectId)) {
+                    favorites.push(projectId);
+                    localStorage.setItem('favoriteProjects', JSON.stringify(favorites));
+                    updateFavoriteUI(projectId, true);
+                    showNotification('Project added to favorites!', 'success');
+                }
+            }
+            
+            function removeFromFavorites(projectId) {
+                const favorites = getFavorites();
+                const index = favorites.indexOf(projectId);
+                if (index > -1) {
+                    favorites.splice(index, 1);
+                    localStorage.setItem('favoriteProjects', JSON.stringify(favorites));
+                    updateFavoriteUI(projectId, false);
+                    showNotification('Project removed from favorites', 'info');
+                }
+            }
+            
+            function updateFavoriteUI(projectId, isFavorite) {
+                const favoriteBtn = document.querySelector(`.favorite-btn[data-project="${projectId}"]`);
+                if (favoriteBtn) {
+                    const icon = favoriteBtn.querySelector('i');
+                    if (isFavorite) {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                        favoriteBtn.setAttribute('title', 'Remove from favorites');
+                    } else {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                        favoriteBtn.setAttribute('title', 'Add to favorites');
+                    }
+                }
+            }
+            
+            // Track user session and recently viewed projects
+            function trackUserActivity(projectId) {
+                if (!projectId) return;
+                
+                // Get recently viewed projects
+                let recentlyViewed = localStorage.getItem('recentlyViewedProjects');
+                recentlyViewed = recentlyViewed ? JSON.parse(recentlyViewed) : [];
+                
+                // Remove if already exists (to move to top)
+                const existingIndex = recentlyViewed.indexOf(projectId);
+                if (existingIndex > -1) {
+                    recentlyViewed.splice(existingIndex, 1);
+                }
+                
+                // Add to beginning of array
+                recentlyViewed.unshift(projectId);
+                
+                // Keep only last 5 projects
+                if (recentlyViewed.length > 5) {
+                    recentlyViewed = recentlyViewed.slice(0, 5);
+                }
+                
+                // Save back to local storage
+                localStorage.setItem('recentlyViewedProjects', JSON.stringify(recentlyViewed));
+                
+                // Update recently viewed section if it exists
+                updateRecentlyViewedSection();
+            }
+            
+            function updateRecentlyViewedSection() {
+                const recentContainer = document.getElementById('recently-viewed-container');
+                if (!recentContainer) return;
+                
+                let recentlyViewed = localStorage.getItem('recentlyViewedProjects');
+                recentlyViewed = recentlyViewed ? JSON.parse(recentlyViewed) : [];
+                
+                if (recentlyViewed.length === 0) {
+                    recentContainer.style.display = 'none';
+                    return;
+                }
+                
+                recentContainer.style.display = 'block';
+                const recentList = document.getElementById('recently-viewed-list');
+                recentList.innerHTML = '';
+                
+                recentlyViewed.forEach(projectId => {
+                    const project = projectsData.find(p => p.id === projectId);
+                    if (project) {
+                        const recentItem = document.createElement('div');
+                        recentItem.className = 'recent-project-card';
+                        recentItem.innerHTML = `
+                            <img src="${project.imageSrc}" alt="${project.title}" class="recent-project-image">
+                            <div class="recent-project-content">
+                                <h4>${project.title}</h4>
+                                <p>${project.technologies.slice(0, 2).join(', ')}</p>
+                                <div class="recent-project-actions">
+                                    <a href="${project.demoUrl}" target="_blank" class="recent-action-btn">
+                                        <i class="fas ${project.demoIcon}"></i>
+                                    </a>
+                                    <button class="recent-action-btn preview-btn" data-frame-url="${project.frameUrl}" data-title="${project.title}">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        recentList.appendChild(recentItem);
+                    }
+                });
+                
+                // Add event listeners to new buttons
+                const previewButtons = recentList.querySelectorAll('.preview-btn');
+                previewButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const frameUrl = btn.getAttribute('data-frame-url');
+                        const title = btn.getAttribute('data-title');
+                        openInFrame(frameUrl, title);
+                    });
+                });
+            }
+            
+            // Guest user handling
+            function setupGuestUser() {
+                const userSection = document.getElementById('user-info-section');
+                if (userSection) {
+                    userSection.innerHTML = `
+                        <div class="user-profile">
+                            <div class="user-avatar-placeholder">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="user-details">
+                                <h3>Welcome, Guest</h3>
+                                <p class="user-bio">Browsing as a guest user</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            function showNotification(message, type) {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+                document.body.appendChild(notification);
+                
+                // Animate in
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 10);
+                
+                // Animate out after delay
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
+            
+            function renderProjectCard(project) {
+                // Create tech tags HTML with icons
+                const techIcons = {
+                    'HTML5': 'fa-html5',
+                    'CSS3': 'fa-css3-alt',
+                    'JavaScript': 'fa-js',
+                    'Canvas API': 'fa-paint-brush',
+                    'CSS Animations': 'fa-magic',
+                    'Physics': 'fa-atom',
+                    'Game Physics': 'fa-rocket',
+                    'Drag & Drop API': 'fa-hand-pointer',
+                    'Responsive UI': 'fa-mobile-alt',
+                    'DOM Manipulation': 'fa-code',
+                    'Web Notifications': 'fa-bell',
+                    'Marked.js': 'fa-markdown',
+                    'LocalStorage API': 'fa-database',
+                    'Chart.js': 'fa-chart-line',
+                    'Fetch API': 'fa-exchange-alt',
+                    'Geolocation API': 'fa-map-marker-alt',
+                    'CodeMirror': 'fa-terminal',
+                    'Web Audio API': 'fa-volume-up',
+                    'MediaElement API': 'fa-headphones',
+                    'Math Functions': 'fa-square-root-alt',
+                    'Exchange Rate API': 'fa-money-bill-wave',
+                    'Crypto API': 'fa-shield-alt',
+                    'Sprite Animation': 'fa-images',
+                    'Advanced DOM': 'fa-code-branch'
+                };
+                
+                const technologiesHTML = project.technologies.map(tech => {
+                    const icon = techIcons[tech] || 'fa-code';
+                    return `<span class="tech-tag"><i class="fas ${icon}"></i> ${tech}</span>`;
+                }).join('');
+                
+                // Status badges
+                const statusBadge = project.status ? 
+                    `<div class="project-status ${project.status}">${project.status.charAt(0).toUpperCase() + project.status.slice(1)}</div>` : '';
+                
+                // Check if project is in favorites
+                const favorites = getFavorites();
+                const isFavorite = favorites.includes(project.id);
+                const favoriteIcon = isFavorite ? 'fas fa-heart' : 'far fa-heart';
+                const favoriteTitle = isFavorite ? 'Remove from favorites' : 'Add to favorites';
+                
+                return `
+                    <div class="project-card" id="project-${project.id}" data-category="${project.category}" data-status="${project.status || ''}">
+                        <div class="project-image-container">
+                            <img src="${project.imageSrc}" alt="${project.title}" class="project-image" loading="lazy"/>
+                            <div class="project-image-overlay"></div>
+                            ${statusBadge}
+                            <button class="favorite-btn" data-project="${project.id}" title="${favoriteTitle}">
+                                <i class="${favoriteIcon}"></i>
+                            </button>
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">${project.title}</h3>
+                            <p class="project-description">${project.description}</p>
+                            <div class="project-technologies">
+                                ${technologiesHTML}
+                            </div>
+                            <div class="project-links">
+                                <a href="${project.demoUrl}" target="_blank" class="demo-link">
+                                    <i class="fas ${project.demoIcon}"></i> ${project.demoText}
+                                </a>
+                                <a href="#" class="preview-link" 
+                                   data-frame-url="${project.frameUrl}" data-title="${project.title}">
+                                    <i class="fas fa-window-maximize"></i> Frame View
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function populateProjects() {
+                const gamesGrid = document.getElementById('html-games-grid');
+                const appsGrid = document.getElementById('utility-apps-grid');
+                
+                gamesGrid.innerHTML = '';
+                appsGrid.innerHTML = '';
+                
+                // Get favorites for filtering
+                const favorites = getFavorites();
+                
+                // Filter projects based on current filter and search
+                activeCards = projectsData.filter(project => {
+                    // Handle favorites filter
+                    if (currentFilter === 'favorites') {
+                        if (!favorites.includes(project.id)) {
+                            return false;
+                        }
+                    }
+                    // Filter by category or status
+                    else if (currentFilter !== 'all' && 
+                        currentFilter !== project.category && 
+                        currentFilter !== project.status) {
+                        return false;
+                    }
+                    
+                    // Filter by search term
+                    if (currentSearch) {
+                        const searchLower = currentSearch.toLowerCase();
+                        const titleMatch = project.title.toLowerCase().includes(searchLower);
+                        const descMatch = project.description.toLowerCase().includes(searchLower);
+                        const techMatch = project.technologies.some(tech => 
+                            tech.toLowerCase().includes(searchLower)
+                        );
+                        
+                        if (!titleMatch && !descMatch && !techMatch) {
+                            return false;
+                        }
+                    }
+                    
+                    return true;
+                });
+                
+                // Count projects by category for badges
+                const gameProjects = activeCards.filter(p => p.category === 'html-games');
+                const utilityProjects = activeCards.filter(p => p.category === 'utility-apps');
+                
+                gamesCount.textContent = gameProjects.length;
+                utilityCount.textContent = utilityProjects.length;
+                
+                // Check if we need to show empty state
+                if (activeCards.length === 0) {
+                    const noResultsHTML = `
+                        <div class="no-results">
+                            <i class="fas fa-search"></i>
+                            <h3>No Projects Found</h3>
+                            <p>Sorry, no projects match your current filter and search criteria. Try adjusting your search or filters.</p>
+                        </div>
+                    `;
+                    
+                    gamesGrid.innerHTML = appsGrid.innerHTML = noResultsHTML;
+                    return;
+                }
+                
+                // Populate grids
+                activeCards.forEach(project => {
+                    const cardHTML = renderProjectCard(project);
+                    if (project.category === 'html-games') {
+                        gamesGrid.innerHTML += cardHTML;
+                    } else if (project.category === 'utility-apps') {
+                        appsGrid.innerHTML += cardHTML;
+                    }
+                });
+                
+                // Hide empty sections
+                if (gameProjects.length === 0) {
+                    document.getElementById('html-games-section').style.display = 'none';
+                } else {
+                    document.getElementById('html-games-section').style.display = 'block';
+                }
+                
+                if (utilityProjects.length === 0) {
+                    document.getElementById('utility-apps-section').style.display = 'none';
+                } else {
+                    document.getElementById('utility-apps-section').style.display = 'block';
+                }
+                
+                initCardAnimations(); // Setup card animations
+                setupEventListeners(); // Setup event listeners for new cards
+            }
+
+            function openInFrame(url, title) {
+                frameProjectTitle.textContent = title;
+                frameOpenNewTab.href = url;
+                
+                // Show loader
+                frameLoader.classList.remove('hidden');
+                
+                // Set iframe src
+                projectFrame.src = url;
+                
+                // Store original body overflow
+                originalBodyOverflow = document.body.style.overflow;
+                document.body.style.overflow = 'hidden';
+                
+                // Show frame container
+                frameContainer.classList.add('visible');
+                
+                // Reset responsive view to desktop
+                document.querySelectorAll('.view-control').forEach(control => {
+                    control.classList.remove('active');
+                });
+                document.querySelector('.view-control[data-view="desktop"]').classList.add('active');
+                resetFrameSize();
+            }
+
+            function closeFrame() {
+                frameContainer.classList.remove('visible');
+                document.body.style.overflow = originalBodyOverflow;
+                
+                // Reset iframe src after animation completes
+                setTimeout(() => {
+                    projectFrame.src = 'about:blank';
+                    frameLoader.classList.remove('hidden');
+                }, 400);
+            }
+
+            function toggleTheme() {
+                const body = document.body;
+                const isDarkTheme = !body.classList.contains('light-theme');
+                
+                if (isDarkTheme) {
+                    // Switch to light theme
+                    body.classList.add('light-theme');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    // Switch to dark theme
+                    body.classList.remove('light-theme');
+                    localStorage.setItem('theme', 'dark');
+                }
+            }
+
+            function initCardAnimations() {
+                const cards = document.querySelectorAll('.project-card');
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '0px',
+                    threshold: 0.1
+                };
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const card = entry.target;
+                            // Calculate delay based on card index within its container
+                            const siblings = Array.from(card.parentNode.children).filter(
+                                el => el.classList.contains('project-card')
+                            );
+                            const index = siblings.indexOf(card);
+                            const delay = Math.min(index * 0.1, 0.8); // Cap at 0.8s
+                            
+                            card.style.animationDelay = `${delay}s`;
+                            card.style.animation = `fadeInUp 0.8s ${delay}s var(--easing-func) forwards`;
+                            
+                            // Unobserve after animating
+                            observer.unobserve(card);
+                        }
+                    });
+                }, observerOptions);
+                
+                cards.forEach(card => {
+                    observer.observe(card);
+                });
+            }
+
+            function initParticleBackground() {
+                const canvas = document.getElementById('particle-canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Set canvas size
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                
+                // Particle properties
+                const particleCount = 70;
+                const particles = [];
+                
+                // Create particles
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        radius: Math.random() * 2 + 1,
+                        color: getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim(),
+                        speedX: Math.random() * 0.2 - 0.1,
+                        speedY: Math.random() * 0.2 - 0.1,
+                        opacity: Math.random() * 0.5 + 0.3
+                    });
+                }
+                
+                // Draw and animate particles
+                function animate() {
+                    requestAnimationFrame(animate);
+                    
+                    // Clear canvas
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    // Update and draw particles
+                    particles.forEach(particle => {
+                        // Move particle
+                        particle.x += particle.speedX;
+                        particle.y += particle.speedY;
+                        
+                        // Wrap around edges
+                        if (particle.x < 0) particle.x = canvas.width;
+                        if (particle.x > canvas.width) particle.x = 0;
+                        if (particle.y < 0) particle.y = canvas.height;
+                        if (particle.y > canvas.height) particle.y = 0;
+                        
+                        // Update color based on theme
+                        particle.color = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
+                        
+                        // Draw particle
+                        ctx.beginPath();
+                        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = particle.color;
+                        ctx.globalAlpha = particle.opacity;
+                        ctx.fill();
+                    });
+                    
+                    // Draw connections
+                    ctx.globalAlpha = 0.15;
+                    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
+                    ctx.lineWidth = 0.5;
+                    
+                    for (let i = 0; i < particles.length; i++) {
+                        for (let j = i + 1; j < particles.length; j++) {
+                            const dx = particles[i].x - particles[j].x;
+                            const dy = particles[i].y - particles[j].y;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+                            
+                            if (distance < 120) {
+                                ctx.beginPath();
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                    
+                    // Reset global alpha
+                    ctx.globalAlpha = 1;
+                }
+                
+                // Start animation
+                animate();
+                
+                // Resize canvas on window resize
+                window.addEventListener('resize', () => {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                });
+            }
+
+            function handleCustomCursor() {
+                const cursor = document.querySelector('.custom-cursor');
+                const cursorTrailContainer = document.getElementById('cursor-trails');
+                
+                // Create cursor trails
+                for (let i = 0; i < 5; i++) {
+                    const trail = document.createElement('div');
+                    trail.className = 'custom-cursor-trail';
+                    trail.style.opacity = (5 - i) / 10;
+                    cursorTrailContainer.appendChild(trail);
+                    cursorTrails.push({
+                        element: trail,
+                        x: 0,
+                        y: 0
+                    });
+                }
+                
+                document.addEventListener('mousemove', (e) => {
+                    // Update cursor position
+                    cursor.style.left = `${e.clientX}px`;
+                    cursor.style.top = `${e.clientY}px`;
+                    
+                    // Update trail positions with delay
+                    setTimeout(() => {
+                        cursorTrails.forEach((trail, index) => {
+                            trail.x = e.clientX;
+                            trail.y = e.clientY;
+                            trail.element.style.left = `${trail.x}px`;
+                            trail.element.style.top = `${trail.y}px`;
+                        });
+                    }, 100);
+                });
+                
+                // Handle cursor over interactive elements
+                document.addEventListener('mouseover', (e) => {
+                    if (e.target.tagName === 'A' || 
+                        e.target.tagName === 'BUTTON' || 
+                        e.target.parentElement.tagName === 'A' || 
+                        e.target.parentElement.tagName === 'BUTTON' ||
+                        e.target.classList.contains('project-card') ||
+                        e.target.closest('.project-card') ||
+                        e.target.classList.contains('tech-tag') ||
+                        e.target.closest('.tech-tag') ||
+                        e.target.classList.contains('filter-button')) {
+                        cursor.classList.add('pointer');
+                    }
+                });
+                
+                document.addEventListener('mouseout', (e) => {
+                    if (e.target.tagName === 'A' || 
+                        e.target.tagName === 'BUTTON' || 
+                        e.target.parentElement.tagName === 'A' || 
+                        e.target.parentElement.tagName === 'BUTTON' ||
+                        e.target.classList.contains('project-card') ||
+                        e.target.closest('.project-card') ||
+                        e.target.classList.contains('tech-tag') ||
+                        e.target.closest('.tech-tag') ||
+                        e.target.classList.contains('filter-button')) {
+                        cursor.classList.remove('pointer');
+                    }
+                });
+                
+                // Handle clicks
+                document.addEventListener('mousedown', () => {
+                    cursor.classList.add('active');
+                });
+                
+                document.addEventListener('mouseup', () => {
+                    cursor.classList.remove('active');
+                });
+                
+                // Hide cursor when it leaves the window
+                document.addEventListener('mouseleave', () => {
+                    cursor.style.opacity = '0';
+                    cursorTrails.forEach(trail => {
+                        trail.element.style.opacity = '0';
+                    });
+                });
+                
+                document.addEventListener('mouseenter', () => {
+                    cursor.style.opacity = '0.8';
+                    cursorTrails.forEach((trail, index) => {
+                        trail.element.style.opacity = (5 - index) / 10;
+                    });
+                });
+            }
+
+            function setupEventListeners() {
+                // Preview links
+                const previewLinks = document.querySelectorAll('.preview-link');
+                previewLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const frameUrl = link.getAttribute('data-frame-url');
+                        const title = link.getAttribute('data-title');
+                        const projectId = link.closest('.project-card').id.replace('project-', '');
+                        
+                        // Track this project view in recently viewed
+                        trackUserActivity(projectId);
+                        
+                        // Open the project in frame
+                        openInFrame(frameUrl, title);
+                    });
+                });
+            }
+
+            function filterProjects() {
+                populateProjects();
+            }
+            
+            function setupFavoritesSystem() {
+                // Delegate event listener for favorite buttons
+                document.addEventListener('click', (e) => {
+                    const favoriteBtn = e.target.closest('.favorite-btn');
+                    if (favoriteBtn) {
+                        const projectId = favoriteBtn.getAttribute('data-project');
+                        const isFavorite = favoriteBtn.querySelector('i').classList.contains('fas');
+                        
+                        if (isFavorite) {
+                            removeFromFavorites(projectId);
+                        } else {
+                            addToFavorites(projectId);
+                        }
+                        
+                        // Re-filter if we're on favorites view
+                        if (currentFilter === 'favorites') {
+                            filterProjects();
+                        }
+                    }
+                });
+            }
+
+            function resetFrameSize() {
+                const frame = document.querySelector('.frame-content');
+                frame.style.width = '90%';
+                projectFrame.style.width = '100%';
+            }
+
+            function changeFrameView(viewType) {
+                const frame = document.querySelector('.frame-content');
+                
+                switch(viewType) {
+                    case 'desktop':
+                        frame.style.width = '90%';
+                        break;
+                    case 'tablet':
+                        frame.style.width = '768px';
+                        break;
+                    case 'mobile':
+                        frame.style.width = '375px';
+                        break;
+                    default:
+                        frame.style.width = '90%';
+                }
+                
+                projectFrame.style.width = '100%';
+            }
+
+            function handleBackToTop() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+
+            function toggleBackToTopVisibility() {
+                if (window.scrollY > 500) {
+                    backToTopButton.classList.add('visible');
+                } else {
+                    backToTopButton.classList.remove('visible');
+                }
+            }
+
+            // --- Event Listeners ---
+            document.addEventListener('DOMContentLoaded', () => {
+                // Check stored theme
+                const storedTheme = localStorage.getItem('theme');
+                if (storedTheme === 'light') {
+                    document.body.classList.add('light-theme');
+                }
+                
+                // Initialize
+                populateProjects();
+                initParticleBackground();
+                handleCustomCursor();
+                setupFavoritesSystem();
+                setupGuestUser();
+                updateRecentlyViewedSection();
+                
+                // Setup global event listeners
+                closeButton.addEventListener('click', closeFrame);
+                themeToggleButton.addEventListener('click', toggleTheme);
+                backToTopButton.addEventListener('click', handleBackToTop);
+                window.addEventListener('scroll', toggleBackToTopVisibility);
+                
+                // Search input event
+                searchInput.addEventListener('input', (e) => {
+                    currentSearch = e.target.value.trim();
+                    filterProjects();
+                });
+                
+                // Filter buttons click
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        // Update active state
+                        filterButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        
+                        // Update filter and refilter projects
+                        currentFilter = button.getAttribute('data-filter');
+                        filterProjects();
+                    });
+                });
+                
+                // Frame loading event
+                projectFrame.addEventListener('load', () => {
+                    if (projectFrame.src !== 'about:blank') {
+                        setTimeout(() => {
+                            frameLoader.classList.add('hidden');
+                        }, 500);
+                    }
+                });
+                
+                // Responsive view controls
+                viewControls.forEach(control => {
+                    control.addEventListener('click', () => {
+                        viewControls.forEach(c => c.classList.remove('active'));
+                        control.classList.add('active');
+                        changeFrameView(control.getAttribute('data-view'));
+                    });
+                });
+                
+                // Show UI when content is loaded
+                window.addEventListener('load', () => {
+                    setTimeout(() => {
+                        preloader.classList.add('hidden');
+                        document.body.style.cursor = 'none';
+                    }, 1000);
+                });
+                
+                // GSAP ScrollTrigger for category titles animation
+                if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                    gsap.utils.toArray('.category-title').forEach(title => {
+                        gsap.from(title, {
+                            x: -50,
+                            opacity: 0,
+                            duration: 0.8,
+                            scrollTrigger: {
+                                trigger: title,
+                                start: "top 80%",
+                                end: "top 50%",
+                                toggleActions: "play none none none"
+                            }
+                        });
+                    });
+                }
+            });
+        </script>
+    </body>
+</html>

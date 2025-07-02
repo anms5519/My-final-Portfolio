@@ -1,0 +1,344 @@
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding-top: var(--header-height);
+    background: var(--gradient-bg);
+    color: var(--text-color);
+    z-index: 2147481647;
+}
+
+.hero::before, .hero::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; /* Ensure particles don't interfere with interaction */
+}
+
+/* Smaller, denser, faster particles */
+.hero::before {
+    background-image:
+        radial-gradient(var(--cosmic-particle-color1) 0.05vh, transparent 0.05vh),
+        radial-gradient(var(--cosmic-particle-color2) 0.05vh, transparent 0.05vh);
+    background-size: 2.5vh 2.5vh, 4vh 4vh;
+    background-position: 0 0, 1.25vh 1.25vh;
+    animation: hero-particles-anim-fast 45s linear infinite;
+    opacity: 0.35;
+    z-index: 1;
+}
+
+/* Larger, sparser, slower particles/nebula effect */
+.hero::after {
+    background-image:
+        radial-gradient(var(--primary-color) 0.1vh, transparent 0.1vh), /* Brighter, larger core particles */
+        radial-gradient(rgba(var(--primary-color-rgb), 0.1) 1vh, transparent 1vh); /* Diffuse glow */
+    background-size: 15vh 15vh, 30vh 30vh;
+    background-position: 0 0, 7.5vh 7.5vh;
+    animation: hero-particles-anim-slow 120s linear infinite;
+    opacity: 0.2;
+    z-index: 0; /* Behind the denser particles */
+}
+
+@keyframes hero-particles-anim-fast {
+    0% { background-position: 0 0, 1.25vh 1.25vh; transform: translateZ(0); }
+    100% { background-position: 25vh 25vh, 26.25vh 26.25vh; transform: translateZ(0); }
+}
+
+@keyframes hero-particles-anim-slow {
+    0% { background-position: 0 0, 7.5vh 7.5vh; transform: translateZ(0); }
+    100% { background-position: -30vh -30vh, -22.5vh -22.5vh; transform: translateZ(0); } /* Opposite direction for parallax */
+}
+
+
+.hero-content {
+    text-align: center;
+    z-index: 10;
+    max-width: 90vh; /* Slightly wider for more content */
+    padding: 5vh 4vh;
+    background: var(--card-bg);
+    backdrop-filter: var(--glass-effect);
+    -webkit-backdrop-filter: var(--glass-effect);
+    border-radius: var(--border-radius-soft);
+    border: 0.1vh solid transparent; /* Base for gradient border */
+    position: relative; /* For pseudo-element border */
+    box-shadow: 0 1vh 4vh rgba(0,0,0,0.3), 0 0 0 0.1vh rgba(var(--primary-color-rgb), 0.1);
+    animation: hero-content-entry 1.2s var(--transition-sharp) 0.2s both;
+    transition: transform var(--anim-speed-normal) var(--transition-sharp), box-shadow var(--anim-speed-normal) var(--transition-sharp);
+}
+
+.hero-content::before { /* Shimmering border effect */
+    content: "";
+    position: absolute;
+    inset: -0.1vh; /* Control border thickness */
+    border-radius: var(--border-radius-soft);
+    padding: 0.1vh; /* Actual border thickness */
+    background: linear-gradient(45deg, rgba(var(--primary-color-rgb),0.1), rgba(var(--primary-color-rgb),0.5), rgba(var(--primary-color-rgb),0.1));
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    z-index: -1;
+    opacity: 0.7;
+    transition: opacity var(--anim-speed-normal) ease;
+}
+
+
+@keyframes hero-content-entry {
+    0% { opacity: 0; transform: translateY(4vh) perspective(50vh) rotateX(-10deg) scale(0.9); }
+    100% { opacity: 1; transform: translateY(0) perspective(50vh) rotateX(0deg) scale(1); }
+}
+
+.hero-content:hover {
+    transform: translateY(-0.7vh) perspective(60vh) rotateX(1deg) scale(1.01);
+    box-shadow: 0 1.5vh 5vh rgba(var(--primary-color-rgb), 0.2), 0 0 2vh rgba(var(--primary-color-rgb), 0.15);
+}
+.hero-content:hover::before {
+    opacity: 1;
+    background: linear-gradient(45deg, rgba(var(--primary-color-rgb),0.3), rgba(var(--primary-color-rgb),0.8), rgba(var(--primary-color-rgb),0.3));
+}
+
+
+#hero-logo {
+    width: 18vh; /* Slightly larger */
+    height: 18vh;
+    margin: 0 auto 3vh;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 0.3vh solid var(--primary-color);
+    box-shadow: 0 0 2.5vh rgba(var(--primary-color-rgb), 0.4), 0 0 0 0.6vh rgba(var(--primary-color-rgb), 0.15);
+    animation: fadeIn 1.2s ease 0.4s both, logo-float 4s ease-in-out infinite;
+    transition: transform var(--anim-speed-normal) var(--transition-sharp), box-shadow var(--anim-speed-normal) var(--transition-sharp);
+}
+
+@keyframes logo-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-0.8vh); }
+}
+
+#hero-logo:hover {
+    transform: scale(1.08) rotate(5deg) translateY(-0.5vh); /* Enhanced hover */
+    box-shadow: 0 0 4vh rgba(var(--primary-color-rgb), 0.6), 0 0 0 0.8vh rgba(var(--primary-color-rgb), 0.25), 0 0 5vh 1vh rgba(var(--primary-color-rgb), 0.1); /* Aura effect */
+    animation-play-state: paused; /* Pause float on hover */
+}
+
+.hero h1 {
+    font-family: var(--font-family-secondary);
+    font-size: clamp(3.8vh, 7.5vw, 6vh);
+    font-weight: 700;
+    margin-bottom: 2vh;
+    color: var(--text-color-headings);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    text-shadow: 0 0.1vh 0 var(--primary-color), 0 0.2vh 0.8vh rgba(0,0,0,0.4), 0 0 2vh rgba(var(--primary-color-rgb),0.3);
+    animation: fadeInDown 1s var(--transition-sharp) 0.6s both;
+    line-height: 1.25;
+}
+
+[data-theme="light"] .hero h1 {
+    text-shadow: 0 0 1.5vh rgba(var(--primary-color-rgb), 0.6), 0 0.1vh 0.4vh rgba(0,0,0,0.5), 0 0 0.5vh var(--primary-color);
+}
+[data-theme="dark"] .hero h1 {
+     text-shadow: 0 0 1.5vh rgba(var(--primary-color-rgb), 0.4), 0 0.1vh 0.4vh rgba(0,0,0,0.3), 0 0 0.5vh var(--primary-color);
+}
+
+
+.hero h2 {
+    font-size: clamp(1.8vh, 3.2vw, 2.4vh);
+    font-weight: 400;
+    margin-bottom: 3vh;
+    color: var(--text-color-light);
+    animation: fadeInUp 1s var(--transition-sharp) 0.8s both;
+    line-height: 1.75;
+    max-width: 65vh;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cosmic-bubbles {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens if many bubbles */
+    gap: 1.8vh;
+    margin: 3vh 0;
+    animation: fadeIn 1s ease 1s both;
+}
+
+.cosmic-bubble {
+    width: 5vh;
+    height: 5vh;
+    border-radius: var(--border-radius-circle);
+    background: rgba(var(--primary-color-rgb), 0.15);
+    backdrop-filter: blur(0.8vh);
+    -webkit-backdrop-filter: blur(0.8vh);
+    border: 0.1vh solid rgba(var(--primary-color-rgb), 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    font-size: 2vh;
+    transition: all var(--anim-speed-normal) var(--transition-sharp);
+    position: relative;
+    overflow: visible; /* Allow tooltip to overflow */
+    box-shadow: 0 0.3vh 1vh rgba(0,0,0,0.15), inset 0 0 0.5vh rgba(var(--primary-color-rgb),0.1);
+}
+
+.cosmic-bubble::before { /* Hover fill effect */
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 0; height: 0;
+    background: radial-gradient(circle, var(--primary-color) 0%, rgba(var(--primary-color-rgb),0.7) 100%);
+    border-radius: var(--border-radius-circle);
+    transform: translate(-50%, -50%);
+    transition: width var(--anim-speed-normal) ease, height var(--anim-speed-normal) ease, opacity var(--anim-speed-normal) ease;
+    z-index: -1;
+    opacity: 0;
+}
+
+/* Tooltip for cosmic-bubble */
+.cosmic-bubble::after {
+    content: attr(data-section);
+    position: absolute;
+    bottom: 120%; /* Position above the bubble */
+    left: 50%;
+    transform: translateX(-50%) translateY(1vh); /* Initial position for animation */
+    background-color: rgba(var(--bg-color-rgb, 26, 26, 46), 0.9); /* Assuming --bg-color-rgb is defined */
+    color: var(--text-color-headings);
+    padding: 0.5vh 1vh;
+    border-radius: var(--border-radius-sharp);
+    font-size: 1.3vh;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--anim-speed-fast) ease, transform var(--anim-speed-fast) ease, visibility var(--anim-speed-fast) ease;
+    z-index: 100;
+    box-shadow: 0 0.2vh 0.5vh rgba(0,0,0,0.2);
+    pointer-events: none; /* Tooltip should not be interactive */
+}
+
+
+.cosmic-bubble:hover {
+    transform: translateY(-0.6vh) scale(1.15);
+    box-shadow: 0 0.6vh 2vh rgba(var(--primary-color-rgb), 0.3), 0 0 0 0.3vh var(--primary-color); /* Outer glow */
+    color: var(--bg-color);
+}
+
+.cosmic-bubble:hover::before {
+    width: 130%;
+    height: 130%;
+    opacity: 1;
+}
+
+.cosmic-bubble:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.cosmic-bubble i {
+    transition: transform var(--anim-speed-fast) ease, filter var(--anim-speed-fast) ease;
+    filter: drop-shadow(0 0 0.3vh rgba(var(--primary-color-rgb),0.5));
+}
+.cosmic-bubble:hover i {
+    transform: scale(1.15) rotate(5deg);
+    filter: drop-shadow(0 0 0.5vh rgba(var(--bg-color-rgb, 255,255,255),0.8)); /* Assuming --bg-color-rgb for contrast */
+}
+
+
+.social-links-hero {
+    display: flex;
+    justify-content: center;
+    gap: 1.8vh;
+    margin: 3.5vh 0;
+    animation: fadeIn 1s ease 1.2s both;
+}
+
+.social-icon-hero {
+    width: 4.5vh;
+    height: 4.5vh;
+    border-radius: var(--border-radius-sharp);
+    background: rgba(var(--text-color-rgb, 224, 224, 224), 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color-light);
+    font-size: 1.8vh;
+    transition: all var(--anim-speed-normal) var(--transition-sharp);
+    border: 0.1vh solid rgba(var(--text-color-rgb, 224, 224, 224), 0.2);
+    position: relative; /* For potential glow effect */
+}
+
+.social-icon-hero:hover {
+    transform: translateY(-0.4vh) scale(1.15);
+    background: var(--primary-color);
+    color: var(--bg-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 1.5vh var(--primary-color), 0 0 0.5vh var(--primary-color) inset;
+}
+.social-icon-hero:hover i {
+    transform: scale(1.1);
+}
+
+.pulse-btn {
+    background: var(--primary-color);
+    color: var(--bg-color);
+    padding: 1.5vh 4vh; /* Increased padding */
+    font-size: 1.8vh;
+    font-weight: 700; /* Bolder */
+    letter-spacing: var(--letter-spacing-normal);
+    border-radius: var(--border-radius-soft);
+    border: 0.1vh solid var(--primary-color);
+    transition: all var(--anim-speed-normal) var(--transition-sharp);
+    animation: fadeIn 1s ease 1.4s both, pulse-glow 2s infinite ease-in-out;
+    box-shadow: 0 0.4vh 1.2vh rgba(var(--primary-color-rgb), 0.25);
+    text-transform: uppercase;
+    display: inline-flex; /* For icon alignment */
+    align-items: center;
+    gap: 1vh; /* Space between text and icon */
+    text-decoration: none; /* Remove underline from <a> tag */
+}
+
+.pulse-btn i {
+    font-size: 1.6vh;
+    transition: transform var(--anim-speed-fast) ease;
+}
+
+.pulse-btn:hover {
+    transform: translateY(-0.4vh) scale(1.05);
+    box-shadow: 0 0.8vh 2.5vh rgba(var(--primary-color-rgb), 0.45), 0 0 2vh rgba(var(--primary-color-rgb),0.35);
+    background: linear-gradient(45deg, var(--primary-color), color-mix(in srgb, var(--primary-color) 80%, #fff)); /* Subtle gradient on hover */
+}
+.pulse-btn:hover i {
+    transform: translateX(0.3vh);
+}
+
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0.4vh 1.2vh rgba(var(--primary-color-rgb), 0.25), 0 0 0 0 rgba(var(--primary-color-rgb), 0.5);
+    }
+    50% { /* Peak of the glow */
+        box-shadow: 0 0.4vh 1.2vh rgba(var(--primary-color-rgb), 0.25), 0 0 0 1.5vh rgba(var(--primary-color-rgb), 0);
+    }
+    100% {
+        box-shadow: 0 0.4vh 1.2vh rgba(var(--primary-color-rgb), 0.25), 0 0 0 0 rgba(var(--primary-color-rgb), 0);
+    }
+}
+
+/* Standard Animations - kept as they are generally useful */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(3vh); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-3vh); }
+    to { opacity: 1; transform: translateY(0); }
+}

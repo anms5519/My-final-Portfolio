@@ -1,0 +1,308 @@
+.contact-section { /* Added from _base.css for context */
+    position: relative;
+    padding: var(--section-padding);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow: hidden;
+}
+.contact-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(circle at 10% 20%, rgba(var(--primary-color-rgb), 0.08) 0%, transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(var(--secondary-color-rgb), 0.08) 0%, transparent 30%);
+    opacity: 0.5; /* More subtle */
+    z-index: 0;
+    animation: contact-bg-anim 40s linear infinite alternate;
+}
+@keyframes contact-bg-anim {
+    0% { transform: scale(1) rotate(0deg); }
+    100% { transform: scale(1.2) rotate(10deg); }
+}
+
+.contact-intro {
+    text-align: center;
+    max-width: 75vh;
+    margin: 0 auto 5rem; /* Increased margin */
+    position: relative; z-index: 1;
+}
+.contact-intro p {
+    font-size: 1.2rem; /* Slightly larger */
+    color: var(--text-color-light);
+    line-height: 1.7;
+}
+.contact-container {
+    max-width: 120vh;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30vh, 1fr)); /* Responsive columns */
+    gap: 4rem; /* Increased gap */
+    position: relative; z-index: 1;
+}
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align to top */
+}
+.contact-info-title {
+    font-family: var(--font-family-secondary);
+    font-size: 1.8rem; /* Larger title */
+    margin-bottom: 2.5rem;
+    color: var(--text-color-headings);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-normal);
+}
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem; /* Increased gap */
+    margin-bottom: 3rem;
+}
+.contact-link {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1.2rem;
+    background-color: var(--card-bg);
+    backdrop-filter: var(--glass-effect);
+    -webkit-backdrop-filter: var(--glass-effect);
+    border-radius: var(--border-radius-soft);
+    box-shadow: var(--card-shadow);
+    border: .1vh solid var(--card-border);
+    transition: all var(--anim-speed-normal) ease;
+    text-decoration: none;
+}
+.contact-link:hover {
+    transform: translateY(-0.6vh) scale(1.02); /* Enhanced hover */
+    box-shadow: 0 1vh 2.5vh rgba(var(--primary-color-rgb), 0.15);
+    border-color: var(--primary-color);
+}
+.contact-link-icon {
+    width: 5vh; height: 5vh; /* Larger icon container */
+    border-radius: var(--border-radius-circle);
+    background: var(--primary-color);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--bg-color); /* Contrast icon color */
+    font-size: 1.8vh; /* Adjusted icon size */
+    flex-shrink: 0;
+    box-shadow: 0 0 1vh rgba(var(--primary-color-rgb), 0.4);
+}
+.contact-link-content { flex-grow: 1; }
+.contact-link-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 0.4rem;
+}
+.contact-link-value {
+    font-size: 0.95rem;
+    color: var(--text-color-light);
+    word-break: break-all;
+}
+.social-links {
+    display: flex;
+    gap: 1.2rem; /* Increased gap */
+    margin-top: 1.5rem;
+}
+.social-link {
+    width: 4.8vh; height: 4.8vh; /* Larger social icons */
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius-circle); /* Circular */
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-color-light); /* Default color */
+    font-size: 1.8vh; /* Adjusted icon size */
+    box-shadow: var(--card-shadow);
+    border: .1vh solid var(--card-border);
+    transition: all var(--anim-speed-fast) ease;
+    text-decoration: none;
+}
+.social-link:hover {
+    transform: translateY(-0.4vh) scale(1.1);
+    color: #fff; /* White icon on colored background */
+    border-color: transparent; /* Hide border on hover if bg is solid */
+}
+/* Specific social hover colors - can be themed if desired */
+.social-link.linkedin:hover { background-color: #0077B5; box-shadow: 0 0 1vh #0077B5; }
+.social-link.github:hover { background-color: #171515; box-shadow: 0 0 1vh #171515; } /* Darker GitHub */
+.social-link.twitter:hover { background-color: #1DA1F2; box-shadow: 0 0 1vh #1DA1F2; }
+.social-link.instagram:hover {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    box-shadow: 0 0 1vh #dc2743;
+}
+
+.contact-availability {
+    margin-top: 3rem;
+    padding: 1.8rem;
+    background-color: var(--card-bg);
+    backdrop-filter: var(--glass-effect);
+    -webkit-backdrop-filter: var(--glass-effect);
+    border-radius: var(--border-radius-soft);
+    box-shadow: var(--card-shadow);
+    border: .1vh solid var(--card-border);
+}
+.availability-title {
+    display: flex; align-items: center;
+    gap: 0.8rem; /* Increased gap */
+    margin-bottom: 1.2rem;
+    font-size: 1.2rem; /* Larger title */
+    color: var(--text-color-headings);
+    font-weight: 600;
+}
+.availability-status {
+    display: inline-block;
+    width: 1.4vh; height: 1.4vh;
+    border-radius: var(--border-radius-circle);
+    background-color: var(--success-color, #4caf50); /* Use theme success color */
+    box-shadow: 0 0 0.8vh var(--success-color, #4caf50); /* Glow for status */
+}
+.availability-text {
+    font-size: 0.95rem;
+    color: var(--text-color-light);
+    line-height: 1.65;
+}
+
+.contact-form-container {
+    background-color: var(--card-bg);
+    backdrop-filter: var(--glass-effect);
+    -webkit-backdrop-filter: var(--glass-effect);
+    border-radius: var(--border-radius-soft);
+    box-shadow: var(--card-shadow);
+    border: .1vh solid var(--card-border);
+    padding: 3rem; /* Increased padding */
+    transition: all var(--anim-speed-normal) ease;
+}
+.contact-form-container:hover {
+    box-shadow: 0 1.5vh 3.5vh rgba(var(--primary-color-rgb), 0.1);
+}
+.contact-form-title {
+    font-family: var(--font-family-secondary);
+    font-size: 1.8rem;
+    margin-bottom: 0.8rem;
+    color: var(--text-color-headings);
+    text-transform: uppercase;
+}
+.contact-form-subtitle {
+    font-size: 1rem;
+    color: var(--text-color-light);
+    margin-bottom: 2.5rem;
+}
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem; /* Increased gap */
+}
+.form-group { position: relative; }
+.form-label {
+    position: absolute;
+    left: 1.2rem; /* Adjusted position */
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    color: var(--text-color-light);
+    transition: all var(--anim-speed-fast) ease;
+    pointer-events: none;
+    background-color: var(--card-bg); /* Match input bg for floating effect */
+    padding: 0 0.5rem;
+    line-height: 1;
+}
+.form-control {
+    width: 100%;
+    padding: 1.2rem; /* Increased padding */
+    font-size: 1rem;
+    color: var(--text-color);
+    background-color: transparent; /* Make transparent to show card-bg */
+    border: .1vh solid var(--input-border, var(--border-color)); /* Themed input border */
+    border-radius: var(--border-radius-sharp); /* Sharper radius */
+    outline: none;
+    transition: all var(--anim-speed-fast) ease;
+}
+.form-control:focus {
+    border-color: var(--input-focus-border, var(--primary-color));
+    box-shadow: var(--input-focus-shadow, 0 0 0 .2vh rgba(var(--primary-color-rgb), 0.2));
+}
+.form-control:focus + .form-label,
+.form-control:not(:placeholder-shown) + .form-label {
+    top: -0.7rem; /* Adjusted floating position */
+    left: 1rem;
+    font-size: 0.85rem;
+    color: var(--primary-color);
+}
+.form-textarea {
+    min-height: 15vh; /* Use min-height */
+    resize: vertical; /* Allow vertical resize */
+}
+.form-submit {
+    padding: 1.2rem 2.5rem; /* Increased padding */
+    background: var(--primary-color);
+    color: var(--bg-color); /* Contrast text */
+    border: none;
+    border-radius: var(--border-radius-soft); /* Softer radius for button */
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--anim-speed-fast) ease;
+    margin-top: 1.5rem;
+    box-shadow: 0 0.4vh 1.2vh rgba(var(--primary-color-rgb), 0.3);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-normal);
+}
+.form-submit:hover {
+    transform: translateY(-0.3vh) scale(1.02);
+    box-shadow: 0 0.8vh 2vh rgba(var(--primary-color-rgb), 0.4);
+    background: var(--secondary-color); /* Themed hover */
+    color: var(--bg-color);
+}
+.form-submit:active { transform: translateY(-.1vh); }
+
+.form-message {
+    padding: 1.2rem;
+    border-radius: var(--border-radius-sharp);
+    font-size: 0.95rem;
+    margin-top: 1.5rem;
+    display: none; /* Hidden by default */
+    border-width: .1vh;
+    border-style: solid;
+    text-align: center;
+}
+.form-message.success {
+    background-color: rgba(var(--success-color-rgb, 76, 175, 80), 0.1);
+    color: var(--success-color, #4caf50);
+    border-color: var(--success-color, #4caf50);
+}
+.form-message.error {
+    background-color: rgba(var(--error-color-rgb, 244, 67, 54), 0.1);
+    color: var(--error-color, #f44336);
+    border-color: var(--error-color, #f44336);
+}
+
+.location-map {
+    margin-top: 6rem; /* Increased margin */
+    position: relative; z-index: 1;
+}
+.map-title {
+    text-align: center;
+    font-family: var(--font-family-secondary);
+    font-size: 1.8rem;
+    margin-bottom: 2.5rem;
+    color: var(--text-color-headings);
+    text-transform: uppercase;
+}
+.map-container {
+    height: 45vh; /* Increased height */
+    border-radius: var(--border-radius-soft);
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    border: .1vh solid var(--card-border);
+}
+.map-container iframe {
+    width: 100%; height: 100%;
+    border: none;
+    filter: var(--map-filter, grayscale(0.3) contrast(0.9) brightness(1.1)); /* Default subtle filter */
+}
+[data-theme="light"] .map-container iframe {
+    filter: grayscale(0.7) contrast(1.2) brightness(0.9) hue-rotate(180deg) saturate(1.5); /* Cyberpunk map filter */
+}
+[data-theme="dark"] .map-container iframe {
+    filter: grayscale(0.2) contrast(1) brightness(1.05) saturate(0.8); /* Lighter, elegant map filter */
+}

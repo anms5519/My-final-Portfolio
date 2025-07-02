@@ -1,0 +1,366 @@
+/* Theme Selector and Theme-related styles */
+
+/* Theme variables for each theme (used for theme previews) */
+:root {
+    /* Midnight theme colors */
+    --midnight-primary: #7214FF;
+    --midnight-secondary: #3A10E5;
+    
+    /* Early Morning theme colors */
+    --earlyMorning-primary: #5065DA;
+    --earlyMorning-secondary: #3F88C5;
+    
+    /* Dawn theme colors */
+    --dawn-primary: #FF9E7A;
+    --dawn-secondary: #E37A90;
+    
+    /* Morning theme colors */
+    --morning-primary: #3498DB;
+    --morning-secondary: #26C6DA;
+    
+    /* Late Morning theme colors */
+    --lateMorning-primary: #00B4D8;
+    --lateMorning-secondary: #38E54D;
+    
+    /* Noon theme colors */
+    --noon-primary: #0EA5E9;
+    --noon-secondary: #F59E0B;
+    
+    /* Afternoon theme colors */
+    --afternoon-primary: #DD6B20;
+    --afternoon-secondary: #F6AD55;
+    
+    /* Late Afternoon theme colors */
+    --lateAfternoon-primary: #D6806A;
+    --lateAfternoon-secondary: #E9B872;
+    
+    /* Evening theme colors */
+    --evening-primary: #FF7B54;
+    --evening-secondary: #A460ED;
+    
+    /* Dusk theme colors */
+    --dusk-primary: #FF5277;
+    --dusk-secondary: #6C63FF;
+    
+    /* Night theme colors */
+    --night-primary: #36B5D0;
+    --night-secondary: #9C54FF;
+    
+    /* Late Night theme colors */
+    --lateNight-primary: #4285F4;
+    --lateNight-secondary: #7367F0;
+    
+    /* Dead of Night theme colors */
+    --deadOfNight-primary: #5D3FD3;
+    --deadOfNight-secondary: #266ED7;
+}
+
+/* Theme Toggle Button */
+#theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--glass-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--border-radius-circle);
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 1.2rem;
+    height: 3.5vh;
+    width: 3.5vh;
+    position: relative;
+    transition: all var(--anim-speed-normal) var(--transition-sharp);
+    backdrop-filter: var(--glass-effect);
+    -webkit-backdrop-filter: var(--glass-effect);
+}
+
+#theme-toggle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 1vh rgba(var(--primary-color-rgb), 0.4);
+}
+
+#theme-toggle .header-tool-tooltip {
+    position: absolute;
+    bottom: -3.5vh;
+    left: 50%;
+    transform: translateX(-50%) translateY(0.5vh);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-color);
+    font-size: 0.8rem;
+    padding: 0.5vh 1vh;
+    border-radius: var(--border-radius-soft);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all var(--anim-speed-normal) var(--transition-sharp);
+    backdrop-filter: var(--glass-effect);
+    -webkit-backdrop-filter: var(--glass-effect);
+    box-shadow: var(--card-shadow);
+    z-index: 2147483646;
+}
+
+#theme-toggle:hover .header-tool-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Theme Info Popup */
+.theme-info-popup {
+    position: fixed;
+    top: 6vh;
+    right: 2vh;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-effect);
+    -webkit-backdrop-filter: var(--glass-effect);
+    border: 1px solid var(--card-border);
+    border-radius: var(--border-radius-soft);
+    box-shadow: var(--card-shadow);
+    width: 36vh;
+    max-height: 80vh;
+    overflow: hidden;
+    z-index: 2147483646;
+    transform: translateY(-1vh) scale(0.98);
+    opacity: 0;
+    pointer-events: none;
+    transition: all var(--anim-speed-normal) var(--transition-sharp);
+}
+
+.theme-info-popup.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: all;
+}
+
+.theme-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.6vh 2vh;
+    background: linear-gradient(135deg, 
+        rgba(var(--primary-color-rgb), 0.4), 
+        rgba(var(--secondary-color-rgb), 0.4));
+    color: var(--text-color-headings);
+    font-size: 1.1rem;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.current-theme-label {
+    font-weight: 500;
+}
+
+#current-theme-name {
+    color: var(--text-color-headings);
+    font-weight: 700;
+}
+
+.theme-info-close {
+    cursor: pointer;
+    padding: 0.5vh;
+    border-radius: var(--border-radius-circle);
+    width: 2.6vh;
+    height: 2.6vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--anim-speed-fast) var(--transition-sharp);
+}
+
+.theme-info-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.theme-info-body {
+    padding: 2vh;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.theme-mode-info {
+    color: var(--text-color-light);
+    font-size: 0.9rem;
+    margin-bottom: 2vh;
+    text-align: center;
+}
+
+.theme-selector {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2vh;
+    margin-bottom: 2vh;
+}
+
+.theme-option {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--border-radius-soft);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all var(--anim-speed-fast) var(--transition-sharp);
+    position: relative;
+    text-align: center;
+}
+
+.theme-option:hover {
+    transform: translateY(-0.3vh);
+    box-shadow: var(--card-shadow);
+}
+
+.theme-option.active {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0.8vh rgba(var(--primary-color-rgb), 0.6);
+}
+
+.theme-option.active::after {
+    content: "\f00c"; /* FontAwesome checkmark */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 0.8vh;
+    right: 0.8vh;
+    background: var(--primary-color);
+    color: #fff;
+    width: 2.2vh;
+    height: 2.2vh;
+    border-radius: var(--border-radius-circle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+}
+
+.theme-preview {
+    width: 100%;
+    height: 6vh;
+    transition: all var(--anim-speed-fast) var(--transition-sharp);
+}
+
+.theme-name {
+    display: block;
+    padding: 0.8vh;
+    font-size: 0.85rem;
+    color: var(--text-color);
+}
+
+.theme-reset-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--button-bg);
+    color: var(--button-text-color);
+    border: 1px solid var(--button-border);
+    border-radius: var(--border-radius-soft);
+    font-size: 0.9rem;
+    padding: 1vh 1.5vh;
+    cursor: pointer;
+    transition: all var(--anim-speed-fast) var(--transition-sharp);
+    margin: 0 auto;
+    box-shadow: var(--button-glow);
+}
+
+.theme-reset-btn:hover {
+    background: var(--button-hover-bg);
+    color: var(--button-hover-text-color);
+}
+
+.theme-reset-btn i {
+    margin-right: 0.8vh;
+}
+
+/* Theme Notice Toast */
+.theme-notice {
+    position: fixed;
+    bottom: 2vh;
+    left: 50%;
+    transform: translateX(-50%) translateY(2vh);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-effect);
+    -webkit-backdrop-filter: var(--glass-effect);
+    border: 1px solid var(--card-border);
+    border-radius: var(--border-radius-soft);
+    box-shadow: var(--card-shadow);
+    padding: 1.2vh 2vh;
+    max-width: 36vh;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: all var(--anim-speed-normal) var(--transition-sharp);
+    z-index: 2147483646;
+}
+
+.theme-notice.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.theme-notice-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    font-size: 0.9rem;
+}
+
+.theme-notice-icon {
+    margin-right: 1vh;
+    color: var(--primary-color);
+}
+
+/* Theme Indicator  */
+.theme-time-indicator {
+    position: fixed;
+    bottom: 2vh;
+    right: 2vh;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-effect);
+    -webkit-backdrop-filter: var(--glass-effect);
+    border: 1px solid var(--card-border);
+    border-radius: var(--border-radius-soft);
+    box-shadow: var(--card-shadow);
+    padding: 0.8vh 1.2vh;
+    font-size: 0.8rem;
+    color: var(--text-color-light);
+    pointer-events: none;
+    z-index: 2147483646;
+    transition: all var(--anim-speed-normal) var(--transition-sharp);
+    opacity: 0.7;
+}
+
+.theme-time-indicator:hover {
+    opacity: 1;
+}
+
+.theme-time-indicator-icon {
+    margin-right: 0.6vh;
+    color: var(--accent-color-alt);
+}
+
+/* Element with attribute selector for responsive design */
+@media (max-width: 768px) {
+    .theme-info-popup {
+        width: 80vw;
+        right: 10vw;
+    }
+    
+    .theme-selector {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* When HTML has a specific theme attribute, apply custom transitions */
+html[data-theme-name] * {
+    transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+    transition-duration: 0.5s;
+    transition-timing-function: ease;
+}
+
+/* Pulse animation for theme toggle on theme change */
+@keyframes theme-pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(var(--primary-color-rgb), 0.7); }
+    50% { transform: scale(1.1); box-shadow: 0 0 0 0.8vh rgba(var(--primary-color-rgb), 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(var(--primary-color-rgb), 0); }
+}
+
+.theme-pulse {
+    animation: theme-pulse 0.8s ease-in-out;
+}

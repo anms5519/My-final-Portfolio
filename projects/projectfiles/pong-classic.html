@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong Classic</title>
+    <style>
+        :root {
+            --primary-color: #6b7b9c;
+            --secondary-color: #4ecca3;
+            --dark-color: #1f243a;
+            --light-color: #e0e0e0;
+            --accent-color: #ff8c42;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            padding: 1rem;
+        }
+        
+        .game-container {
+            position: relative;
+            width: 800px;
+            max-width: 100%;
+            margin-bottom: 1rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #1a1f32;
+            box-shadow: 0 0 30px rgba(31, 36, 58, 0.5);
+        }
+        
+        canvas {
+            display: block;
+            background-color: #1a1f32;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(78, 204, 163, 0.5);
+            letter-spacing: 2px;
+        }
+        
+        .score-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 1rem;
+        }
+        
+        .score-box {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .score-label {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--light-color);
+            opacity: 0.8;
+        }
+        
+        .score-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 1rem;
+        }
+        
+        .control-group {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .start-btn {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+        }
+        
+        .instructions {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 800px;
+            margin-top: 1rem;
+        }
+        
+        .instructions h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+        
+        .instruction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .player-controls {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .player-controls h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            color: var(--accent-color);
+        }
+        
+        .control-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .key {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(31, 36, 58, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background-color: var(--dark-color);
+            padding: 2.5rem;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 90%;
+            transform: translateY(-30px);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+        
+        .winner-text {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: var(--accent-color);
+        }
+        
+        .final-score {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+        
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--light-color);
+        }
+        
+        .mobile-controls {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+            margin-top: 1rem;
+        }
+        
+        .mobile-player-controls {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .mobile-control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .mobile-control-label {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        
+        .mobile-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            touch-action: manipulation;
+        }
+        
+        @media (max-width: 860px) {
+            h1 {
+                font-size: 2.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .score-box {
+                min-width: 100px;
+                padding: 0.5rem 1rem;
+            }
+            
+            .score-value {
+                font-size: 2rem;
+            }
+            
+            button {
+                padding: 0.6rem 1rem;
+            }
+            
+            .instructions {
+                padding: 1rem;
+            }
+            
+            .mobile-controls {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 500px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: center;
+            }
+            
+            .instruction-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <h1>PONG CLASSIC</h1>
+    
+    <div class="score-container">
+        <div class="score-box">
+            <div class="score-label">PLAYER 1</div>
+            <div class="score-value" id="player1-score">0</div>
+        </div>
+        <div class="score-box">
+            <div class="score-label">PLAYER 2</div>
+            <div class="score-value" id="player2-score">0</div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <div class="control-group">
+            <button class="start-btn" id="start-btn">
+                <i class="fas fa-play"></i>
+                Start Game
+            </button>
+            <button class="reset-btn" id="reset-btn">
+                <i class="fas fa-redo-alt"></i>
+                Reset
+            </button>
+        </div>
+        <div class="control-group">
+            <button class="mode-btn" id="ai-btn">
+                <i class="fas fa-robot"></i>
+                Play vs AI
+            </button>
+            <button class="mute-btn" id="mute-btn">
+                <i class="fas fa-volume-up"></i>
+                Sound
+            </button>
+        </div>
+    </div>
+    
+    <div class="game-container">
+        <canvas id="pong-canvas"></canvas>
+    </div>
+    
+    <div class="instructions">
+        <h2>How to Play</h2>
+        <div class="instruction-grid">
+            <div class="player-controls">
+                <h3>Player 1 Controls</h3>
+                <div class="control-item">
+                    <span class="key">W</span>
+                    <span>Move Up</span>
+                </div>
+                <div class="control-item">
+                    <span class="key">S</span>
+                    <span>Move Down</span>
+                </div>
+            </div>
+            <div class="player-controls">
+                <h3>Player 2 Controls</h3>
+                <div class="control-item">
+                    <span class="key">↑</span>
+                    <span>Move Up</span>
+                </div>
+                <div class="control-item">
+                    <span class="key">↓</span>
+                    <span>Move Down</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mobile-controls">
+        <div class="mobile-player-controls">
+            <div class="mobile-control-group">
+                <div class="mobile-control-label">Player 1</div>
+                <div class="mobile-btn" id="p1-up">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+                <div class="mobile-btn" id="p1-down">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+            </div>
+            <div class="mobile-control-group">
+                <div class="mobile-control-label">Player 2</div>
+                <div class="mobile-btn" id="p2-up">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+                <div class="mobile-btn" id="p2-down">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="game-over-modal">
+        <div class="modal-content">
+            <h2 class="modal-title">Game Over</h2>
+            <div class="winner-text" id="winner-text">Player 1 Wins!</div>
+            <div class="final-score">
+                <div class="score-display">
+                    <span id="final-p1-score">0</span> - <span id="final-p2-score">0</span>
+                </div>
+            </div>
+            <button class="start-btn" id="play-again-btn">
+                <i class="fas fa-play"></i>
+                Play Again
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Canvas and context
+            const canvas = document.getElementById('pong-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Game DOM elements
+            const player1ScoreElement = document.getElementById('player1-score');
+            const player2ScoreElement = document.getElementById('player2-score');
+            const startBtn = document.getElementById('start-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const aiBtn = document.getElementById('ai-btn');
+            const muteBtn = document.getElementById('mute-btn');
+            const gameOverModal = document.getElementById('game-over-modal');
+            const winnerText = document.getElementById('winner-text');
+            const finalP1Score = document.getElementById('final-p1-score');
+            const finalP2Score = document.getElementById('final-p2-score');
+            const playAgainBtn = document.getElementById('play-again-btn');
+            
+            // Mobile controls
+            const p1UpBtn = document.getElementById('p1-up');
+            const p1DownBtn = document.getElementById('p1-down');
+            const p2UpBtn = document.getElementById('p2-up');
+            const p2DownBtn = document.getElementById('p2-down');
+            
+            // Game dimensions
+            const GAME_WIDTH = 800;
+            const GAME_HEIGHT = 500;
+            
+            // Game objects dimensions
+            const PADDLE_WIDTH = 15;
+            const PADDLE_HEIGHT = 100;
+            const PADDLE_MARGIN = 20;
+            const BALL_SIZE = 15;
+            const NET_WIDTH = 4;
+            const NET_SEGMENT_HEIGHT = 15;
+            const NET_GAP = 10;
+            
+            // Game speeds
+            const PADDLE_SPEED = 8;
+            const INITIAL_BALL_SPEED = 5;
+            const BALL_ACCELERATION = 0.2;
+            const MAX_BALL_SPEED = 15;
+            const AI_REACTION_TIME = 0.08; // Lower is harder (0-1)
+            
+            // Game state
+            let gameRunning = false;
+            let gameOver = false;
+            let player1Score = 0;
+            let player2Score = 0;
+            let winningScore = 7;
+            let aiMode = false;
+            let aiDifficulty = 0.05; // 0.01 (hard) to 0.1 (easy)
+            let muted = false;
+            
+            // Game objects
+            let player1 = {
+                x: PADDLE_MARGIN,
+                y: GAME_HEIGHT / 2 - PADDLE_HEIGHT / 2,
+                width: PADDLE_WIDTH,
+                height: PADDLE_HEIGHT,
+                color: '#4ecca3',
+                vy: 0,
+                score: 0
+            };
+            
+            let player2 = {
+                x: GAME_WIDTH - PADDLE_MARGIN - PADDLE_WIDTH,
+                y: GAME_HEIGHT / 2 - PADDLE_HEIGHT / 2,
+                width: PADDLE_WIDTH,
+                height: PADDLE_HEIGHT,
+                color: '#ff8c42',
+                vy: 0,
+                score: 0
+            };
+            
+            let ball = {
+                x: GAME_WIDTH / 2,
+                y: GAME_HEIGHT / 2,
+                width: BALL_SIZE,
+                height: BALL_SIZE,
+                color: '#e0e0e0',
+                vx: 0,
+                vy: 0,
+                speed: INITIAL_BALL_SPEED
+            };
+            
+            // Control states
+            let keys = {
+                w: false,
+                s: false,
+                up: false,
+                down: false
+            };
+            
+            // Mobile control states
+            let mobileControls = {
+                p1Up: false,
+                p1Down: false,
+                p2Up: false,
+                p2Down: false
+            };
+            
+            // Sound effects
+            let paddleHitSound, wallHitSound, scoreSound, winSound;
+            
+            // Initialize game
+            function init() {
+                // Set canvas size
+                setupCanvas();
+                
+                // Initialize sounds
+                initSounds();
+                
+                // Reset game objects
+                resetGameObjects();
+                
+                // Event listeners
+                window.addEventListener('resize', setupCanvas);
+                document.addEventListener('keydown', handleKeyDown);
+                document.addEventListener('keyup', handleKeyUp);
+                
+                // Button event listeners
+                startBtn.addEventListener('click', startGame);
+                resetBtn.addEventListener('click', resetGame);
+                aiBtn.addEventListener('click', toggleAI);
+                muteBtn.addEventListener('click', toggleMute);
+                playAgainBtn.addEventListener('click', function() {
+                    gameOverModal.classList.remove('show');
+                    resetGame();
+                    startGame();
+                });
+                
+                // Mobile control event listeners
+                p1UpBtn.addEventListener('touchstart', function() { mobileControls.p1Up = true; });
+                p1UpBtn.addEventListener('touchend', function() { mobileControls.p1Up = false; });
+                p1DownBtn.addEventListener('touchstart', function() { mobileControls.p1Down = true; });
+                p1DownBtn.addEventListener('touchend', function() { mobileControls.p1Down = false; });
+                p2UpBtn.addEventListener('touchstart', function() { mobileControls.p2Up = true; });
+                p2UpBtn.addEventListener('touchend', function() { mobileControls.p2Up = false; });
+                p2DownBtn.addEventListener('touchstart', function() { mobileControls.p2Down = true; });
+                p2DownBtn.addEventListener('touchend', function() { mobileControls.p2Down = false; });
+                
+                // Start animation loop
+                window.requestAnimationFrame(gameLoop);
+            }
+            
+            // Set up canvas dimensions
+            function setupCanvas() {
+                // Scale canvas to fit screen width
+                const containerWidth = Math.min(GAME_WIDTH, window.innerWidth - 40);
+                const scale = containerWidth / GAME_WIDTH;
+                
+                canvas.width = GAME_WIDTH;
+                canvas.height = GAME_HEIGHT;
+                canvas.style.width = `${containerWidth}px`;
+                canvas.style.height = `${GAME_HEIGHT * scale}px`;
+            }
+            
+            // Initialize sound effects
+            function initSounds() {
+                // Create paddle hit sound (short beep)
+                paddleHitSound = new Audio('data:audio/wav;base64,UklGRpYEAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YXIEAAAAAAAAgD2DPYg9jD2NPYs9hj1/PXY9aj1dPVA9Qz03PSw9Ij0ZPRQ9Dz0NPRE9Gj0nPTc9ST1bPW09fz2QPaA9sD2/Pc090z3XPdo92z3ZPdU90D3IPb89tD2pPZ09kj2HPYE9fj19PYA9hj2OPZc9oT2rPbQ9vD3CPcY9yD3IPcU9vz23Pak9mD2FPXE9XT1JPTc9Jj0YPQ09Bj0CPf88AT0JPQ89GT0gPS49OD1CPUs9Uj1ZPV49Yj1kPWQ9YT1dPVg9Uj1KPUI9OT0vPSY9HT0VPRA9Dj0TPRw9KT04PUk9Wz1uPYA9kj2jPbI9wD3MPdY93j3jPeY96D3mPeM93j3XPc89xT27Pa89pD2ZPY89hz2APYE9gD2DPYk9kD2YPaA9qD2wPbc9vD3BPcM9xD3DPcA9vD22Paw9oz2ZPY09gD1zPWY9Wj1OPT89Mj0nPR49Fz0TPQ49Cz0MPQ09ED0VPRw9JD0tPTY9Pj1FPUY9Sj1LPVU9VD1QPUM9OT0mPRk9CD0EOxE9JD07PVI9aT1+PZA9nj2rPbU9vj3EPck9zD3PPc890j3TPdQ91D3UPdI90D3MPcc9wT25PbI9qj2kPaA9nj2dPZ09nz2gPaA9nz2cPZY9jj2FPYQ9gT1tPU89MT0TPf48DD1BPXo9sj3hPQ4+MD5OPmk+gT6VPqI+qz6wPrE+rj6oPqI+mz6UPow+hj6DPoQ+hD6HPov+kr6YPp0+nz6fPp0+mT6TPou+gz57PnE+aD5fPlY+TT5DPjk+Lj4jPhg+Cz7+PfI95j3ZPc49wj25Pa09qj2iPaA9oT2kPak9rj2zPbk9vz3GLcw90T3XPdo94D3cPcA9jj0yPeM8mDxfPC88AjzXO7A7kDt1O2I7VjtSO1A7UjtYO2M7cTuCO5Q7qTu6O807/DsrPFU8gDylPMU86TwIPR09Mj1GPVc9Zj1zPX89ij2VPZ09pT2sPbI9uD27PcA9wz3GPcg9yj3LPcw9zD3MPcs9yj3JPcc9xj3EPcM9wT2/Pb49vD26PbU9sj2qPaU9nz2PPS49sTwZPJM7IjuIOrE5pzipN7I29jVUNeo0jzSbNPY0mDVHNiA37zfPN6I3VjfsNos2KTbkNas1ejVSNSo1BjXnNM80vjSrNJ00kTSHNIM0gTSENIg0kDSbNKM0qDSnNKM0mzSRNIc0fjR2NG80aTRlNGQ0ZDRnNG80dzSBNI40njSvNME01DToNP40FDUaNSE1GjUXNQs1/zTxNOQ01jTJNL00sTSmNJw0kjSKNH80dzRvNGk0ZDRgNF00XDRcNGE0aDRyNHw0hzSRNJ00qDSzNL00yDTSNNw05jTvNPg0ATUJNg42FDYYNhs2HDYeNh82HzYfNiA2IDYgNiA2HzYeNh42HTYbNhk2GDYVNhQ2EDYPNg02CzYINgY2AzYANv41+zX4NfQ18DXtNeo15zXkNeE13jXdNds12DXWNdM10zXRNc81zjXNNc01zDXNNcw1zTXNNc41zjXPNdA10TXTNdQ11TXXNdg12TXbNd414TXjNeU15zXpNes17TXuNfE18zX1Nfc1+DX6Nfw1/jUANgE2AzYDNgQ2AjYMNiY2ZjbFNlE3AjjVOLA5hzpgOyE83jwYPXg9gj1gPRE9kDzbOwM7DzogOR444jd/N0I3GjcBN/I27TbzNv826zcgOG84wzgcOXk51jk2OpM67DoIOyY7QjtdO3Q7jDugO687ujvJO9Q73jvoO/E7+Tv/OwE8ATz+O/g77DvgO9M7xju5O607ozuXO447hzt8O3Q7bjtnO2I7XTtZO1Y7VDtTO1Q7VjtZO147ZDtrO3M7fDuFO487mTujO647tzw=');
+                
+                // Create wall hit sound (higher pitched beep)
+                wallHitSound = new Audio('data:audio/wav;base64,UklGRpgDAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YXQDAAAAAAAAjV+SX5dfnF+gX6RfqF+sX69fs1+2X7lfvF+/X8FfxF/GX8hfyV/LX8xfzV/OX85fz1/PX89fz1/OX85fzV/MX8tfyV/IX8Zfw1/BX75fu1+4X7RfsV+tX6lfo1+fX5tfll+TX49fiV+FX4Fffl96X3Zfcl9vX2tKaF9mP2RfY/9h32G/YL9gX2CfYN9gn2EdYR9iX2OfZB9lH2afZ19on2nfah9sn21fb19xX3Mfc194X3rffd9+/4A/gn+Df4Z/iJ+Jv4v/jT+Qf5JKlP+WX5mfm1+eX6BfoV+iP6JfoV+gX55fnF+aP5jfFb+UP5K/kD+Of4u/iX+Gf4R/gX9/f3yfef93f3V/cn9wf25fHL9q/2j/Zr9krWO/YZ9gn1+fX59ff19f/19//19ff2BfYR9iH2NfZJ9l32YfaF9pn2r/bB9uX29fcR9zH3Vfd196H3wffh+An4L/hD+Hf4lfi3+Nn4//kX+Tf5Z/mH+bn51/n3+hf6J/pH+mf6d/qH+pf6p/q3+sf6x/rX+tf65/rn+uf65/rn+uf65/rX+tf6x/q3+qf6l/p3+mf6R/o3+hf59/nX+af5h/lX+Tf5B/jX+Kf4d/hH+Bf39/fH95f3Z/c39wf21/an9nf2R/Yn9ff1x/WX9Wf1N/UP9Of0z/Sf9H/0X/RP9C/0D/Pv89/zv/Ov86/zj/N/82/zX/Nf81/zX/Nf80/zb/Nv83/zj/Of87/zz/Pv8//0H/Q/9F/0b/SP9K/0z/Tv9R/1P/Vf9W/1n/W/9d/1//Yf9k/2b/aP9q/2z/bv9w/3L/dP92/3j/ef97/33/f/+B/4P/hP+G/4j/if+L/4z/jv+Q/5H/k/+U/5b/mP+Z/5r/nP+e/5//oP+i/6P/pf+m/6j/qf+q/6z/rf+v/7D/sf+z/7T/tf+3/7j/uf+6/7z/vf++/7//wf/C/8P/xP/F/8f/yP/J/8r/y//M/83/zv/Q/9H/0v/T/9T/1f/W/9f/2P/Z/9r/2//c/9z/3f/e/9//4P/g/+H/4v/j/+P/5P/l/+X/5v/n/+j/6P/p/+r/6v/r/+v/7P/t/+3/7v/u/+//7//w//D/8f/x//L/8v/z//P/9P/1//X/9v/2//f/9//4//j/+f/5//r/+v/7//v//P/8//3//f/+//7//v///w==');
+                
+                // Create score sound (lower pitched beep)
+                scoreSound = new Audio('data:audio/wav;base64,UklGRlAFAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YSwFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAQABgAJAAsADQAQABIAFQAXABkAGwAdAB4AIAAiACMAJQAlACcAJgAnACcAJwAnACYAJgAkACQAIgAhACAAHgAcABgAFgATABEADQAJAAYAAgD+//r/9f/w/+v/5//h/9z/1//R/8z/x/+7/7f/sf+s/6f/o/+e/5v/mP+U/5H/j/+N/4r/iP+I/4f/hv+G/4j/iP+J/4v/jf+P/5L/lv+Z/53/o/+n/6z/sv+4/73/w//K/9D/1//d/+X/7P/z//v/AwALABMAGwAkACsAMwA7AEIASQBQAFYAXQBjAGYAagBvAHMAcgB2AHgAeQB6AHsAdwB2AHIAcABsAGYAYgBbAFQATgBHAEAAOQAyACoAIQAZABAACQAAAAgA/v/3//D/6f/i/9z/1f/P/8n/xP+//7v/t/+0/7H/r/+u/67/rv+v/7D/sv+1/7j/u/+//8P/yP/M/9L/1//c/+L/5//u//T/+/8BAAcADgAVABsAIQAoAC4AMwA4AD0AQgBGAEkATQBQAFIAVABVAFQAUgBQAE4ASgBHAEIAPQA4ADIAKwAlAB4AFwAQAAcAAAA4//f/7v/m/93/1f/M/8P/u/+z/6z/pP+e/5j/k/+N/4r/h/+F/4P/g/+D/4P/g/+F/4f/iv+N/5L/lv+b/6D/pf+r/7H/uP+//8X/zP/T/9r/4f/p//H/+P8AAAcADwAXAB4AJgAsADQAOgBAAEYASwBQAFUAWgBeAGEAZQBnAGoAawBsAG0AbQBtAG0AbQBsAGsAagBoAGYAZABhAF4AWwBXAFQAUABMAEcAQgA+ADoANAAw/+v/5//j/9//2//Y/9T/0P/M/8n/xP/B/7//vP+6/7j/t/+3/7X/tf+2/7X/t/+4/7n/u/+8/77/wP/D/8X/x//K/8z/z//S/9X/2f/c/9//4v/l/+n/7P/v//P/9v/5//z///8CAAUACAAMAAUACAALAAoADQAPABEAEwAVABYAGAAZABsAHAAeAB8AIAAhACIAIwAkACUAJgAnACgAKAApACoAKgArACsALAAsAC0ALQAuAC8ALwAwADAAMQAyADIAMwAzADQANAA1ADUANgA2ADcANwA4ADkAOQA5ADoAOgA6ADsAOwA8ADwAPAA9AD0APQA9AD4APgA/AD8APwBAAEAAQABBAEEAQQBCAEIAQgBCAEIAQwBDAEMARABEAEQARABFAEUARQBFAEUARQBGAEYARgBGAEcARwBHAEgASABIAEkASgBKAEsATABMAE0ATgBPAFAAUABRAFIAUwBUAFUAVgBXAFgAWQBaAFoAWwBcAF0AXgBfAGAAYQBiAGMAZABlAGYAZwBoAGgAaQBpAGoAawBsAG0AbgBvAHAAcQByAHMAcwB0AHUAdgB2AHcAeAB4AHkAegB6AHsAfAB8AH0AfgB+AH8AgACBAIEAggCCAIMAhACEAIUAhQCGAIYAhwCHAIgAiACJAIkAigCLAIsAjACMAI0AjgCOAI8AjwCQAJAAkQCRAJIAkgCTAJQAlACVAJUAlgCWAJcAlwCYAJkAmQCaAJoAmwCbAJwAnACdAJ0AngCeAJ8AoAChAKEAogCjAKQApQCmAKcAqACpAKoAqwCsAK0ArgCvALAAsgCzALQAtgC3ALgAugC7AL0AvgDAAMIAxADFAMcAyQDLAM0AzwDRANMAMAA=');
+                
+                // Create win sound (cheerful beeps)
+                winSound = new Audio('data:audio/wav;base64,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');
+            }
+            
+            // Toggle mute
+            function toggleMute() {
+                muted = !muted;
+                if (muted) {
+                    muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i> Muted';
+                } else {
+                    muteBtn.innerHTML = '<i class="fas fa-volume-up"></i> Sound';
+                }
+            }
+            
+            // Play sound
+            function playSound(sound) {
+                if (!muted) {
+                    sound.currentTime = 0;
+                    sound.play();
+                }
+            }
+            
+            // Reset game objects
+            function resetGameObjects() {
+                // Reset paddles
+                player1.y = GAME_HEIGHT / 2 - PADDLE_HEIGHT / 2;
+                player1.vy = 0;
+                
+                player2.y = GAME_HEIGHT / 2 - PADDLE_HEIGHT / 2;
+                player2.vy = 0;
+                
+                // Reset ball
+                ball.x = GAME_WIDTH / 2;
+                ball.y = GAME_HEIGHT / 2;
+                ball.vx = 0;
+                ball.vy = 0;
+                ball.speed = INITIAL_BALL_SPEED;
+            }
+            
+            // Start the game
+            function startGame() {
+                if (!gameRunning) {
+                    gameRunning = true;
+                    gameOver = false;
+                    
+                    // Set initial ball direction (random)
+                    const angle = Math.random() * Math.PI / 4 - Math.PI / 8;
+                    const direction = Math.random() > 0.5 ? 1 : -1;
+                    
+                    ball.vx = Math.cos(angle) * ball.speed * direction;
+                    ball.vy = Math.sin(angle) * ball.speed;
+                    
+                    // Update button text
+                    startBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                } else {
+                    // Pause/resume game
+                    gameRunning = !gameRunning;
+                    
+                    if (gameRunning) {
+                        startBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                    } else {
+                        startBtn.innerHTML = '<i class="fas fa-play"></i> Resume';
+                    }
+                }
+            }
+            
+            // Reset game
+            function resetGame() {
+                gameRunning = false;
+                gameOver = false;
+                player1Score = 0;
+                player2Score = 0;
+                resetGameObjects();
+                
+                // Update score display
+                player1ScoreElement.textContent = player1Score;
+                player2ScoreElement.textContent = player2Score;
+                
+                // Update button text
+                startBtn.innerHTML = '<i class="fas fa-play"></i> Start Game';
+            }
+            
+            // Toggle AI mode
+            function toggleAI() {
+                aiMode = !aiMode;
+                
+                if (aiMode) {
+                    aiBtn.innerHTML = '<i class="fas fa-user"></i> Play vs Human';
+                } else {
+                    aiBtn.innerHTML = '<i class="fas fa-robot"></i> Play vs AI';
+                }
+                
+                // Reset the game when switching modes
+                resetGame();
+            }
+            
+            // Handle keydown events
+            function handleKeyDown(e) {
+                switch (e.key.toLowerCase()) {
+                    case 'w':
+                        keys.w = true;
+                        break;
+                    case 's':
+                        keys.s = true;
+                        break;
+                    case 'arrowup':
+                        keys.up = true;
+                        break;
+                    case 'arrowdown':
+                        keys.down = true;
+                        break;
+                    case ' ':
+                        if (!gameRunning || gameOver) {
+                            startGame();
+                        }
+                        break;
+                    case 'r':
+                        resetGame();
+                        break;
+                    case 'a':
+                        toggleAI();
+                        break;
+                    case 'm':
+                        toggleMute();
+                        break;
+                    case 'p':
+                        if (gameRunning && !gameOver) {
+                            startGame(); // This toggles pause
+                        }
+                        break;
+                }
+            }
+            
+            // Handle keyup events
+            function handleKeyUp(e) {
+                switch (e.key.toLowerCase()) {
+                    case 'w':
+                        keys.w = false;
+                        break;
+                    case 's':
+                        keys.s = false;
+                        break;
+                    case 'arrowup':
+                        keys.up = false;
+                        break;
+                    case 'arrowdown':
+                        keys.down = false;
+                        break;
+                }
+            }
+            
+            // Update game state
+            function update() {
+                if (!gameRunning || gameOver) return;
+                
+                // Update paddle positions based on inputs
+                updatePaddles();
+                
+                // Update ball position
+                updateBall();
+                
+                // Check for collisions
+                checkCollisions();
+                
+                // Check for scoring
+                checkScoring();
+            }
+            
+            // Update paddle positions
+            function updatePaddles() {
+                // Player 1 (left paddle)
+                if (keys.w || mobileControls.p1Up) {
+                    player1.vy = -PADDLE_SPEED;
+                } else if (keys.s || mobileControls.p1Down) {
+                    player1.vy = PADDLE_SPEED;
+                } else {
+                    player1.vy = 0;
+                }
+                
+                // Player 2 (right paddle, or AI)
+                if (aiMode) {
+                    // AI movement
+                    updateAI();
+                } else {
+                    // Human control
+                    if (keys.up || mobileControls.p2Up) {
+                        player2.vy = -PADDLE_SPEED;
+                    } else if (keys.down || mobileControls.p2Down) {
+                        player2.vy = PADDLE_SPEED;
+                    } else {
+                        player2.vy = 0;
+                    }
+                }
+                
+                // Update paddle positions
+                player1.y += player1.vy;
+                player2.y += player2.vy;
+                
+                // Keep paddles within the game bounds
+                keepPaddlesInBounds();
+            }
+            
+            // Keep paddles within game boundaries
+            function keepPaddlesInBounds() {
+                // Player 1
+                if (player1.y < 0) {
+                    player1.y = 0;
+                } else if (player1.y + player1.height > GAME_HEIGHT) {
+                    player1.y = GAME_HEIGHT - player1.height;
+                }
+                
+                // Player 2
+                if (player2.y < 0) {
+                    player2.y = 0;
+                } else if (player2.y + player2.height > GAME_HEIGHT) {
+                    player2.y = GAME_HEIGHT - player2.height;
+                }
+            }
+            
+            // Update AI movement
+            function updateAI() {
+                // Only move the AI paddle if the ball is moving toward it
+                if (ball.vx > 0) {
+                    // Calculate the target y position (with some delay for easier difficulty)
+                    const targetY = ball.y - player2.height / 2;
+                    const currentY = player2.y;
+                    const diff = targetY - currentY;
+                    
+                    // Add randomness to AI reaction (harder difficulty has less randomness)
+                    const randomFactor = Math.random() * aiDifficulty - aiDifficulty / 2;
+                    
+                    // Move the paddle based on the difference with some delay
+                    if (diff > AI_REACTION_TIME * PADDLE_SPEED) {
+                        player2.vy = PADDLE_SPEED * (1 + randomFactor);
+                    } else if (diff < -AI_REACTION_TIME * PADDLE_SPEED) {
+                        player2.vy = -PADDLE_SPEED * (1 + randomFactor);
+                    } else {
+                        player2.vy = 0;
+                    }
+                } else {
+                    // Return to center when ball is moving away
+                    const centerY = GAME_HEIGHT / 2 - player2.height / 2;
+                    const diff = centerY - player2.y;
+                    
+                    if (Math.abs(diff) > PADDLE_SPEED) {
+                        player2.vy = Math.sign(diff) * PADDLE_SPEED * 0.5;
+                    } else {
+                        player2.vy = 0;
+                    }
+                }
+            }
+            
+            // Update ball position
+            function updateBall() {
+                ball.x += ball.vx;
+                ball.y += ball.vy;
+            }
+            
+            // Check for collisions
+            function checkCollisions() {
+                // Ball collision with top and bottom walls
+                if (ball.y < 0 || ball.y + ball.height > GAME_HEIGHT) {
+                    ball.vy = -ball.vy;
+                    
+                    // Keep ball within bounds
+                    if (ball.y < 0) {
+                        ball.y = 0;
+                    } else if (ball.y + ball.height > GAME_HEIGHT) {
+                        ball.y = GAME_HEIGHT - ball.height;
+                    }
+                    
+                    // Play wall hit sound
+                    playSound(wallHitSound);
+                }
+                
+                // Ball collision with player 1 (left paddle)
+                if (
+                    ball.x < player1.x + player1.width &&
+                    ball.x + ball.width > player1.x &&
+                    ball.y < player1.y + player1.height &&
+                    ball.y + ball.height > player1.y
+                ) {
+                    // Calculate hit position on paddle (0-1 range)
+                    const hitPos = (ball.y + ball.height / 2 - player1.y) / player1.height;
+                    
+                    // Calculate angle based on hit position
+                    const angle = (hitPos - 0.5) * Math.PI / 3; // -30 to 30 degrees
+                    
+                    // Update ball direction and speed
+                    ball.vx = Math.cos(angle) * ball.speed;
+                    ball.vy = Math.sin(angle) * ball.speed;
+                    
+                    // Increase ball speed
+                    ball.speed = Math.min(ball.speed + BALL_ACCELERATION, MAX_BALL_SPEED);
+                    
+                    // Move ball outside paddle to prevent multiple collisions
+                    ball.x = player1.x + player1.width;
+                    
+                    // Play paddle hit sound
+                    playSound(paddleHitSound);
+                }
+                
+                // Ball collision with player 2 (right paddle)
+                if (
+                    ball.x < player2.x + player2.width &&
+                    ball.x + ball.width > player2.x &&
+                    ball.y < player2.y + player2.height &&
+                    ball.y + ball.height > player2.y
+                ) {
+                    // Calculate hit position on paddle (0-1 range)
+                    const hitPos = (ball.y + ball.height / 2 - player2.y) / player2.height;
+                    
+                    // Calculate angle based on hit position
+                    const angle = (hitPos - 0.5) * Math.PI / 3; // -30 to 30 degrees
+                    
+                    // Update ball direction and speed
+                    ball.vx = -Math.cos(angle) * ball.speed;
+                    ball.vy = Math.sin(angle) * ball.speed;
+                    
+                    // Increase ball speed
+                    ball.speed = Math.min(ball.speed + BALL_ACCELERATION, MAX_BALL_SPEED);
+                    
+                    // Move ball outside paddle to prevent multiple collisions
+                    ball.x = player2.x - ball.width;
+                    
+                    // Play paddle hit sound
+                    playSound(paddleHitSound);
+                }
+            }
+            
+            // Check for scoring
+            function checkScoring() {
+                // Player 2 scores
+                if (ball.x < 0) {
+                    player2Score++;
+                    player2ScoreElement.textContent = player2Score;
+                    
+                    // Play score sound
+                    playSound(scoreSound);
+                    
+                    // Check for game over
+                    if (player2Score >= winningScore) {
+                        gameOver = true;
+                        showGameOver(2);
+                    } else {
+                        resetBall(-1);
+                    }
+                }
+                
+                // Player 1 scores
+                if (ball.x + ball.width > GAME_WIDTH) {
+                    player1Score++;
+                    player1ScoreElement.textContent = player1Score;
+                    
+                    // Play score sound
+                    playSound(scoreSound);
+                    
+                    // Check for game over
+                    if (player1Score >= winningScore) {
+                        gameOver = true;
+                        showGameOver(1);
+                    } else {
+                        resetBall(1);
+                    }
+                }
+            }
+            
+            // Reset ball after scoring
+            function resetBall(direction) {
+                ball.x = GAME_WIDTH / 2;
+                ball.y = GAME_HEIGHT / 2;
+                ball.speed = INITIAL_BALL_SPEED;
+                
+                // Wait a moment before launching the ball
+                ball.vx = 0;
+                ball.vy = 0;
+                
+                setTimeout(() => {
+                    // Only restart if the game is still running
+                    if (gameRunning && !gameOver) {
+                        const angle = Math.random() * Math.PI / 4 - Math.PI / 8;
+                        ball.vx = Math.cos(angle) * ball.speed * direction;
+                        ball.vy = Math.sin(angle) * ball.speed;
+                    }
+                }, 1000);
+            }
+            
+            // Show game over screen
+            function showGameOver(winner) {
+                gameRunning = false;
+                
+                // Update winner text
+                winnerText.textContent = `Player ${winner} Wins!`;
+                
+                // Update final score
+                finalP1Score.textContent = player1Score;
+                finalP2Score.textContent = player2Score;
+                
+                // Show modal
+                gameOverModal.classList.add('show');
+                
+                // Play win sound
+                playSound(winSound);
+                
+                // Update button text
+                startBtn.innerHTML = '<i class="fas fa-play"></i> New Game';
+            }
+            
+            // Draw the game
+            function draw() {
+                // Clear canvas
+                ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+                
+                // Draw center net
+                drawNet();
+                
+                // Draw paddles
+                drawPaddle(player1);
+                drawPaddle(player2);
+                
+                // Draw ball
+                drawBall();
+            }
+            
+            // Draw center net
+            function drawNet() {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                
+                const netX = GAME_WIDTH / 2 - NET_WIDTH / 2;
+                
+                for (let y = NET_GAP / 2; y < GAME_HEIGHT; y += NET_SEGMENT_HEIGHT + NET_GAP) {
+                    ctx.fillRect(netX, y, NET_WIDTH, NET_SEGMENT_HEIGHT);
+                }
+            }
+            
+            // Draw paddle
+            function drawPaddle(paddle) {
+                ctx.fillStyle = paddle.color;
+                ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
+                
+                // Add highlight
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.fillRect(paddle.x, paddle.y, paddle.width, 10);
+            }
+            
+            // Draw ball
+            function drawBall() {
+                ctx.fillStyle = ball.color;
+                
+                // Draw ball glow
+                ctx.shadowColor = ball.color;
+                ctx.shadowBlur = 15;
+                
+                // Draw ball
+                ctx.beginPath();
+                ctx.arc(
+                    ball.x + ball.width / 2,
+                    ball.y + ball.height / 2,
+                    ball.width / 2,
+                    0,
+                    Math.PI * 2
+                );
+                ctx.fill();
+                
+                // Reset shadow
+                ctx.shadowBlur = 0;
+            }
+            
+            // Game loop
+            function gameLoop() {
+                update();
+                draw();
+                requestAnimationFrame(gameLoop);
+            }
+            
+            // Initialize game
+            init();
+        });
+    </script>
+</body>
+</html>

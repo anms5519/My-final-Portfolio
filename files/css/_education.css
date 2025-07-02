@@ -1,0 +1,256 @@
+.education-section {
+    background-color: var(--bg-color);
+    position: relative;
+    overflow: hidden;
+    padding: var(--section-padding);
+    color: var(--text-color);
+}
+.education-section::before { /* Subtle background pattern */
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image:
+        linear-gradient(to right, rgba(var(--primary-color-rgb), 0.03) .1vh, transparent .1vh),
+        linear-gradient(to bottom, rgba(var(--primary-color-rgb), 0.03) .1vh, transparent .1vh);
+    background-size: 4vh 4vh;
+    opacity: 0.7;
+    z-index: 0;
+    animation: grid-pan 60s linear infinite;
+}
+@keyframes grid-pan {
+    0% { background-position: 0 0; }
+    100% { background-position: 8vh 8vh; }
+}
+
+.education-intro {
+    max-width: 75vh;
+    margin: 0 auto 4rem; /* Increased bottom margin */
+    text-align: center;
+    position: relative; z-index: 1;
+}
+.education-intro h2 { /* Assuming .section-title class is used */
+    font-family: var(--font-family-secondary);
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    color: var(--text-color-headings);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-wide);
+    margin-bottom: 1.5rem;
+}
+.education-intro p {
+    font-size: 1.15rem;
+    color: var(--text-color-light);
+    line-height: 1.7;
+}
+
+.education-progress {
+    display: flex;
+    justify-content: space-around; /* Better distribution */
+    max-width: 90vh; /* Wider progress bar */
+    margin: 0 auto 5rem; /* Increased bottom margin */
+    position: relative;
+    z-index: 1;
+}
+.education-progress::before { /* The connecting line */
+    content: '';
+    position: absolute;
+    top: 50%; left: 5%; /* Start/end inside a bit */
+    width: 90%; /* Don't span full width */
+    height: .3vh; /* Thinner line */
+    background: var(--card-border); /* Themed border color */
+    transform: translateY(-50%);
+    z-index: 1;
+    border-radius: var(--border-radius-sharp);
+}
+.progress-step {
+    width: 4.5vh; height: 4.5vh; /* Slightly smaller */
+    background: var(--card-bg);
+    border-radius: var(--border-radius-circle);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; /* Icon size */
+    color: var(--text-color-light);
+    position: relative; z-index: 2;
+    box-shadow: var(--card-shadow);
+    border: .2vh solid var(--card-border);
+    transition: all var(--anim-speed-normal) var(--transition-sharp);
+    transform: scale(0.9); /* Start slightly smaller */
+    opacity: 0.8;
+}
+.progress-step.animated { /* Animation applied via JS */
+    transform: scale(1);
+    opacity: 1;
+}
+.progress-step.completed {
+    background: var(--primary-color);
+    color: var(--bg-color); /* Contrast text */
+    border-color: var(--primary-color);
+    box-shadow: 0 0 1.5vh rgba(var(--primary-color-rgb), 0.4);
+}
+.progress-step.current {
+    background: var(--secondary-color); /* Use secondary for current */
+    color: var(--bg-color); /* Contrast text */
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 .5vh rgba(var(--secondary-color-rgb), 0.3), 0 0 2vh rgba(var(--secondary-color-rgb), 0.5);
+    transform: scale(1.25); /* More emphasis */
+}
+.progress-tooltip {
+    position: absolute;
+    bottom: calc(100% + 1vh); /* Position above the step */
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--card-bg);
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--border-radius-sharp);
+    font-size: 0.85rem;
+    white-space: nowrap;
+    color: var(--text-color);
+    box-shadow: var(--card-shadow);
+    opacity: 0; pointer-events: none;
+    transition: opacity var(--anim-speed-fast) ease, transform var(--anim-speed-fast) ease;
+    border: 0.1vh solid var(--card-border);
+}
+.progress-step:hover .progress-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-0.5vh);
+}
+
+.education-table-container {
+    overflow-x: auto;
+    margin-bottom: 4rem; /* Increased margin */
+    box-shadow: var(--card-shadow);
+    border-radius: var(--border-radius-soft); /* Softer radius */
+    border: 0.1vh solid var(--card-border);
+    position: relative; z-index: 1;
+}
+.education-table {
+    width: 100%;
+    border-collapse: separate; /* For border-radius on cells */
+    border-spacing: 0;
+    background-color: var(--card-bg);
+    backdrop-filter: var(--glass-effect);
+    -webkit-backdrop-filter: var(--glass-effect);
+    border-radius: var(--border-radius-soft);
+    overflow: hidden; /* Clip content to rounded corners */
+}
+.education-table th,
+.education-table td {
+    padding: 1.5rem; /* Increased padding */
+    text-align: left;
+    border-bottom: .1vh solid var(--card-border);
+    font-size: 1rem; /* Consistent font size */
+}
+.education-table th {
+    background: rgba(var(--primary-color-rgb), 0.1); /* Subtle header bg */
+    color: var(--primary-color); /* Themed header text */
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-normal);
+    font-family: var(--font-family-secondary);
+}
+.education-table tr:last-child td { border-bottom: none; }
+.education-table tbody tr:hover {
+    background-color: rgba(var(--primary-color-rgb), 0.03); /* Subtle hover */
+}
+.education-table td { color: var(--text-color-light); }
+.education-table td:first-child { color: var(--text-color); font-weight: 500; } /* Degree/Cert name */
+
+.education-cards { /* For mobile/smaller screens */
+    display: none; /* Hidden by default, shown via media query */
+    position: relative; z-index: 1;
+}
+.education-card {
+    background-color: var(--card-bg);
+    backdrop-filter: var(--glass-effect);
+    -webkit-backdrop-filter: var(--glass-effect);
+    border-radius: var(--border-radius-soft);
+    padding: 2.5rem; /* Increased padding */
+    margin-bottom: 2rem; /* Increased margin */
+    box-shadow: var(--card-shadow);
+    border: 0.1vh solid var(--card-border);
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--anim-speed-normal) ease, box-shadow var(--anim-speed-normal) ease;
+    opacity: 0;
+    transform: translateY(3vh) scale(0.98);
+    animation: card-slide-up var(--anim-speed-normal) var(--transition-sharp) forwards;
+    animation-delay: calc(var(--animation-order, 0) * 0.12s); /* Staggered animation */
+}
+@keyframes card-slide-up {
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.education-card::before { /* Accent line */
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: .5vh; height: 100%;
+    background: var(--primary-color);
+    box-shadow: 0.2vh 0 0.8vh var(--primary-color);
+}
+.education-card:hover {
+    transform: translateY(-0.8vh) scale(1.02);
+    box-shadow: 0 1.2vh 3vh rgba(var(--primary-color-rgb), 0.15);
+}
+.education-card h3 {
+    margin-bottom: 0.8rem;
+    font-family: var(--font-family-secondary);
+    font-size: 1.3rem; /* Larger title */
+    color: var(--primary-color);
+    font-weight: 600;
+}
+.school {
+    color: var(--text-color-light);
+    margin-bottom: 1.2rem;
+    font-style: italic;
+    font-size: 0.95rem;
+}
+.edu-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.8rem; /* Row and column gap */
+    margin-bottom: 1.2rem;
+}
+.edu-details span {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.95rem;
+    color: var(--text-color);
+}
+.edu-details i {
+    color: var(--secondary-color); /* Use secondary for icons */
+    font-size: 1.2em;
+}
+.additional { /* For GPA, Honors etc. */
+    font-size: 0.95rem;
+    padding-top: 1.2rem;
+    margin-top: 1.2rem; /* Space from details */
+    border-top: .1vh solid var(--card-border);
+    color: var(--text-color-light);
+}
+.additional strong {
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+/* Floating Particles - kept for visual flair */
+.education-particles {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0; /* Behind content */
+}
+.floating-particle {
+    position: absolute;
+    border-radius: var(--border-radius-circle);
+    opacity: 0; /* Start invisible */
+    animation: floatParticle-edu 20s infinite linear;
+    background-color: var(--particle-color); /* Themed particle color */
+    box-shadow: 0 0 1vh var(--particle-color);
+}
+@keyframes floatParticle-edu { /* Renamed to avoid conflict */
+    0% { transform: translateY(10vh) translateX(var(--x-start, vh)) scale(0.5); opacity: 0; }
+    10% { opacity: var(--max-opacity, 0.6); }
+    90% { opacity: var(--max-opacity, 0.6); }
+    100% { transform: translateY(-10vh) translateX(var(--x-end, vh)) scale(1.2); opacity: 0; }
+}

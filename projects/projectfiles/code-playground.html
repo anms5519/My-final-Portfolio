@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Code Playground</title>
+    <!-- CodeMirror Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+    <!-- CodeMirror Themes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/material.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/monokai.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/neo.min.css">
+    <!-- Font Awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff8c42;
+            --secondary-color: #6b7b9c;
+            --dark-color: #1f243a;
+            --darker-color: #151828;
+            --light-color: #e0e0e0;
+            --success-color: #4ecca3;
+            --warning-color: #ffc107;
+            --danger-color: #ff5252;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            line-height: 1.6;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .header {
+            background-color: var(--darker-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--box-shadow);
+            z-index: 10;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .logo-icon {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .control-panel {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--light-color);
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+        
+        .dropdown-btn:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 200px;
+            background-color: var(--darker-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            z-index: 100;
+            display: none;
+        }
+        
+        .dropdown-menu.open {
+            display: block;
+        }
+        
+        .dropdown-item {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .dropdown-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn {
+            background-color: var(--primary-color);
+            color: var(--dark-color);
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        
+        .toolbar {
+            background-color: var(--darker-color);
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 0.3rem;
+        }
+        
+        .tab {
+            padding: 0.6rem 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .tab:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .tab.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .tab-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .html-icon {
+            color: #e44d26;
+        }
+        
+        .css-icon {
+            color: #264de4;
+        }
+        
+        .js-icon {
+            color: #f7df1e;
+        }
+        
+        .settings {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .settings-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .settings-label {
+            font-size: 0.9rem;
+            color: rgba(224, 224, 224, 0.7);
+        }
+        
+        .settings-select {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--light-color);
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+        }
+        
+        .settings-select:focus {
+            outline: none;
+        }
+        
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .editor-wrapper {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .editor {
+            display: none;
+            height: 100%;
+        }
+        
+        .editor.active {
+            display: block;
+        }
+        
+        .preview-container {
+            flex: 1;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .preview-toolbar {
+            padding: 0.5rem 1rem;
+            background-color: var(--darker-color);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .preview-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--light-color);
+        }
+        
+        .preview-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .preview-btn {
+            background: none;
+            border: none;
+            color: var(--light-color);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 0.4rem;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+        
+        .preview-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .preview-frame-container {
+            flex: 1;
+            position: relative;
+            background-color: #fff;
+        }
+        
+        #preview-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: #fff;
+        }
+        
+        .resize-handle {
+            width: 10px;
+            background-color: var(--darker-color);
+            cursor: col-resize;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .resize-handle::before {
+            content: '';
+            width: 2px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+        
+        .resize-handle:hover::before {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .CodeMirror {
+            height: 100%;
+            font-family: 'Fira Code', 'Courier New', monospace !important;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background-color: var(--success-color);
+            color: var(--dark-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .notification.error {
+            background-color: var(--danger-color);
+            color: var(--light-color);
+        }
+        
+        .notification-icon {
+            font-size: 1.2rem;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+        
+        .modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background-color: var(--dark-color);
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 500px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--light-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .modal-close:hover {
+            color: var(--danger-color);
+            transform: rotate(90deg);
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            color: var(--light-color);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .saved-projects {
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+        }
+        
+        .project-item {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .project-item:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+        
+        .project-name {
+            font-weight: 500;
+        }
+        
+        .project-date {
+            font-size: 0.9rem;
+            color: rgba(224, 224, 224, 0.6);
+        }
+        
+        .project-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .project-action {
+            background: none;
+            border: none;
+            color: var(--light-color);
+            cursor: pointer;
+            padding: 0.3rem;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+        
+        .project-action:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .project-delete {
+            color: var(--danger-color);
+        }
+        
+        .toggle-panel-btn {
+            position: absolute;
+            top: 50%;
+            right: -15px;
+            width: 30px;
+            height: 30px;
+            background-color: var(--primary-color);
+            color: var(--dark-color);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            transform: translateY(-50%);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+        }
+        
+        .toggle-panel-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .preview-container-hidden {
+            display: none;
+        }
+        
+        .dark-frame {
+            background-color: #121212;
+        }
+        
+        @media (max-width: 992px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .preview-container {
+                border-left: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                height: 50%;
+            }
+            
+            .resize-handle {
+                width: 100%;
+                height: 10px;
+                cursor: row-resize;
+            }
+            
+            .resize-handle::before {
+                width: 30px;
+                height: 2px;
+            }
+            
+            .toggle-panel-btn {
+                top: -15px;
+                right: 50%;
+                transform: translateX(50%);
+            }
+            
+            .toggle-panel-btn:hover {
+                transform: translateX(50%) scale(1.1);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            
+            .control-panel {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .toolbar {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+            
+            .tabs {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .settings {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-code"></i>
+            </div>
+            <h1>Web Code Playground</h1>
+        </div>
+        
+        <div class="control-panel">
+            <div class="dropdown" id="file-dropdown">
+                <button class="dropdown-btn">
+                    <i class="fas fa-file"></i>
+                    File
+                </button>
+                <div class="dropdown-menu" id="file-menu">
+                    <div class="dropdown-item" id="new-btn">
+                        <i class="fas fa-file"></i>
+                        New Project
+                    </div>
+                    <div class="dropdown-item" id="save-btn">
+                        <i class="fas fa-save"></i>
+                        Save Project
+                    </div>
+                    <div class="dropdown-item" id="load-btn">
+                        <i class="fas fa-folder-open"></i>
+                        Load Project
+                    </div>
+                    <div class="dropdown-item" id="export-btn">
+                        <i class="fas fa-file-export"></i>
+                        Export as HTML
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn btn-success" id="run-btn">
+                <i class="fas fa-play"></i>
+                Run
+            </button>
+        </div>
+    </div>
+    
+    <div class="toolbar">
+        <div class="tabs">
+            <div class="tab active" data-target="html-editor">
+                <div class="tab-icon html-icon">
+                    <i class="fab fa-html5"></i>
+                </div>
+                HTML
+            </div>
+            <div class="tab" data-target="css-editor">
+                <div class="tab-icon css-icon">
+                    <i class="fab fa-css3-alt"></i>
+                </div>
+                CSS
+            </div>
+            <div class="tab" data-target="js-editor">
+                <div class="tab-icon js-icon">
+                    <i class="fab fa-js"></i>
+                </div>
+                JavaScript
+            </div>
+        </div>
+        
+        <div class="settings">
+            <div class="settings-item">
+                <label class="settings-label">Theme</label>
+                <select class="settings-select" id="theme-select">
+                    <option value="dracula">Dracula</option>
+                    <option value="material">Material</option>
+                    <option value="monokai">Monokai</option>
+                    <option value="neo">Neo</option>
+                </select>
+            </div>
+            
+            <div class="settings-item">
+                <label class="settings-label">Font Size</label>
+                <select class="settings-select" id="font-size-select">
+                    <option value="12px">12px</option>
+                    <option value="14px" selected>14px</option>
+                    <option value="16px">16px</option>
+                    <option value="18px">18px</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-container">
+        <div class="editor-container">
+            <div class="editor-wrapper">
+                <div class="editor active" id="html-editor"></div>
+                <div class="editor" id="css-editor"></div>
+                <div class="editor" id="js-editor"></div>
+            </div>
+        </div>
+        
+        <div class="resize-handle" id="resize-handle"></div>
+        
+        <div class="preview-container" id="preview-container">
+            <div class="preview-toolbar">
+                <div class="preview-title">Live Preview</div>
+                
+                <div class="preview-actions">
+                    <button class="preview-btn" id="dark-mode-btn" title="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="preview-btn" id="reload-btn" title="Reload Preview">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button class="preview-btn" id="new-window-btn" title="Open in New Window">
+                        <i class="fas fa-external-link-alt"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="preview-frame-container">
+                <iframe id="preview-frame" sandbox="allow-scripts"></iframe>
+                <button class="toggle-panel-btn" id="toggle-panel" title="Toggle Preview Panel">
+                    <i class="fas fa-chevron-right" id="toggle-icon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification">
+        <div class="notification-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <span id="notification-message">Project saved successfully</span>
+    </div>
+    
+    <div class="modal" id="save-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Save Project</h2>
+                <button class="modal-close" id="save-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="project-name" class="form-label">Project Name</label>
+                    <input type="text" id="project-name" class="form-control" placeholder="Enter project name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="project-description" class="form-label">Description (optional)</label>
+                    <textarea id="project-description" class="form-control" rows="3" placeholder="Enter project description"></textarea>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn" id="save-modal-cancel">Cancel</button>
+                <button class="btn btn-success" id="save-modal-save">Save Project</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="load-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Load Project</h2>
+                <button class="modal-close" id="load-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="saved-projects" id="projects-list">
+                    <!-- Project list will be populated by JavaScript -->
+                </div>
+                
+                <div id="no-projects" style="text-align: center; padding: 1rem;">
+                    No saved projects found.
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn" id="load-modal-cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CodeMirror Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+    
+    <!-- CodeMirror Modes -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/xml/xml.min.js"></script>
+    
+    <!-- CodeMirror Addons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closetag.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/comment/comment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/foldcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/foldgutter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/fold/brace-fold.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/html-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/css-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/javascript-hint.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const fileDropdown = document.getElementById('file-dropdown');
+            const fileMenu = document.getElementById('file-menu');
+            const newBtn = document.getElementById('new-btn');
+            const saveBtn = document.getElementById('save-btn');
+            const loadBtn = document.getElementById('load-btn');
+            const exportBtn = document.getElementById('export-btn');
+            const runBtn = document.getElementById('run-btn');
+            const tabs = document.querySelectorAll('.tab');
+            const themeSelect = document.getElementById('theme-select');
+            const fontSizeSelect = document.getElementById('font-size-select');
+            const resizeHandle = document.getElementById('resize-handle');
+            const previewContainer = document.getElementById('preview-container');
+            const previewFrame = document.getElementById('preview-frame');
+            const darkModeBtn = document.getElementById('dark-mode-btn');
+            const reloadBtn = document.getElementById('reload-btn');
+            const newWindowBtn = document.getElementById('new-window-btn');
+            const togglePanelBtn = document.getElementById('toggle-panel');
+            const toggleIcon = document.getElementById('toggle-icon');
+            const notification = document.getElementById('notification');
+            const notificationMessage = document.getElementById('notification-message');
+            
+            // Modals
+            const saveModal = document.getElementById('save-modal');
+            const saveModalClose = document.getElementById('save-modal-close');
+            const projectNameInput = document.getElementById('project-name');
+            const projectDescriptionInput = document.getElementById('project-description');
+            const saveModalCancel = document.getElementById('save-modal-cancel');
+            const saveModalSave = document.getElementById('save-modal-save');
+            
+            const loadModal = document.getElementById('load-modal');
+            const loadModalClose = document.getElementById('load-modal-close');
+            const projectsList = document.getElementById('projects-list');
+            const noProjects = document.getElementById('no-projects');
+            const loadModalCancel = document.getElementById('load-modal-cancel');
+            
+            // CodeMirror Instances
+            let htmlEditor, cssEditor, jsEditor;
+            
+            // Default code templates
+            const defaultHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Code Playground</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Web Code Playground</h1>
+        <p>Start editing the HTML, CSS, and JavaScript to create your web project.</p>
+        <div id="app"></div>
+    </div>
+</body>
+</html>`;
+            
+            const defaultCSS = `/* Styles for your project */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #4ecca3;
+    margin-top: 0;
+}`;
+            
+            const defaultJS = `// JavaScript for your project
+document.addEventListener('DOMContentLoaded', function() {
+    const app = document.getElementById('app');
+    
+    // Create an interactive element
+    const button = document.createElement('button');
+    button.textContent = 'Click me!';
+    button.style.padding = '10px 20px';
+    button.style.backgroundColor = '#4ecca3';
+    button.style.color = 'white';
+    button.style.border = 'none';
+    button.style.borderRadius = '5px';
+    button.style.cursor = 'pointer';
+    button.style.marginTop = '20px';
+    
+    // Add event listener
+    button.addEventListener('click', function() {
+        const now = new Date();
+        const timeDisplay = document.createElement('p');
+        timeDisplay.textContent = 'Button clicked at: ' + now.toLocaleTimeString();
+        app.appendChild(timeDisplay);
+    });
+    
+    app.appendChild(button);
+});`;
+            
+            // Current project state
+            let currentProject = {
+                id: null,
+                name: 'Untitled Project',
+                description: '',
+                html: defaultHTML,
+                css: defaultCSS,
+                js: defaultJS,
+                lastModified: new Date()
+            };
+            
+            // Initialize CodeMirror editors
+            function initializeEditors() {
+                // HTML Editor
+                htmlEditor = CodeMirror(document.getElementById('html-editor'), {
+                    mode: 'htmlmixed',
+                    theme: 'dracula',
+                    lineNumbers: true,
+                    indentUnit: 4,
+                    autoCloseTags: true,
+                    autoCloseBrackets: true,
+                    lineWrapping: true,
+                    extraKeys: { 'Ctrl-Space': 'autocomplete' },
+                    value: currentProject.html
+                });
+                
+                // CSS Editor
+                cssEditor = CodeMirror(document.getElementById('css-editor'), {
+                    mode: 'css',
+                    theme: 'dracula',
+                    lineNumbers: true,
+                    indentUnit: 4,
+                    autoCloseBrackets: true,
+                    lineWrapping: true,
+                    extraKeys: { 'Ctrl-Space': 'autocomplete' },
+                    value: currentProject.css
+                });
+                
+                // JavaScript Editor
+                jsEditor = CodeMirror(document.getElementById('js-editor'), {
+                    mode: 'javascript',
+                    theme: 'dracula',
+                    lineNumbers: true,
+                    indentUnit: 4,
+                    autoCloseBrackets: true,
+                    lineWrapping: true,
+                    extraKeys: { 'Ctrl-Space': 'autocomplete' },
+                    value: currentProject.js
+                });
+            }
+            
+            // Update preview with current code
+            function updatePreview() {
+                const htmlContent = htmlEditor.getValue();
+                const cssContent = cssEditor.getValue();
+                const jsContent = jsEditor.getValue();
+                
+                const previewDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+                
+                // Create complete HTML document
+                const content = `
+                    ${htmlContent}
+                    <style>${cssContent}</style>
+                    <script>${jsContent}</script>
+                `;
+                
+                // Reset iframe content
+                previewDoc.open();
+                previewDoc.write(content);
+                previewDoc.close();
+            }
+            
+            // Toggle between editor tabs
+            function setActiveTab(tabId) {
+                // Hide all editors
+                document.querySelectorAll('.editor').forEach(editor => {
+                    editor.classList.remove('active');
+                });
+                
+                // Deactivate all tabs
+                tabs.forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                
+                // Activate selected tab and editor
+                document.getElementById(tabId).classList.add('active');
+                document.querySelector(`[data-target="${tabId}"]`).classList.add('active');
+            }
+            
+            // Save current project
+            function saveProject() {
+                // Update current project
+                currentProject.html = htmlEditor.getValue();
+                currentProject.css = cssEditor.getValue();
+                currentProject.js = jsEditor.getValue();
+                currentProject.lastModified = new Date();
+                
+                // Open save modal if project doesn't have a name
+                if (!currentProject.id) {
+                    openSaveModal();
+                    return;
+                }
+                
+                // Update project in localStorage
+                saveProjectToStorage(currentProject);
+                
+                showNotification('Project saved successfully');
+            }
+            
+            // Save project to localStorage
+            function saveProjectToStorage(project) {
+                // Generate ID if not exists
+                if (!project.id) {
+                    project.id = Date.now().toString(36) + Math.random().toString(36).substr(2);
+                }
+                
+                // Get saved projects
+                let savedProjects = JSON.parse(localStorage.getItem('codePlayground_projects')) || [];
+                
+                // Check if project already exists
+                const existingIndex = savedProjects.findIndex(p => p.id === project.id);
+                
+                if (existingIndex !== -1) {
+                    // Update existing project
+                    savedProjects[existingIndex] = project;
+                } else {
+                    // Add new project
+                    savedProjects.push(project);
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('codePlayground_projects', JSON.stringify(savedProjects));
+                
+                // Update current project
+                currentProject = project;
+            }
+            
+            // Load projects from localStorage
+            function loadProjects() {
+                const savedProjects = JSON.parse(localStorage.getItem('codePlayground_projects')) || [];
+                
+                if (savedProjects.length === 0) {
+                    projectsList.style.display = 'none';
+                    noProjects.style.display = 'block';
+                    return;
+                }
+                
+                projectsList.style.display = 'block';
+                noProjects.style.display = 'none';
+                
+                // Clear projects list
+                projectsList.innerHTML = '';
+                
+                // Sort projects by lastModified (newest first)
+                savedProjects.sort((a, b) => new Date(b.lastModified) - new Date(a.lastModified));
+                
+                // Add projects to list
+                savedProjects.forEach(project => {
+                    const lastModified = new Date(project.lastModified).toLocaleString();
+                    
+                    const projectItem = document.createElement('div');
+                    projectItem.className = 'project-item';
+                    projectItem.innerHTML = `
+                        <div>
+                            <div class="project-name">${project.name}</div>
+                            <div class="project-date">${lastModified}</div>
+                        </div>
+                        <div class="project-actions">
+                            <button class="project-action project-delete" data-id="${project.id}" title="Delete Project">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    `;
+                    
+                    // Add click event to load project
+                    projectItem.addEventListener('click', function(e) {
+                        if (!e.target.closest('.project-actions')) {
+                            loadProject(project.id);
+                            closeLoadModal();
+                        }
+                    });
+                    
+                    projectsList.appendChild(projectItem);
+                });
+                
+                // Add delete event listeners
+                document.querySelectorAll('.project-delete').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const projectId = this.dataset.id;
+                        deleteProject(projectId);
+                    });
+                });
+            }
+            
+            // Load a project
+            function loadProject(projectId) {
+                const savedProjects = JSON.parse(localStorage.getItem('codePlayground_projects')) || [];
+                const project = savedProjects.find(p => p.id === projectId);
+                
+                if (!project) {
+                    showNotification('Project not found', true);
+                    return;
+                }
+                
+                // Update current project
+                currentProject = project;
+                
+                // Update editors
+                htmlEditor.setValue(project.html);
+                cssEditor.setValue(project.css);
+                jsEditor.setValue(project.js);
+                
+                // Update preview
+                updatePreview();
+                
+                showNotification(`Project "${project.name}" loaded successfully`);
+            }
+            
+            // Delete a project
+            function deleteProject(projectId) {
+                if (!confirm('Are you sure you want to delete this project?')) {
+                    return;
+                }
+                
+                // Get saved projects
+                let savedProjects = JSON.parse(localStorage.getItem('codePlayground_projects')) || [];
+                
+                // Remove project
+                savedProjects = savedProjects.filter(p => p.id !== projectId);
+                
+                // Save to localStorage
+                localStorage.setItem('codePlayground_projects', JSON.stringify(savedProjects));
+                
+                // Reload projects list
+                loadProjects();
+                
+                // If current project was deleted, create new project
+                if (currentProject.id === projectId) {
+                    createNewProject();
+                }
+                
+                showNotification('Project deleted successfully');
+            }
+            
+            // Create a new project
+            function createNewProject() {
+                // Reset current project
+                currentProject = {
+                    id: null,
+                    name: 'Untitled Project',
+                    description: '',
+                    html: defaultHTML,
+                    css: defaultCSS,
+                    js: defaultJS,
+                    lastModified: new Date()
+                };
+                
+                // Update editors
+                htmlEditor.setValue(currentProject.html);
+                cssEditor.setValue(currentProject.css);
+                jsEditor.setValue(currentProject.js);
+                
+                // Reset to HTML tab
+                setActiveTab('html-editor');
+                
+                // Update preview
+                updatePreview();
+                
+                showNotification('New project created');
+            }
+            
+            // Export project as HTML
+            function exportProject() {
+                const htmlContent = htmlEditor.getValue();
+                const cssContent = cssEditor.getValue();
+                const jsContent = jsEditor.getValue();
+                
+                // Create complete HTML document
+                const content = `
+                    ${htmlContent.replace('</head>', `<style>\n${cssContent}\n</style>\n</head>`).replace('</body>', `<script>\n${jsContent}\n</script>\n</body>`)}
+                `;
+                
+                // Create download link
+                const blob = new Blob([content], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${currentProject.name || 'untitled'}.html`;
+                a.click();
+                
+                // Clean up
+                URL.revokeObjectURL(url);
+                
+                showNotification('Project exported successfully');
+            }
+            
+            // Open save modal
+            function openSaveModal() {
+                projectNameInput.value = currentProject.name !== 'Untitled Project' ? currentProject.name : '';
+                projectDescriptionInput.value = currentProject.description || '';
+                saveModal.classList.add('open');
+                projectNameInput.focus();
+            }
+            
+            // Close save modal
+            function closeSaveModal() {
+                saveModal.classList.remove('open');
+            }
+            
+            // Save project from modal
+            function saveProjectFromModal() {
+                const name = projectNameInput.value.trim();
+                if (!name) {
+                    showNotification('Please enter a project name', true);
+                    return;
+                }
+                
+                // Update current project
+                currentProject.name = name;
+                currentProject.description = projectDescriptionInput.value.trim();
+                currentProject.lastModified = new Date();
+                
+                // Update code
+                currentProject.html = htmlEditor.getValue();
+                currentProject.css = cssEditor.getValue();
+                currentProject.js = jsEditor.getValue();
+                
+                // Save to localStorage
+                saveProjectToStorage(currentProject);
+                
+                // Close modal
+                closeSaveModal();
+                
+                showNotification('Project saved successfully');
+            }
+            
+            // Open load modal
+            function openLoadModal() {
+                loadProjects();
+                loadModal.classList.add('open');
+            }
+            
+            // Close load modal
+            function closeLoadModal() {
+                loadModal.classList.remove('open');
+            }
+            
+            // Show notification
+            function showNotification(message, isError = false) {
+                notificationMessage.textContent = message;
+                notification.className = 'notification';
+                
+                if (isError) {
+                    notification.classList.add('error');
+                    notification.querySelector('.notification-icon').innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+                } else {
+                    notification.querySelector('.notification-icon').innerHTML = '<i class="fas fa-check-circle"></i>';
+                }
+                
+                notification.classList.add('show');
+                
+                // Hide after 3 seconds
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+            
+            // Toggle preview panel
+            function togglePreviewPanel() {
+                const editorContainer = document.querySelector('.editor-container');
+                
+                if (previewContainer.classList.contains('preview-container-hidden')) {
+                    // Show preview
+                    previewContainer.classList.remove('preview-container-hidden');
+                    toggleIcon.className = 'fas fa-chevron-right';
+                } else {
+                    // Hide preview
+                    previewContainer.classList.add('preview-container-hidden');
+                    toggleIcon.className = 'fas fa-chevron-left';
+                }
+            }
+            
+            // Initialize app
+            function init() {
+                // Initialize editors
+                initializeEditors();
+                
+                // Update preview
+                updatePreview();
+                
+                // Set up event listeners
+                
+                // File dropdown
+                fileDropdown.addEventListener('click', function() {
+                    fileMenu.classList.toggle('open');
+                });
+                
+                // Click outside to close dropdown
+                document.addEventListener('click', function(event) {
+                    if (!event.target.closest('#file-dropdown')) {
+                        fileMenu.classList.remove('open');
+                    }
+                });
+                
+                // File menu items
+                newBtn.addEventListener('click', createNewProject);
+                saveBtn.addEventListener('click', saveProject);
+                loadBtn.addEventListener('click', openLoadModal);
+                exportBtn.addEventListener('click', exportProject);
+                
+                // Run button
+                runBtn.addEventListener('click', updatePreview);
+                
+                // Tabs
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        setActiveTab(this.dataset.target);
+                    });
+                });
+                
+                // Theme select
+                themeSelect.addEventListener('change', function() {
+                    const theme = this.value;
+                    htmlEditor.setOption('theme', theme);
+                    cssEditor.setOption('theme', theme);
+                    jsEditor.setOption('theme', theme);
+                });
+                
+                // Font size select
+                fontSizeSelect.addEventListener('change', function() {
+                    const fontSize = this.value;
+                    
+                    document.querySelectorAll('.CodeMirror').forEach(editor => {
+                        editor.style.fontSize = fontSize;
+                    });
+                });
+                
+                // Resize handle
+                let isResizing = false;
+                let initialWidth, initialX;
+                
+                resizeHandle.addEventListener('mousedown', function(e) {
+                    isResizing = true;
+                    initialWidth = previewContainer.offsetWidth;
+                    initialX = e.clientX;
+                    document.body.style.cursor = 'col-resize';
+                });
+                
+                document.addEventListener('mousemove', function(e) {
+                    if (!isResizing) return;
+                    
+                    const mainContainer = document.querySelector('.main-container');
+                    const deltaX = initialX - e.clientX;
+                    const newWidth = initialWidth + deltaX;
+                    
+                    // Minimum width for preview container
+                    if (newWidth > 200 && newWidth < mainContainer.offsetWidth - 300) {
+                        previewContainer.style.flex = 'none';
+                        previewContainer.style.width = newWidth + 'px';
+                    }
+                });
+                
+                document.addEventListener('mouseup', function() {
+                    isResizing = false;
+                    document.body.style.cursor = '';
+                });
+                
+                // Preview controls
+                darkModeBtn.addEventListener('click', function() {
+                    previewFrame.classList.toggle('dark-frame');
+                    
+                    const isDark = previewFrame.classList.contains('dark-frame');
+                    darkModeBtn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                    
+                    // Update preview frame background
+                    if (isDark) {
+                        previewFrame.contentDocument.body.style.backgroundColor = '#121212';
+                        previewFrame.contentDocument.body.style.color = '#e0e0e0';
+                    } else {
+                        previewFrame.contentDocument.body.style.backgroundColor = '';
+                        previewFrame.contentDocument.body.style.color = '';
+                    }
+                });
+                
+                reloadBtn.addEventListener('click', updatePreview);
+                
+                newWindowBtn.addEventListener('click', function() {
+                    const htmlContent = htmlEditor.getValue();
+                    const cssContent = cssEditor.getValue();
+                    const jsContent = jsEditor.getValue();
+                    
+                    // Create complete HTML document
+                    const content = `
+                        ${htmlContent}
+                        <style>${cssContent}</style>
+                        <script>${jsContent}</script>
+                    `;
+                    
+                    // Open in new window
+                    const newWindow = window.open('', '_blank');
+                    newWindow.document.open();
+                    newWindow.document.write(content);
+                    newWindow.document.close();
+                });
+                
+                togglePanelBtn.addEventListener('click', togglePreviewPanel);
+                
+                // Save modal
+                saveModalClose.addEventListener('click', closeSaveModal);
+                saveModalCancel.addEventListener('click', closeSaveModal);
+                saveModalSave.addEventListener('click', saveProjectFromModal);
+                
+                // Load modal
+                loadModalClose.addEventListener('click', closeLoadModal);
+                loadModalCancel.addEventListener('click', closeLoadModal);
+                
+                // Set up keyboard shortcuts
+                document.addEventListener('keydown', function(e) {
+                    // Ctrl+S: Save
+                    if (e.ctrlKey && e.key === 's') {
+                        e.preventDefault();
+                        saveProject();
+                    }
+                    
+                    // Ctrl+N: New Project
+                    if (e.ctrlKey && e.key === 'n') {
+                        e.preventDefault();
+                        createNewProject();
+                    }
+                    
+                    // Ctrl+R: Run
+                    if (e.ctrlKey && e.key === 'r') {
+                        e.preventDefault();
+                        updatePreview();
+                    }
+                    
+                    // Ctrl+E: Export
+                    if (e.ctrlKey && e.key === 'e') {
+                        e.preventDefault();
+                        exportProject();
+                    }
+                });
+                
+                // Auto-update preview
+                let debounceTimeout;
+                
+                function debounceUpdate() {
+                    clearTimeout(debounceTimeout);
+                    debounceTimeout = setTimeout(updatePreview, 1000);
+                }
+                
+                htmlEditor.on('change', debounceUpdate);
+                cssEditor.on('change', debounceUpdate);
+                jsEditor.on('change', debounceUpdate);
+                
+                // Load settings from localStorage
+                const savedTheme = localStorage.getItem('codePlayground_theme');
+                const savedFontSize = localStorage.getItem('codePlayground_fontSize');
+                
+                if (savedTheme) {
+                    themeSelect.value = savedTheme;
+                    htmlEditor.setOption('theme', savedTheme);
+                    cssEditor.setOption('theme', savedTheme);
+                    jsEditor.setOption('theme', savedTheme);
+                }
+                
+                if (savedFontSize) {
+                    fontSizeSelect.value = savedFontSize;
+                    document.querySelectorAll('.CodeMirror').forEach(editor => {
+                        editor.style.fontSize = savedFontSize;
+                    });
+                }
+                
+                // Save settings to localStorage
+                themeSelect.addEventListener('change', function() {
+                    localStorage.setItem('codePlayground_theme', this.value);
+                });
+                
+                fontSizeSelect.addEventListener('change', function() {
+                    localStorage.setItem('codePlayground_fontSize', this.value);
+                });
+            }
+            
+            // Initialize app
+            init();
+        });
+    </script>
+</body>
+</html>

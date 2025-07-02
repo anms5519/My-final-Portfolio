@@ -1,0 +1,159 @@
+/* Utility Classes and Common Styles */
+
+.container {
+    width: 100%;
+    max-width: 120vh;
+    margin: 0 auto;
+    padding: 0 1.5vh;
+}
+
+.section {
+    padding: var(--section-padding);
+    position: relative;
+    overflow: hidden;
+}
+
+.section-title {
+    position: relative;
+    display: inline-block;
+    font-size: 2.5vh;
+    margin-bottom: 2.5vh;
+    text-transform: uppercase;
+    letter-spacing: .1vh;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1vh;
+    width: 6vh;
+    height: .4vh;
+    background: var(--gradient-primary);
+    border-radius: .2vh;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75vh 2vh;
+    border-radius: 3vh;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .1vh;
+    cursor: pointer;
+    transition: transform var(--anim-speed-fast) cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow var(--anim-speed-fast) cubic-bezier(0.4, 0, 0.2, 1),
+        background-color var(--anim-speed-fast) cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    position: relative;
+    overflow: hidden;
+    font-family: var(--font-family-primary);
+    font-size: 0.875vh; /* Using vh */
+}
+
+.btn:hover {
+    transform: translateY(-0.3vh) scale(1.02);
+}
+
+.glow-btn {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: 0 .5vh 1.5vh rgba(138, 79, 255, 0.3); /* Hardcoded color, should use variable */
+}
+
+.glow-btn:hover {
+    box-shadow: 0 0.7vh 2vh rgba(138, 79, 255, 0.5); /* Hardcoded color, should use variable */
+}
+
+.outline-btn {
+    background: transparent;
+    color: var(--primary-color);
+    border: 0.2vh solid var(--primary-color);
+}
+
+.outline-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.accent-text {
+    background: var(--gradient-primary); /* This seems inconsistent with other uses of accent-text */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Common Section Backgrounds */
+.about-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.05;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(circle at 10% 20%, rgba(var(--primary-color-rgb), 0.2) 0%, transparent 40%);
+}
+
+.skills-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.05;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(120deg, rgba(var(--accent-color-rgb), 0.2) 0%, transparent 70%);
+}
+
+.projects-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.05;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(circle at 90% 10%, rgba(var(--secondary-color-rgb), 0.2) 0%, transparent 50%);
+}
+
+.contact-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.1;
+    z-index: 0;
+    background: radial-gradient(circle at 10% 20%, var(--primary-color-transparent) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, var(--secondary-color-transparent) 0%, transparent 20%);
+}
+
+/* Dark mode specific overrides for common elements */
+[data-theme="dark"] .card-bg,
+[data-theme="dark"] .timeline-card,
+[data-theme="dark"] .skill-card,
+[data-theme="dark"] .project-card {
+    backdrop-filter: blur(1vh);
+    -webkit-backdrop-filter: blur(1vh);
+}
+
+[data-theme="dark"] .glow-btn {
+    text-shadow: 0 0 .8vh rgba(var(--primary-color-rgb), 0.5);
+}

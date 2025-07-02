@@ -1,0 +1,140 @@
+.linkedin-section {
+    background: var(--section-bg);
+    padding: 8vh 0;
+    position: relative;
+    overflow: hidden;
+}
+.linkedin-feed {
+    background: var(--card-bg);
+    border-radius: 1.2vh;
+    box-shadow: 0 1vh 3vh rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 80vh;
+    margin: 0 auto;
+}
+.feed-header {
+    padding: 2vh;
+    border-bottom: .1vh solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.profile-preview {
+    display: flex;
+    align-items: center;
+    gap: 1.5vh;
+}
+.linkedin-profile-image {
+    width: 6vh;
+    height: 6vh;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.profile-info h3 {
+    margin: 0 0 .5vh 0;
+    font-size: 1.2rem;
+}
+.profile-info p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-color-light);
+}
+.linkedin-follow-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .8vh;
+    background: #0077b5;
+    color: white;
+    text-decoration: none;
+    padding: .8vh 1.6vh;
+    border-radius: .4vh;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+.linkedin-follow-btn:hover {
+    background: #005e93;
+}
+.feed-content {
+    padding: 2vh;
+}
+.linkedin-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+}
+.linkedin-post {
+    border: .1vh solid var(--border-color);
+    border-radius: .8vh;
+    overflow: hidden;
+    background: var(--card-bg);
+    transition: all 0.3s ease;
+}
+.linkedin-post:hover {
+    transform: translateY(-.5vh);
+    box-shadow: 0 1vh 3vh rgba(0, 0, 0, 0.1);
+}
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: 1.2vh;
+    padding: 1.5vh;
+}
+.post-author-img {
+    width: 4.8vh;
+    height: 4.8vh;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.post-author {
+    font-weight: 600;
+    font-size: 1rem;
+}
+.post-date {
+    font-size: 0.85rem;
+    color: var(--text-color-light);
+}
+.post-content {
+    padding: 0 1.5vh 1.5vh;
+}
+.post-content p {
+    margin: 0;
+    line-height: 1.6;
+}
+.post-image {
+    max-height: 30vh;
+    overflow: hidden;
+}
+.post-image img {
+    width: 100%;
+    object-fit: cover;
+}
+.post-engagement {
+    padding: 1.2vh 1.5vh;
+    display: flex;
+    border-top: .1vh solid var(--border-color);
+    gap: 2vh;
+}
+.engagement-item {
+    display: flex;
+    align-items: center;
+    gap: .6vh;
+    color: var(--text-color-light);
+    font-size: 0.9rem;
+}
+.feed-footer {
+    padding: 2vh;
+    text-align: center;
+    border-top: .1vh solid var(--border-color);
+}
+.view-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .8vh;
+    color: #0077b5;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+.view-more-btn:hover {
+    text-decoration: underline;
+}

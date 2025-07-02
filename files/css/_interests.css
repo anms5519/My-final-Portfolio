@@ -1,0 +1,441 @@
+.interests-section {
+    position: relative;
+    overflow: hidden;
+    padding: 12vh 0;
+    background: linear-gradient(135deg, rgba(var(--bg-color-rgb), 0.7), rgba(var(--bg-color-rgb), 0.9)),
+        url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(138,79,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)" /></svg>');
+    background-attachment: fixed;
+    z-index: 0;
+}
+.interests-quote,
+.interests-particle-bg,
+.section-background {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+.interests-particle-bg {
+    background: radial-gradient(circle, rgba(138, 79, 255, 0.15) 0%, transparent 50%);
+    opacity: 0.4;
+}
+.interests-section .container {
+    position: relative;
+    z-index: 1;
+    max-width: 120vh;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+.section-title-container {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.section-title {
+    font-size: 3rem;
+    position: relative;
+    display: inline-block;
+    text-transform: uppercase;
+    color: var(--text-color, #333);
+}
+.section-title .title-icon {
+    margin-right: 0.5rem;
+    color: var(--primary-color, #6C63FF);
+    font-size: 3rem;
+    vertical-align: middle;
+}
+.section-title .title-text {
+    vertical-align: middle;
+}
+.section-title .accent-text {
+    color: var(--secondary-color, #FF6B81);
+}
+.title-particles {
+    position: absolute;
+    top: -1vh;
+    right: -1vh;
+    width: 5vh;
+    height: 5vh;
+}
+.section-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-color-light, #666);
+    margin-top: 0.5rem;
+}
+.legendary-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+.legendary-indicator .pulse-dot {
+    width: 1rem;
+    height: 1rem;
+    background: var(--primary-color, #6C63FF);
+    border-radius: 50%;
+    animation: pulse 2s infinite alternate;
+}
+@keyframes pulse {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(1.3);
+        opacity: 0.7;
+    }
+}
+.legendary-indicator .indicator-text {
+    font-size: 1.1rem;
+    color: var(--text-color, #333);
+}
+.interests-intro {
+    max-width: 80vh;
+    margin: 0 auto 3rem;
+    text-align: center;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-color, #333);
+}
+.interests-showcase-visual .visual-container {
+    position: relative;
+    margin: 3rem auto;
+    width: 100%;
+    max-width: 60vh;
+    height: 30vh;
+    overflow: hidden;
+}
+.floating-elements {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+.float-element {
+    font-size: 3rem;
+    color: var(--primary-color, #6C63FF);
+    opacity: 0.8;
+    animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(1vh, -1vh);
+    }
+}
+.interests-tabs-container {
+    margin: 3rem 0;
+}
+.interests-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.interest-tab {
+    position: relative;
+    background: transparent;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-color, #333);
+    cursor: pointer;
+    overflow: hidden;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+.interest-tab .tab-aura {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-primary);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+.interest-tab:hover,
+.interest-tab.active {
+    color: white;
+    transform: translateY(-.3vh);
+}
+.interest-tab:hover .tab-aura,
+.interest-tab.active .tab-aura {
+    opacity: 1;
+}
+.interest-tab i {
+    margin-right: 0.5rem;
+}
+.interest-tab .tab-highlight {
+    position: absolute;
+    bottom: -.5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2vh;
+    height: .3vh;
+    background: var(--primary-color);
+    border-radius: .3vh;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.interest-tab.active .tab-highlight {
+    opacity: 1;
+}
+.tabs-content {
+    margin-top: 2rem;
+}
+.tab-content {
+    display: none;
+    animation: fadeIn 0.5s ease forwards;
+}
+.tab-content.active {
+    display: block;
+}
+.interests-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30vh, 1fr));
+    gap: 2rem;
+}
+.interest-card {
+    position: relative;
+    background: rgba(var(--card-bg-rgb), 0.8);
+    backdrop-filter: blur(1.5vh);
+    -webkit-backdrop-filter: blur(1.5vh);
+    border-radius: 2vh;
+    overflow: hidden;
+    box-shadow: 0 1.5vh 3.5vh rgba(0, 0, 0, 0.1);
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        box-shadow 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: .1vh solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transform-style: preserve-3d;
+}
+.interest-card:hover {
+    transform: translateY(-1.5vh) rotateX(5deg) rotateY(5deg);
+    box-shadow: 0 3vh 6vh rgba(0, 0, 0, 0.1), 0 0 3vh rgba(138, 79, 255, 0.2);
+    border-color: rgba(138, 79, 255, 0.3);
+}
+.card-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--card-bg, #ffffff);
+    opacity: 0.9;
+    z-index: 0;
+}
+.interest-icon {
+    position: relative;
+    width: 7vh;
+    height: 7vh;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    margin: -3.5vh auto 2vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1vh 2vh rgba(138, 79, 255, 0.3);
+    z-index: 2;
+}
+.interest-icon i {
+    font-size: 1.8rem;
+    color: white;
+    text-shadow: 0 .2vh .5vh rgba(0, 0, 0, 0.2);
+    animation: pulse-scale 2s infinite alternate;
+}
+@keyframes pulse-scale {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.2);
+    }
+}
+.icon-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+.interest-card h3 {
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 1rem 1.5rem;
+    color: var(--text-color, #333);
+    transition: color 0.3s ease, transform 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+.interest-card:hover h3 {
+    color: var(--primary-color);
+    transform: translateY(-.5vh);
+}
+.interest-card p {
+    padding: 0 1.5rem;
+    text-align: center;
+    color: var(--text-color-light, #666);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    transition: color 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+.interest-card:hover p {
+    color: var(--text-color);
+}
+.interest-card-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(138, 79, 255, 0.2), transparent);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 1;
+}
+.interest-card:hover .interest-card-glow {
+    opacity: 1;
+}
+.card-shine {
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transform: skewX(-25deg);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 2;
+}
+.interest-card:hover .card-shine {
+    opacity: 0.6;
+    animation: shine 1.5s forwards;
+}
+@keyframes shine {
+    0% {
+        left: -75%;
+    }
+    100% {
+        left: 125%;
+    }
+}
+.interests-quote blockquote {
+    margin: 3rem auto;
+    padding: 1rem 2rem;
+    max-width: 80vh;
+    font-size: 1.3rem;
+    line-height: 1.8;
+    font-style: italic;
+    color: var(--text-color-light, #666);
+    border-left: .4vh solid var(--primary-color);
+}
+.interests-quote cite {
+    display: block;
+    text-align: right;
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: var(--text-color, #333);
+}
+.hobby-categories {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+.hobby-category {
+    text-align: center;
+    width: 15vh;
+}
+.hobby-category-icon {
+    width: 7vh;
+    height: 7vh;
+    border-radius: 50%;
+    background-color: var(--card-bg);
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--card-shadow);
+    border: .1vh solid var(--card-border);
+    transition: all 0.3s ease;
+}
+.hobby-category-icon i {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+.hobby-category:hover .hobby-category-icon {
+    transform: translateY(-.5vh);
+    box-shadow: 0 1.5vh 3vh rgba(0, 0, 0, 0.15);
+}
+.hobby-category:hover .hobby-category-icon i {
+    transform: scale(1.2);
+}
+.hobby-category-title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+.hobby-category-count {
+    font-size: 0.8rem;
+    color: var(--text-color-light);
+}
+.fun-facts {
+    max-width: 100vh;
+    margin: 4rem auto 0;
+}
+.fun-facts-title {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--text-color);
+}
+.fun-facts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20vh, 1fr));
+    gap: 1.5rem;
+}
+.fun-fact {
+    background-color: var(--card-bg);
+    border-radius: 1.5vh;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: var(--card-shadow);
+    border: .1vh solid var(--card-border);
+    transition: all 0.3s ease;
+}
+.fun-fact:hover {
+    transform: translateY(-.5vh);
+    box-shadow: 0 1.5vh 3vh rgba(0, 0, 0, 0.15);
+}
+.fun-fact-icon {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+.fun-fact-text {
+    color: var(--text-color);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+.fun-fact-highlight {
+    color: var(--primary-color);
+    font-weight: 600;
+}

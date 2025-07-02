@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Finder</title>
+    <style>
+        :root {
+            --primary-color: #6b7b9c;
+            --secondary-color: #4ecca3;
+            --dark-color: #1f243a;
+            --darker-color: #12151e;
+            --light-color: #e0e0e0;
+            --accent-color: #ff8c42;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(78, 204, 163, 0.05) 0%, transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(107, 123, 156, 0.05) 0%, transparent 30%);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .intro {
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .search-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 1rem;
+            padding-left: 3rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--light-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(78, 204, 163, 0.3);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.2rem;
+        }
+        
+        .search-btn {
+            padding: 1rem 2rem;
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .search-btn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .filter-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .filter-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+        
+        .filter-select {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--light-color);
+            font-size: 1rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23e0e0e0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.8rem center;
+            background-size: 1.2rem;
+            padding-right: 2.5rem;
+        }
+        
+        .filter-select:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+        
+        .tag-container {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tag {
+            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .tag:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .tag-close {
+            background: none;
+            border: none;
+            color: var(--light-color);
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .results-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .results-count {
+            font-size: 0.9rem;
+        }
+        
+        .sort-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .sort-label {
+            font-size: 0.9rem;
+        }
+        
+        .sort-select {
+            padding: 0.4rem 0.8rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            color: var(--light-color);
+            font-size: 0.9rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23e0e0e0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            background-size: 0.8rem;
+            padding-right: 1.8rem;
+        }
+        
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .recipe-card {
+            background: linear-gradient(135deg, rgba(31, 36, 58, 0.95), rgba(18, 21, 30, 0.98));
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+            border-color: rgba(78, 204, 163, 0.3);
+        }
+        
+        .recipe-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .recipe-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .recipe-card:hover .recipe-image img {
+            transform: scale(1.05);
+        }
+        
+        .recipe-time {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            padding: 0.4rem 0.8rem;
+            background-color: rgba(18, 21, 30, 0.8);
+            color: var(--light-color);
+            border-radius: 5px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .recipe-difficulty {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 0.4rem 0.8rem;
+            color: var(--light-color);
+            border-radius: 5px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .easy {
+            background-color: rgba(46, 204, 113, 0.8);
+        }
+        
+        .medium {
+            background-color: rgba(52, 152, 219, 0.8);
+        }
+        
+        .hard {
+            background-color: rgba(231, 76, 60, 0.8);
+        }
+        
+        .recipe-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .recipe-title {
+            font-size: 1.3rem;
+            color: var(--light-color);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+        
+        .recipe-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            flex: 1;
+        }
+        
+        .recipe-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .recipe-cuisine {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .recipe-tags {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .recipe-tag {
+            padding: 0.3rem 0.6rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .recipe-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .recipe-btn {
+            flex: 1;
+            padding: 0.6rem 0;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+            transition: all 0.3s ease;
+        }
+        
+        .view-btn {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+        }
+        
+        .view-btn:hover {
+            background-color: var(--accent-color);
+        }
+        
+        .save-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--light-color);
+        }
+        
+        .save-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .saved {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+        }
+        
+        .load-more {
+            display: block;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--light-color);
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .load-more:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .recipe-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .recipe-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, rgba(31, 36, 58, 0.95), rgba(18, 21, 30, 0.98));
+            border-radius: 10px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow: auto;
+            position: relative;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        
+        .recipe-modal.show .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--light-color);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            background-color: var(--accent-color);
+            transform: rotate(90deg);
+        }
+        
+        .modal-header {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .modal-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .modal-header-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(transparent, rgba(18, 21, 30, 0.8) 50%, rgba(18, 21, 30, 1));
+            padding: 5rem 2rem 1.5rem;
+        }
+        
+        .modal-title {
+            font-size: 2rem;
+            color: var(--light-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .modal-meta {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        .modal-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .modal-body {
+            padding: 2rem;
+        }
+        
+        .modal-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .modal-section {
+            margin-bottom: 2rem;
+        }
+        
+        .modal-section-title {
+            font-size: 1.3rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .ingredients-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.8rem;
+        }
+        
+        .ingredient-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+        }
+        
+        .ingredient-checkbox {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        
+        .ingredient-checkbox:checked {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .ingredient-checkbox:checked::after {
+            content: '✓';
+            font-size: 12px;
+            color: var(--dark-color);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .ingredient-text {
+            flex: 1;
+            transition: all 0.2s ease;
+        }
+        
+        .ingredient-checkbox:checked + .ingredient-text {
+            text-decoration: line-through;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .instructions-list {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+        
+        .instruction-item {
+            position: relative;
+            margin-bottom: 1.5rem;
+            padding-left: 3rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .instruction-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .instruction-item::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .nutrition-item {
+            padding: 1rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .nutrition-value {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.3rem;
+        }
+        
+        .nutrition-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .modal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .modal-tag {
+            padding: 0.4rem 0.8rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .modal-btn {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .print-btn {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+        }
+        
+        .print-btn:hover {
+            background-color: var(--accent-color);
+        }
+        
+        .share-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--light-color);
+        }
+        
+        .share-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .loading {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--secondary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 3rem 0;
+        }
+        
+        .no-results-icon {
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.2);
+            margin-bottom: 1rem;
+        }
+        
+        .no-results-message {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+        }
+        
+        .no-results-tips {
+            max-width: 500px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .tips-list {
+            list-style: none;
+            margin-top: 1rem;
+            text-align: left;
+        }
+        
+        .tips-list li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+        
+        .tips-list li::before {
+            content: '•';
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .search-container {
+                flex-direction: column;
+            }
+            
+            .recipe-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .modal-title {
+                font-size: 1.5rem;
+            }
+            
+            .modal-meta {
+                gap: 1rem;
+            }
+            
+            .modal-body {
+                padding: 1.5rem;
+            }
+            
+            .ingredients-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .nutrition-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .modal-header {
+                height: 180px;
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Recipe Finder</h1>
+            <p class="intro">Discover delicious recipes based on ingredients you have, dietary preferences, or cuisine types. Find the perfect meal for any occasion!</p>
+        </header>
+        
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="search-input" class="search-input" placeholder="Search by recipe name or ingredients...">
+            </div>
+            <button id="search-btn" class="search-btn">
+                <i class="fas fa-utensils"></i>
+                Find Recipes
+            </button>
+        </div>
+        
+        <div class="filter-container">
+            <div class="filter-group">
+                <label class="filter-label">Cuisine Type</label>
+                <select id="cuisine-filter" class="filter-select">
+                    <option value="">All Cuisines</option>
+                    <option value="italian">Italian</option>
+                    <option value="mexican">Mexican</option>
+                    <option value="indian">Indian</option>
+                    <option value="chinese">Chinese</option>
+                    <option value="japanese">Japanese</option>
+                    <option value="french">French</option>
+                    <option value="thai">Thai</option>
+                    <option value="mediterranean">Mediterranean</option>
+                    <option value="american">American</option>
+                    <option value="greek">Greek</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label class="filter-label">Diet Type</label>
+                <select id="diet-filter" class="filter-select">
+                    <option value="">All Diets</option>
+                    <option value="vegetarian">Vegetarian</option>
+                    <option value="vegan">Vegan</option>
+                    <option value="gluten-free">Gluten-Free</option>
+                    <option value="dairy-free">Dairy-Free</option>
+                    <option value="keto">Keto</option>
+                    <option value="paleo">Paleo</option>
+                    <option value="low-carb">Low Carb</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label class="filter-label">Meal Type</label>
+                <select id="meal-filter" class="filter-select">
+                    <option value="">All Meals</option>
+                    <option value="breakfast">Breakfast</option>
+                    <option value="lunch">Lunch</option>
+                    <option value="dinner">Dinner</option>
+                    <option value="appetizer">Appetizer</option>
+                    <option value="dessert">Dessert</option>
+                    <option value="snack">Snack</option>
+                    <option value="soup">Soup</option>
+                    <option value="salad">Salad</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label class="filter-label">Max Cooking Time</label>
+                <select id="time-filter" class="filter-select">
+                    <option value="">Any Time</option>
+                    <option value="15">15 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="45">45 minutes</option>
+                    <option value="60">1 hour</option>
+                    <option value="120">2 hours</option>
+                </select>
+            </div>
+        </div>
+        
+        <div id="tag-container" class="tag-container">
+            <!-- Tags will be added here dynamically -->
+        </div>
+        
+        <div id="results-info" class="results-info" style="display: none;">
+            <div id="results-count" class="results-count">Showing 12 recipes</div>
+            <div class="sort-container">
+                <span class="sort-label">Sort by:</span>
+                <select id="sort-select" class="sort-select">
+                    <option value="relevance">Relevance</option>
+                    <option value="rating">Rating</option>
+                    <option value="time-asc">Time (Low to High)</option>
+                    <option value="time-desc">Time (High to Low)</option>
+                </select>
+            </div>
+        </div>
+        
+        <div id="recipe-grid" class="recipe-grid">
+            <!-- Recipe cards will be added here dynamically -->
+        </div>
+        
+        <div id="loading" class="loading" style="display: none;">
+            <div class="loading-spinner"></div>
+        </div>
+        
+        <div id="no-results" class="no-results" style="display: none;">
+            <div class="no-results-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <h2 class="no-results-message">No recipes found</h2>
+            <div class="no-results-tips">
+                Try adjusting your search criteria:
+                <ul class="tips-list">
+                    <li>Use more general search terms</li>
+                    <li>Remove some filters</li>
+                    <li>Check your spelling</li>
+                    <li>Try searching for a different ingredient or dish</li>
+                </ul>
+            </div>
+        </div>
+        
+        <button id="load-more" class="load-more" style="display: none;">Load More Recipes</button>
+    </div>
+    
+    <!-- Recipe Modal -->
+    <div id="recipe-modal" class="recipe-modal">
+        <div class="modal-content">
+            <button id="modal-close" class="modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="modal-header">
+                <img id="modal-image" src="https://placehold.co/600x400/1f243a/4ecca3?text=RECIPE+IMAGE" alt="Recipe">
+                <div class="modal-header-overlay">
+                    <h2 id="modal-title" class="modal-title">Recipe Title</h2>
+                    <div class="modal-meta">
+                        <div class="modal-meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span id="modal-time">30 mins</span>
+                        </div>
+                        <div class="modal-meta-item">
+                            <i class="fas fa-utensils"></i>
+                            <span id="modal-cuisine">Italian</span>
+                        </div>
+                        <div class="modal-meta-item">
+                            <i class="fas fa-signal"></i>
+                            <span id="modal-difficulty">Medium</span>
+                        </div>
+                        <div class="modal-meta-item">
+                            <i class="fas fa-user-friends"></i>
+                            <span id="modal-servings">4 servings</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-body">
+                <p id="modal-description" class="modal-description">Recipe description goes here...</p>
+                
+                <div class="modal-section">
+                    <h3 class="modal-section-title">
+                        <i class="fas fa-shopping-basket"></i>
+                        Ingredients
+                    </h3>
+                    <ul id="ingredients-list" class="ingredients-list">
+                        <!-- Ingredients will be added here dynamically -->
+                    </ul>
+                </div>
+                
+                <div class="modal-section">
+                    <h3 class="modal-section-title">
+                        <i class="fas fa-list-ol"></i>
+                        Instructions
+                    </h3>
+                    <ol id="instructions-list" class="instructions-list">
+                        <!-- Instructions will be added here dynamically -->
+                    </ol>
+                </div>
+                
+                <div class="modal-section">
+                    <h3 class="modal-section-title">
+                        <i class="fas fa-chart-pie"></i>
+                        Nutrition Information
+                    </h3>
+                    <div id="nutrition-grid" class="nutrition-grid">
+                        <!-- Nutrition info will be added here dynamically -->
+                    </div>
+                </div>
+                
+                <div id="modal-tags" class="modal-tags">
+                    <!-- Tags will be added here dynamically -->
+                </div>
+                
+                <div class="modal-actions">
+                    <button id="print-btn" class="modal-btn print-btn">
+                        <i class="fas fa-print"></i>
+                        Print Recipe
+                    </button>
+                    <button id="share-btn" class="modal-btn share-btn">
+                        <i class="fas fa-share-alt"></i>
+                        Share Recipe
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const searchInput = document.getElementById('search-input');
+            const searchBtn = document.getElementById('search-btn');
+            const cuisineFilter = document.getElementById('cuisine-filter');
+            const dietFilter = document.getElementById('diet-filter');
+            const mealFilter = document.getElementById('meal-filter');
+            const timeFilter = document.getElementById('time-filter');
+            const tagContainer = document.getElementById('tag-container');
+            const resultsInfo = document.getElementById('results-info');
+            const resultsCount = document.getElementById('results-count');
+            const sortSelect = document.getElementById('sort-select');
+            const recipeGrid = document.getElementById('recipe-grid');
+            const loadingElement = document.getElementById('loading');
+            const noResultsElement = document.getElementById('no-results');
+            const loadMoreBtn = document.getElementById('load-more');
+            
+            // Modal Elements
+            const recipeModal = document.getElementById('recipe-modal');
+            const modalClose = document.getElementById('modal-close');
+            const modalImage = document.getElementById('modal-image');
+            const modalTitle = document.getElementById('modal-title');
+            const modalTime = document.getElementById('modal-time');
+            const modalCuisine = document.getElementById('modal-cuisine');
+            const modalDifficulty = document.getElementById('modal-difficulty');
+            const modalServings = document.getElementById('modal-servings');
+            const modalDescription = document.getElementById('modal-description');
+            const ingredientsList = document.getElementById('ingredients-list');
+            const instructionsList = document.getElementById('instructions-list');
+            const nutritionGrid = document.getElementById('nutrition-grid');
+            const modalTags = document.getElementById('modal-tags');
+            const printBtn = document.getElementById('print-btn');
+            const shareBtn = document.getElementById('share-btn');
+            
+            // App State
+            let recipes = [];
+            let filteredRecipes = [];
+            let activeFilters = {
+                search: '',
+                cuisine: '',
+                diet: '',
+                meal: '',
+                time: ''
+            };
+            let currentPage = 1;
+            let recipesPerPage = 12;
+            let totalResults = 0;
+            let currentSort = 'relevance';
+            let savedRecipes = JSON.parse(localStorage.getItem('savedRecipes')) || [];
+            
+            // Sample Recipes Data
+            const sampleRecipes = [
+                {
+                    id: 1,
+                    title: 'Classic Margherita Pizza',
+                    description: 'A simple and delicious Italian classic with fresh mozzarella, tomatoes, and basil on a crispy crust.',
+                    image: 'https://placehold.co/600x400/1f243a/4ecca3?text=MARGHERITA+PIZZA',
+                    time: 45,
+                    difficulty: 'easy',
+                    cuisine: 'Italian',
+                    servings: 4,
+                    meal_type: 'dinner',
+                    diet_type: ['vegetarian'],
+                    ingredients: [
+                        '1 pizza dough',
+                        '3 tbsp tomato sauce',
+                        '150g fresh mozzarella',
+                        '5-6 fresh basil leaves',
+                        '2 tbsp olive oil',
+                        'Salt and pepper to taste'
+                    ],
+                    instructions: [
+                        'Preheat oven to 475°F (245°C) with a pizza stone if available.',
+                        'Roll out the pizza dough on a floured surface to your desired thickness.',
+                        'Spread tomato sauce evenly over the dough, leaving a small border for the crust.',
+                        'Tear the mozzarella into pieces and distribute evenly over the sauce.',
+                        'Season with salt and pepper.',
+                        'Bake for 10-12 minutes or until the crust is golden and the cheese is bubbly.',
+                        'Remove from oven, top with fresh basil leaves and drizzle with olive oil.',
+                        'Slice and serve immediately.'
+                    ],
+                    nutrition: {
+                        calories: 285,
+                        fat: 12,
+                        carbs: 31,
+                        protein: 11,
+                        fiber: 2
+                    },
+                    tags: ['pizza', 'Italian', 'vegetarian', 'dinner']
+                },
+                {
+                    id: 2,
+                    title: 'Chicken Tikka Masala',
+                    description: 'Tender chicken pieces marinated in spices and yogurt, then simmered in a rich, creamy tomato sauce.',
+                    image: 'https://placehold.co/600x400/1f243a/ff8c42?text=CHICKEN+TIKKA+MASALA',
+                    time: 60,
+                    difficulty: 'medium',
+                    cuisine: 'Indian',
+                    servings: 4,
+                    meal_type: 'dinner',
+                    diet_type: [],
+                    ingredients: [
+                        '700g chicken breast, cut into chunks',
+                        '1 cup plain yogurt',
+                        '2 tbsp lemon juice',
+                        '2 tsp ground cumin',
+                        '2 tsp ground coriander',
+                        '2 tsp garam masala',
+                        '1 tsp turmeric',
+                        '1 tsp cayenne pepper',
+                        '2 cloves garlic, minced',
+                        '1 tbsp ginger, grated',
+                        '2 tbsp vegetable oil',
+                        '1 onion, finely chopped',
+                        '1 can (400g) tomato sauce',
+                        '1 cup heavy cream',
+                        'Fresh cilantro for garnish',
+                        'Salt to taste'
+                    ],
+                    instructions: [
+                        'In a large bowl, combine yogurt, lemon juice, cumin, coriander, 1 tsp of garam masala, turmeric, cayenne, garlic, and ginger. Add chicken pieces and marinate for at least 1 hour, preferably overnight.',
+                        'Preheat oven to 450°F (230°C). Thread chicken onto skewers and place on a baking sheet. Bake for 15 minutes or until chicken is cooked through.',
+                        'While chicken is cooking, heat oil in a large pan over medium heat. Add onion and cook until soft, about 5 minutes.',
+                        'Add tomato sauce and bring to a simmer. Cook for 10-15 minutes until sauce thickens.',
+                        'Stir in cream and remaining garam masala. Simmer for 5 minutes.',
+                        'Add cooked chicken to the sauce and simmer for another 5 minutes.',
+                        'Season with salt to taste and garnish with fresh cilantro.',
+                        'Serve hot with rice or naan bread.'
+                    ],
+                    nutrition: {
+                        calories: 410,
+                        fat: 24,
+                        carbs: 12,
+                        protein: 36,
+                        fiber: 2
+                    },
+                    tags: ['chicken', 'Indian', 'spicy', 'curry', 'dinner']
+                },
+                {
+                    id: 3,
+                    title: 'Avocado Toast with Poached Egg',
+                    description: 'Creamy avocado spread on toasted bread, topped with perfectly poached eggs and a sprinkle of red pepper flakes.',
+                    image: 'https://placehold.co/600x400/1f243a/4ecca3?text=AVOCADO+TOAST',
+                    time: 15,
+                    difficulty: 'easy',
+                    cuisine: 'American',
+                    servings: 2,
+                    meal_type: 'breakfast',
+                    diet_type: ['vegetarian'],
+                    ingredients: [
+                        '2 slices whole grain bread',
+                        '1 ripe avocado',
+                        '2 eggs',
+                        '1 tbsp white vinegar',
+                        '1 tsp lemon juice',
+                        'Salt and pepper to taste',
+                        'Red pepper flakes',
+                        'Fresh herbs (optional)'
+                    ],
+                    instructions: [
+                        'Toast the bread slices until golden and crispy.',
+                        'Meanwhile, bring a pot of water to a gentle simmer. Add vinegar.',
+                        'Crack an egg into a small bowl, then slowly slide it into the simmering water. Repeat with the second egg.',
+                        'Cook eggs for about 3 minutes for a runny yolk, or longer if preferred.',
+                        'While eggs are cooking, mash the avocado with lemon juice, salt, and pepper.',
+                        'Spread the avocado mixture onto the toast slices.',
+                        'Remove poached eggs with a slotted spoon and place on top of the avocado toast.',
+                        'Sprinkle with red pepper flakes and fresh herbs if using. Serve immediately.'
+                    ],
+                    nutrition: {
+                        calories: 280,
+                        fat: 18,
+                        carbs: 20,
+                        protein: 12,
+                        fiber: 8
+                    },
+                    tags: ['breakfast', 'avocado', 'eggs', 'vegetarian', 'quick']
+                },
+                {
+                    id: 4,
+                    title: 'Beef and Broccoli Stir-Fry',
+                    description: 'Quick and flavorful stir-fry with tender beef slices and crisp broccoli in a savory sauce.',
+                    image: 'https://placehold.co/600x400/1f243a/6b7b9c?text=BEEF+AND+BROCCOLI',
+                    time: 30,
+                    difficulty: 'medium',
+                    cuisine: 'Chinese',
+                    servings: 4,
+                    meal_type: 'dinner',
+                    diet_type: [],
+                    ingredients: [
+                        '500g beef sirloin, thinly sliced',
+                        '1 head broccoli, cut into florets',
+                        '3 cloves garlic, minced',
+                        '1 tbsp ginger, grated',
+                        '3 tbsp vegetable oil',
+                        '1/4 cup soy sauce',
+                        '2 tbsp oyster sauce',
+                        '1 tbsp brown sugar',
+                        '1 tbsp cornstarch',
+                        '1/2 cup beef broth',
+                        '2 green onions, sliced',
+                        'Sesame seeds for garnish'
+                    ],
+                    instructions: [
+                        'In a small bowl, whisk together soy sauce, oyster sauce, brown sugar, cornstarch, and beef broth. Set aside.',
+                        'Heat 1 tbsp oil in a large wok or skillet over high heat. Add beef slices and stir-fry for 2-3 minutes until browned but not fully cooked. Remove and set aside.',
+                        'Add remaining oil to the pan. Add garlic and ginger, stir-fry for 30 seconds until fragrant.',
+                        'Add broccoli florets and stir-fry for 3-4 minutes until bright green and tender-crisp.',
+                        'Return beef to the pan. Pour the sauce over and stir well to combine.',
+                        'Cook for 2-3 minutes until the sauce thickens and coats the beef and broccoli evenly.',
+                        'Garnish with green onions and sesame seeds.',
+                        'Serve hot over steamed rice.'
+                    ],
+                    nutrition: {
+                        calories: 320,
+                        fat: 18,
+                        carbs: 15,
+                        protein: 28,
+                        fiber: 3
+                    },
+                    tags: ['beef', 'Chinese', 'stir-fry', 'dinner', 'quick']
+                },
+                {
+                    id: 5,
+                    title: 'Greek Salad',
+                    description: 'Fresh and vibrant salad with crisp vegetables, tangy feta cheese, and olives dressed in olive oil and lemon.',
+                    image: 'https://placehold.co/600x400/1f243a/e0e0e0?text=GREEK+SALAD',
+                    time: 15,
+                    difficulty: 'easy',
+                    cuisine: 'Greek',
+                    servings: 4,
+                    meal_type: 'salad',
+                    diet_type: ['vegetarian'],
+                    ingredients: [
+                        '1 large cucumber, chopped',
+                        '4 tomatoes, chopped',
+                        '1 red onion, thinly sliced',
+                        '1 green bell pepper, chopped',
+                        '200g feta cheese, cubed',
+                        '1 cup kalamata olives',
+                        '3 tbsp extra virgin olive oil',
+                        '1 tbsp red wine vinegar',
+                        '1 tsp dried oregano',
+                        'Salt and pepper to taste',
+                        'Fresh lemon juice',
+                        'Fresh herbs (optional)'
+                    ],
+                    instructions: [
+                        'In a large bowl, combine cucumber, tomatoes, red onion, and bell pepper.',
+                        'Add olives and toss gently.',
+                        'In a small bowl, whisk together olive oil, red wine vinegar, oregano, salt, and pepper.',
+                        'Pour the dressing over the salad and toss to coat.',
+                        'Sprinkle feta cheese on top and drizzle with fresh lemon juice.',
+                        'Garnish with fresh herbs if using.',
+                        'Serve immediately or refrigerate for 30 minutes to allow flavors to blend.'
+                    ],
+                    nutrition: {
+                        calories: 240,
+                        fat: 20,
+                        carbs: 12,
+                        protein: 8,
+                        fiber: 4
+                    },
+                    tags: ['salad', 'Greek', 'vegetarian', 'lunch', 'quick']
+                },
+                {
+                    id: 6,
+                    title: 'Chocolate Chip Cookies',
+                    description: 'Classic homemade cookies with a perfect balance of chewy centers and crisp edges, loaded with chocolate chips.',
+                    image: 'https://placehold.co/600x400/1f243a/ff8c42?text=CHOCOLATE+CHIP+COOKIES',
+                    time: 30,
+                    difficulty: 'easy',
+                    cuisine: 'American',
+                    servings: 24,
+                    meal_type: 'dessert',
+                    diet_type: ['vegetarian'],
+                    ingredients: [
+                        '1 cup (225g) unsalted butter, softened',
+                        '3/4 cup (150g) granulated sugar',
+                        '3/4 cup (165g) brown sugar, packed',
+                        '2 large eggs',
+                        '2 tsp vanilla extract',
+                        '2 1/4 cups (280g) all-purpose flour',
+                        '1 tsp baking soda',
+                        '1/2 tsp salt',
+                        '2 cups (350g) chocolate chips',
+                        '1 cup (100g) chopped nuts (optional)'
+                    ],
+                    instructions: [
+                        'Preheat oven to 375°F (190°C). Line baking sheets with parchment paper.',
+                        'In a large bowl, cream together butter, granulated sugar, and brown sugar until light and fluffy.',
+                        'Beat in eggs one at a time, then stir in vanilla.',
+                        'In a separate bowl, combine flour, baking soda, and salt. Gradually add to the butter mixture and mix well.',
+                        'Fold in chocolate chips and nuts if using.',
+                        'Drop by rounded tablespoons onto the prepared baking sheets, spacing cookies about 2 inches apart.',
+                        'Bake for 9-11 minutes or until golden brown around the edges but still soft in the center.',
+                        'Allow to cool on the baking sheets for 5 minutes before transferring to wire racks to cool completely.'
+                    ],
+                    nutrition: {
+                        calories: 180,
+                        fat: 10,
+                        carbs: 22,
+                        protein: 2,
+                        fiber: 1
+                    },
+                    tags: ['dessert', 'cookies', 'chocolate', 'baking', 'vegetarian']
+                },
+                {
+                    id: 7,
+                    title: 'Vegetable Pad Thai',
+                    description: 'Stir-fried rice noodles with tofu, vegetables, and a flavorful sauce topped with crushed peanuts and lime.',
+                    image: 'https://placehold.co/600x400/1f243a/4ecca3?text=VEGETABLE+PAD+THAI',
+                    time: 30,
+                    difficulty: 'medium',
+                    cuisine: 'Thai',
+                    servings: 4,
+                    meal_type: 'dinner',
+                    diet_type: ['vegetarian', 'vegan'],
+                    ingredients: [
+                        '8 oz (225g) rice noodles',
+                        '2 tbsp vegetable oil',
+                        '1 block (14 oz) firm tofu, cubed',
+                        '2 cloves garlic, minced',
+                        '1 red bell pepper, sliced',
+                        '2 carrots, julienned',
+                        '2 cups bean sprouts',
+                        '3 green onions, sliced',
+                        '3 tbsp soy sauce',
+                        '2 tbsp lime juice',
+                        '2 tbsp brown sugar',
+                        '1 tbsp sriracha (adjust to taste)',
+                        '1/4 cup chopped peanuts',
+                        'Fresh cilantro',
+                        'Lime wedges for serving'
+                    ],
+                    instructions: [
+                        'Soak rice noodles in hot water according to package instructions until softened. Drain and set aside.',
+                        'In a small bowl, whisk together soy sauce, lime juice, brown sugar, and sriracha.',
+                        'Heat oil in a large wok or skillet over medium-high heat. Add tofu and cook until golden, about 4-5 minutes. Remove and set aside.',
+                        'In the same pan, add garlic and stir-fry for 30 seconds until fragrant.',
+                        'Add bell pepper and carrots, stir-fry for 2-3 minutes until slightly softened.',
+                        'Add drained noodles and sauce to the pan. Toss to coat and cook for 2-3 minutes.',
+                        'Add bean sprouts, green onions, and cooked tofu. Stir to combine and cook for another minute.',
+                        'Serve hot, garnished with chopped peanuts, fresh cilantro, and lime wedges.'
+                    ],
+                    nutrition: {
+                        calories: 320,
+                        fat: 12,
+                        carbs: 45,
+                        protein: 14,
+                        fiber: 5
+                    },
+                    tags: ['noodles', 'Thai', 'vegetarian', 'vegan', 'dinner']
+                },
+                {
+                    id: 8,
+                    title: 'Spinach and Feta Stuffed Chicken Breast',
+                    description: 'Juicy chicken breasts stuffed with a flavorful mixture of spinach, feta, and herbs, then baked to perfection.',
+                    image: 'https://placehold.co/600x400/1f243a/6b7b9c?text=STUFFED+CHICKEN',
+                    time: 45,
+                    difficulty: 'medium',
+                    cuisine: 'Mediterranean',
+                    servings: 4,
+                    meal_type: 'dinner',
+                    diet_type: ['low-carb'],
+                    ingredients: [
+                        '4 chicken breasts',
+                        '2 cups fresh spinach, chopped',
+                        '1 cup feta cheese, crumbled',
+                        '2 cloves garlic, minced',
+                        '2 tbsp olive oil',
+                        '1 tsp dried oregano',
+                        '1 tsp lemon zest',
+                        'Salt and pepper to taste',
+                        '1 tbsp paprika',
+                        '1 tsp garlic powder',
+                        'Lemon slices for garnish'
+                    ],
+                    instructions: [
+                        'Preheat oven to 375°F (190°C).',
+                        'Create a pocket in each chicken breast by cutting horizontally through the thickest part, being careful not to cut all the way through.',
+                        'In a bowl, combine chopped spinach, feta cheese, minced garlic, 1 tbsp olive oil, oregano, lemon zest, salt, and pepper.',
+                        'Stuff each chicken breast with the spinach and feta mixture, then secure with toothpicks if needed.',
+                        'Season the outside of the chicken with salt, pepper, paprika, and garlic powder.',
+                        'Heat the remaining olive oil in an oven-safe skillet over medium-high heat. Sear the chicken breasts for 3-4 minutes on each side until golden.',
+                        'Transfer the skillet to the oven and bake for 15-20 minutes, or until the chicken reaches an internal temperature of 165°F (74°C).',
+                        'Remove from oven, let rest for 5 minutes, then serve garnished with lemon slices.'
+                    ],
+                    nutrition: {
+                        calories: 350,
+                        fat: 18,
+                        carbs: 3,
+                        protein: 42,
+                        fiber: 1
+                    },
+                    tags: ['chicken', 'Mediterranean', 'low-carb', 'dinner', 'high-protein']
+                },
+                {
+                    id: 9,
+                    title: 'Berry Smoothie Bowl',
+                    description: 'Thick and creamy smoothie bowl packed with mixed berries and topped with granola, fresh fruits, and seeds.',
+                    image: 'https://placehold.co/600x400/1f243a/e0e0e0?text=SMOOTHIE+BOWL',
+                    time: 10,
+                    difficulty: 'easy',
+                    cuisine: 'American',
+                    servings: 1,
+                    meal_type: 'breakfast',
+                    diet_type: ['vegetarian', 'vegan'],
+                    ingredients: [
+                        '1 cup frozen mixed berries',
+                        '1 frozen banana',
+                        '1/2 cup plant-based milk',
+                        '1 tbsp chia seeds',
+                        '1 tbsp maple syrup or honey (optional)',
+                        'Toppings: fresh berries, sliced banana, granola, coconut flakes, almond butter'
+                    ],
+                    instructions: [
+                        'Add frozen berries, banana, plant-based milk, chia seeds, and sweetener (if using) to a blender.',
+                        'Blend until smooth and creamy. The mixture should be thick enough to eat with a spoon.',
+                        'Pour into a bowl.',
+                        'Arrange toppings as desired.',
+                        'Serve immediately.'
+                    ],
+                    nutrition: {
+                        calories: 320,
+                        fat: 8,
+                        carbs: 60,
+                        protein: 6,
+                        fiber: 13
+                    },
+                    tags: ['breakfast', 'smoothie', 'vegetarian', 'vegan', 'quick']
+                },
+                {
+                    id: 10,
+                    title: 'Homemade Ramen Soup',
+                    description: 'Rich and flavorful broth with ramen noodles, soft-boiled eggs, and a variety of toppings for a comforting meal.',
+                    image: 'https://placehold.co/600x400/1f243a/ff8c42?text=RAMEN+SOUP',
+                    time: 60,
+                    difficulty: 'hard',
+                    cuisine: 'Japanese',
+                    servings: 4,
+                    meal_type: 'soup',
+                    diet_type: [],
+                    ingredients: [
+                        '8 cups chicken or vegetable broth',
+                        '4 cloves garlic, minced',
+                        '2 tbsp ginger, grated',
+                        '3 tbsp soy sauce',
+                        '1 tbsp miso paste',
+                        '1 tbsp sesame oil',
+                        '300g ramen noodles',
+                        '200g sliced cooked meat (chicken, pork, or beef)',
+                        '4 soft-boiled eggs, halved',
+                        '1 cup sliced mushrooms',
+                        '2 cups baby spinach',
+                        '4 green onions, sliced',
+                        'Nori sheets, cut into strips',
+                        'Sesame seeds',
+                        'Chili oil (optional)'
+                    ],
+                    instructions: [
+                        'In a large pot, bring broth to a simmer. Add garlic, ginger, soy sauce, miso paste, and sesame oil. Simmer for 20 minutes.',
+                        'Meanwhile, cook ramen noodles according to package instructions. Drain and set aside.',
+                        'Prepare toppings: soft-boil eggs, slice meat, sauté mushrooms until golden.',
+                        'To serve, place cooked noodles in bowls and ladle hot broth over them.',
+                        'Arrange meat, soft-boiled eggs, mushrooms, and spinach on top.',
+                        'Garnish with green onions, nori strips, sesame seeds, and chili oil if desired.',
+                        'Serve immediately while hot.'
+                    ],
+                    nutrition: {
+                        calories: 450,
+                        fat: 18,
+                        carbs: 48,
+                        protein: 28,
+                        fiber: 3
+                    },
+                    tags: ['soup', 'Japanese', 'ramen', 'dinner', 'comfort food']
+                },
+                {
+                    id: 11,
+                    title: 'Quinoa Salad with Roasted Vegetables',
+                    description: 'Nutritious salad with protein-rich quinoa and colorful roasted vegetables tossed in a zesty vinaigrette.',
+                    image: 'https://placehold.co/600x400/1f243a/4ecca3?text=QUINOA+SALAD',
+                    time: 40,
+                    difficulty: 'medium',
+                    cuisine: 'Mediterranean',
+                    servings: 4,
+                    meal_type: 'salad',
+                    diet_type: ['vegetarian', 'vegan', 'gluten-free'],
+                    ingredients: [
+                        '1 cup quinoa, rinsed',
+                        '2 cups vegetable broth',
+                        '1 red bell pepper, diced',
+                        '1 yellow bell pepper, diced',
+                        '1 zucchini, diced',
+                        '1 red onion, diced',
+                        '2 tbsp olive oil',
+                        '2 cloves garlic, minced',
+                        '1 tsp dried oregano',
+                        '1/2 cup cherry tomatoes, halved',
+                        '1/4 cup kalamata olives, pitted and sliced',
+                        '1/4 cup fresh parsley, chopped',
+                        '2 tbsp lemon juice',
+                        '3 tbsp olive oil',
+                        '1 tsp Dijon mustard',
+                        'Salt and pepper to taste'
+                    ],
+                    instructions: [
+                        'Preheat oven to 425°F (220°C). Line a baking sheet with parchment paper.',
+                        'In a saucepan, bring quinoa and vegetable broth to a boil. Reduce heat, cover, and simmer for 15 minutes until liquid is absorbed. Remove from heat and let stand for 5 minutes, then fluff with a fork.',
+                        'Toss bell peppers, zucchini, and red onion with olive oil, garlic, oregano, salt, and pepper. Spread on the prepared baking sheet.',
+                        'Roast vegetables for 20 minutes, stirring halfway through, until tender and slightly caramelized.',
+                        'In a small bowl, whisk together lemon juice, olive oil, Dijon mustard, salt, and pepper to make the dressing.',
+                        'In a large bowl, combine cooked quinoa, roasted vegetables, cherry tomatoes, olives, and parsley.',
+                        'Pour dressing over the salad and toss to combine.',
+                        'Serve warm or at room temperature.'
+                    ],
+                    nutrition: {
+                        calories: 320,
+                        fat: 17,
+                        carbs: 38,
+                        protein: 8,
+                        fiber: 6
+                    },
+                    tags: ['quinoa', 'salad', 'vegetarian', 'vegan', 'gluten-free', 'lunch']
+                },
+                {
+                    id: 12,
+                    title: 'Classic French Onion Soup',
+                    description: 'Rich and savory caramelized onion soup topped with crusty bread and melted Gruyère cheese.',
+                    image: 'https://placehold.co/600x400/1f243a/6b7b9c?text=ONION+SOUP',
+                    time: 90,
+                    difficulty: 'medium',
+                    cuisine: 'French',
+                    servings: 4,
+                    meal_type: 'soup',
+                    diet_type: ['vegetarian'],
+                    ingredients: [
+                        '4 large onions, thinly sliced',
+                        '3 tbsp butter',
+                        '1 tbsp olive oil',
+                        '1 tsp sugar',
+                        '2 cloves garlic, minced',
+                        '1 tbsp flour',
+                        '1 cup dry white wine',
+                        '6 cups beef or vegetable broth',
+                        '2 bay leaves',
+                        '2 sprigs fresh thyme',
+                        'Salt and pepper to taste',
+                        '4 slices crusty French bread',
+                        '2 cups Gruyère cheese, grated',
+                        'Fresh parsley for garnish'
+                    ],
+                    instructions: [
+                        'Heat butter and olive oil in a large pot over medium-low heat. Add onions and sugar, cook for 30-40 minutes, stirring occasionally, until onions are deeply caramelized.',
+                        'Add garlic and cook for 1 minute until fragrant.',
+                        'Sprinkle flour over the onions and stir for 1-2 minutes.',
+                        'Add wine and scrape up any browned bits from the bottom of the pot. Simmer until wine is reduced by half.',
+                        'Add broth, bay leaves, and thyme. Bring to a simmer, then reduce heat and cook for 30 minutes. Season with salt and pepper.',
+                        'Preheat broiler. Ladle soup into oven-safe bowls placed on a baking sheet.',
+                        'Top each bowl with a slice of bread and a generous amount of grated Gruyère.',
+                        'Broil for 2-3 minutes until cheese is melted and golden. Garnish with fresh parsley and serve hot.'
+                    ],
+                    nutrition: {
+                        calories: 380,
+                        fat: 22,
+                        carbs: 25,
+                        protein: 16,
+                        fiber: 3
+                    },
+                    tags: ['soup', 'French', 'comfort food', 'vegetarian', 'dinner']
+                }
+            ];
+            
+            // Initialize App
+            function init() {
+                recipes = sampleRecipes;
+                filteredRecipes = [...recipes];
+                
+                // Initial render
+                renderRecipes();
+                
+                // Event listeners
+                searchBtn.addEventListener('click', handleSearch);
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        handleSearch();
+                    }
+                });
+                
+                cuisineFilter.addEventListener('change', applyFilters);
+                dietFilter.addEventListener('change', applyFilters);
+                mealFilter.addEventListener('change', applyFilters);
+                timeFilter.addEventListener('change', applyFilters);
+                
+                sortSelect.addEventListener('change', function() {
+                    currentSort = this.value;
+                    sortRecipes();
+                    renderRecipes();
+                });
+                
+                loadMoreBtn.addEventListener('click', loadMoreRecipes);
+                
+                // Modal events
+                modalClose.addEventListener('click', closeModal);
+                recipeModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeModal();
+                    }
+                });
+                
+                printBtn.addEventListener('click', printRecipe);
+                shareBtn.addEventListener('click', shareRecipe);
+            }
+            
+            // Handle Search
+            function handleSearch() {
+                const searchTerm = searchInput.value.trim().toLowerCase();
+                if (searchTerm !== activeFilters.search) {
+                    activeFilters.search = searchTerm;
+                    addSearchTag(searchTerm);
+                    currentPage = 1;
+                    applyFilters();
+                }
+            }
+            
+            // Apply Filters
+            function applyFilters() {
+                activeFilters.cuisine = cuisineFilter.value;
+                activeFilters.diet = dietFilter.value;
+                activeFilters.meal = mealFilter.value;
+                activeFilters.time = timeFilter.value;
+                
+                updateFilterTags();
+                
+                // Show loading
+                recipeGrid.innerHTML = '';
+                loadingElement.style.display = 'block';
+                noResultsElement.style.display = 'none';
+                
+                // Simulate API delay
+                setTimeout(() => {
+                    filterRecipes();
+                    
+                    // Hide loading
+                    loadingElement.style.display = 'none';
+                    
+                    if (filteredRecipes.length === 0) {
+                        noResultsElement.style.display = 'block';
+                        resultsInfo.style.display = 'none';
+                        loadMoreBtn.style.display = 'none';
+                    } else {
+                        renderRecipes();
+                    }
+                }, 500);
+            }
+            
+            // Filter Recipes
+            function filterRecipes() {
+                filteredRecipes = recipes.filter(recipe => {
+                    // Search filter
+                    if (activeFilters.search && 
+                        !recipe.title.toLowerCase().includes(activeFilters.search) && 
+                        !recipe.description.toLowerCase().includes(activeFilters.search) && 
+                        !recipe.ingredients.some(i => i.toLowerCase().includes(activeFilters.search)) &&
+                        !recipe.tags.some(t => t.toLowerCase().includes(activeFilters.search))) {
+                        return false;
+                    }
+                    
+                    // Cuisine filter
+                    if (activeFilters.cuisine && recipe.cuisine.toLowerCase() !== activeFilters.cuisine.toLowerCase()) {
+                        return false;
+                    }
+                    
+                    // Diet filter
+                    if (activeFilters.diet && !recipe.diet_type.includes(activeFilters.diet)) {
+                        return false;
+                    }
+                    
+                    // Meal filter
+                    if (activeFilters.meal && recipe.meal_type !== activeFilters.meal) {
+                        return false;
+                    }
+                    
+                    // Time filter
+                    if (activeFilters.time && recipe.time > parseInt(activeFilters.time)) {
+                        return false;
+                    }
+                    
+                    return true;
+                });
+                
+                totalResults = filteredRecipes.length;
+                sortRecipes();
+            }
+            
+            // Sort Recipes
+            function sortRecipes() {
+                switch(currentSort) {
+                    case 'rating':
+                        // In a real app, we would sort by actual ratings
+                        filteredRecipes.sort((a, b) => (Math.random() - 0.5));
+                        break;
+                    case 'time-asc':
+                        filteredRecipes.sort((a, b) => a.time - b.time);
+                        break;
+                    case 'time-desc':
+                        filteredRecipes.sort((a, b) => b.time - a.time);
+                        break;
+                    case 'relevance':
+                    default:
+                        // In a real app, we would implement more sophisticated relevance sorting
+                        // For demo purposes, we'll keep the original order
+                        break;
+                }
+            }
+            
+            // Render Recipes
+            function renderRecipes() {
+                recipeGrid.innerHTML = '';
+                
+                const startIndex = 0;
+                const endIndex = Math.min(currentPage * recipesPerPage, filteredRecipes.length);
+                const recipesToShow = filteredRecipes.slice(startIndex, endIndex);
+                
+                recipesToShow.forEach(recipe => {
+                    const recipeCard = createRecipeCard(recipe);
+                    recipeGrid.appendChild(recipeCard);
+                });
+                
+                // Update results info
+                resultsInfo.style.display = 'flex';
+                resultsCount.textContent = `Showing ${endIndex} of ${totalResults} recipes`;
+                
+                // Show/hide load more button
+                if (endIndex < totalResults) {
+                    loadMoreBtn.style.display = 'block';
+                } else {
+                    loadMoreBtn.style.display = 'none';
+                }
+            }
+            
+            // Create Recipe Card
+            function createRecipeCard(recipe) {
+                const card = document.createElement('div');
+                card.className = 'recipe-card';
+                
+                // Check if recipe is saved
+                const isSaved = savedRecipes.includes(recipe.id);
+                
+                card.innerHTML = `
+                    <div class="recipe-image">
+                        <img src="${recipe.image}" alt="${recipe.title}">
+                        <div class="recipe-time">
+                            <i class="fas fa-clock"></i>
+                            <span>${recipe.time} mins</span>
+                        </div>
+                        <div class="recipe-difficulty ${recipe.difficulty}">
+                            <i class="fas fa-signal"></i>
+                            <span>${recipe.difficulty.charAt(0).toUpperCase() + recipe.difficulty.slice(1)}</span>
+                        </div>
+                    </div>
+                    <div class="recipe-content">
+                        <h3 class="recipe-title">${recipe.title}</h3>
+                        <p class="recipe-description">${recipe.description.length > 100 ? recipe.description.substring(0, 100) + '...' : recipe.description}</p>
+                        <div class="recipe-meta">
+                            <div class="recipe-cuisine">
+                                <i class="fas fa-utensils"></i>
+                                <span>${recipe.cuisine}</span>
+                            </div>
+                            <div class="recipe-servings">
+                                <i class="fas fa-user-friends"></i>
+                                <span>${recipe.servings} servings</span>
+                            </div>
+                        </div>
+                        <div class="recipe-tags">
+                            ${recipe.tags.slice(0, 3).map(tag => `<span class="recipe-tag">${tag}</span>`).join('')}
+                        </div>
+                        <div class="recipe-actions">
+                            <button class="recipe-btn view-btn" data-id="${recipe.id}">
+                                <i class="fas fa-eye"></i>
+                                View Recipe
+                            </button>
+                            <button class="recipe-btn save-btn ${isSaved ? 'saved' : ''}" data-id="${recipe.id}">
+                                <i class="fas ${isSaved ? 'fa-bookmark' : 'fa-bookmark'}"></i>
+                                ${isSaved ? 'Saved' : 'Save'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                // Add event listeners
+                const viewBtn = card.querySelector('.view-btn');
+                const saveBtn = card.querySelector('.save-btn');
+                
+                viewBtn.addEventListener('click', () => openRecipeModal(recipe));
+                saveBtn.addEventListener('click', function() {
+                    toggleSaveRecipe(recipe.id, this);
+                });
+                
+                return card;
+            }
+            
+            // Load More Recipes
+            function loadMoreRecipes() {
+                currentPage++;
+                renderRecipes();
+            }
+            
+            // Open Recipe Modal
+            function openRecipeModal(recipe) {
+                // Set modal content
+                modalImage.src = recipe.image;
+                modalTitle.textContent = recipe.title;
+                modalTime.textContent = `${recipe.time} mins`;
+                modalCuisine.textContent = recipe.cuisine;
+                modalDifficulty.textContent = recipe.difficulty.charAt(0).toUpperCase() + recipe.difficulty.slice(1);
+                modalServings.textContent = `${recipe.servings} servings`;
+                modalDescription.textContent = recipe.description;
+                
+                // Set ingredients
+                ingredientsList.innerHTML = '';
+                recipe.ingredients.forEach(ingredient => {
+                    const li = document.createElement('li');
+                    li.className = 'ingredient-item';
+                    li.innerHTML = `
+                        <input type="checkbox" class="ingredient-checkbox">
+                        <span class="ingredient-text">${ingredient}</span>
+                    `;
+                    ingredientsList.appendChild(li);
+                });
+                
+                // Set instructions
+                instructionsList.innerHTML = '';
+                recipe.instructions.forEach(instruction => {
+                    const li = document.createElement('li');
+                    li.className = 'instruction-item';
+                    li.textContent = instruction;
+                    instructionsList.appendChild(li);
+                });
+                
+                // Set nutrition info
+                nutritionGrid.innerHTML = '';
+                Object.entries(recipe.nutrition).forEach(([key, value]) => {
+                    const div = document.createElement('div');
+                    div.className = 'nutrition-item';
+                    
+                    let label = key.charAt(0).toUpperCase() + key.slice(1);
+                    let unit = '';
+                    
+                    switch(key) {
+                        case 'calories':
+                            unit = 'kcal';
+                            break;
+                        case 'fat':
+                        case 'carbs':
+                        case 'protein':
+                        case 'fiber':
+                            unit = 'g';
+                            break;
+                    }
+                    
+                    div.innerHTML = `
+                        <div class="nutrition-value">${value}${unit}</div>
+                        <div class="nutrition-label">${label}</div>
+                    `;
+                    nutritionGrid.appendChild(div);
+                });
+                
+                // Set tags
+                modalTags.innerHTML = '';
+                recipe.tags.forEach(tag => {
+                    const span = document.createElement('span');
+                    span.className = 'modal-tag';
+                    span.textContent = tag;
+                    modalTags.appendChild(span);
+                });
+                
+                // Show modal
+                recipeModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            // Close Recipe Modal
+            function closeModal() {
+                recipeModal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+            
+            // Toggle Save Recipe
+            function toggleSaveRecipe(recipeId, button) {
+                const index = savedRecipes.indexOf(recipeId);
+                
+                if (index === -1) {
+                    // Save recipe
+                    savedRecipes.push(recipeId);
+                    button.classList.add('saved');
+                    button.innerHTML = '<i class="fas fa-bookmark"></i> Saved';
+                } else {
+                    // Unsave recipe
+                    savedRecipes.splice(index, 1);
+                    button.classList.remove('saved');
+                    button.innerHTML = '<i class="far fa-bookmark"></i> Save';
+                }
+                
+                // Save to local storage
+                localStorage.setItem('savedRecipes', JSON.stringify(savedRecipes));
+            }
+            
+            // Print Recipe
+            function printRecipe() {
+                window.print();
+            }
+            
+            // Share Recipe
+            function shareRecipe() {
+                if (navigator.share) {
+                    navigator.share({
+                        title: modalTitle.textContent,
+                        text: modalDescription.textContent,
+                        url: window.location.href
+                    })
+                    .catch(error => console.log('Error sharing:', error));
+                } else {
+                    alert('Web Share API not supported in your browser. You can copy the URL manually.');
+                }
+            }
+            
+            // Add Search Tag
+            function addSearchTag(searchTerm) {
+                // Remove existing search tags
+                const existingTags = tagContainer.querySelectorAll('.tag[data-type="search"]');
+                existingTags.forEach(tag => tag.remove());
+                
+                if (!searchTerm) return;
+                
+                const tag = document.createElement('div');
+                tag.className = 'tag';
+                tag.dataset.type = 'search';
+                tag.dataset.value = searchTerm;
+                
+                tag.innerHTML = `
+                    <i class="fas fa-search"></i>
+                    <span>${searchTerm}</span>
+                    <button class="tag-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                const closeBtn = tag.querySelector('.tag-close');
+                closeBtn.addEventListener('click', function() {
+                    tag.remove();
+                    activeFilters.search = '';
+                    searchInput.value = '';
+                    applyFilters();
+                });
+                
+                tagContainer.appendChild(tag);
+            }
+            
+            // Update Filter Tags
+            function updateFilterTags() {
+                // Remove existing filter tags
+                const existingTags = tagContainer.querySelectorAll('.tag:not([data-type="search"])');
+                existingTags.forEach(tag => tag.remove());
+                
+                // Add cuisine tag
+                if (activeFilters.cuisine) {
+                    addFilterTag('cuisine', cuisineFilter.options[cuisineFilter.selectedIndex].text, activeFilters.cuisine);
+                }
+                
+                // Add diet tag
+                if (activeFilters.diet) {
+                    addFilterTag('diet', dietFilter.options[dietFilter.selectedIndex].text, activeFilters.diet);
+                }
+                
+                // Add meal tag
+                if (activeFilters.meal) {
+                    addFilterTag('meal', mealFilter.options[mealFilter.selectedIndex].text, activeFilters.meal);
+                }
+                
+                // Add time tag
+                if (activeFilters.time) {
+                    addFilterTag('time', `Max ${timeFilter.options[timeFilter.selectedIndex].text}`, activeFilters.time);
+                }
+            }
+            
+            // Add Filter Tag
+            function addFilterTag(type, text, value) {
+                const tag = document.createElement('div');
+                tag.className = 'tag';
+                tag.dataset.type = type;
+                tag.dataset.value = value;
+                
+                let icon = 'fas fa-filter';
+                switch(type) {
+                    case 'cuisine':
+                        icon = 'fas fa-utensils';
+                        break;
+                    case 'diet':
+                        icon = 'fas fa-leaf';
+                        break;
+                    case 'meal':
+                        icon = 'fas fa-hamburger';
+                        break;
+                    case 'time':
+                        icon = 'fas fa-clock';
+                        break;
+                }
+                
+                tag.innerHTML = `
+                    <i class="${icon}"></i>
+                    <span>${text}</span>
+                    <button class="tag-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                const closeBtn = tag.querySelector('.tag-close');
+                closeBtn.addEventListener('click', function() {
+                    tag.remove();
+                    
+                    // Reset filter value
+                    switch(type) {
+                        case 'cuisine':
+                            cuisineFilter.value = '';
+                            activeFilters.cuisine = '';
+                            break;
+                        case 'diet':
+                            dietFilter.value = '';
+                            activeFilters.diet = '';
+                            break;
+                        case 'meal':
+                            mealFilter.value = '';
+                            activeFilters.meal = '';
+                            break;
+                        case 'time':
+                            timeFilter.value = '';
+                            activeFilters.time = '';
+                            break;
+                    }
+                    
+                    applyFilters();
+                });
+                
+                tagContainer.appendChild(tag);
+            }
+            
+            // Initialize the app
+            init();
+        });
+    </script>
+</body>
+</html>

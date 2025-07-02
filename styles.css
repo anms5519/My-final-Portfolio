@@ -1,0 +1,36 @@
+/* Import variables and theme settings first */
+@import 'files/css/_variables.css';
+@import 'files/css/_theme-selector.css'; /* Theme selector UI styles */
+
+/* Import base styles and global utilities */
+@import 'files/css/_base.css';
+@import 'files/css/_utilities.css'; /* Contains common animations and helpers */
+
+/* Import component styles */
+@import 'files/css/_preloader.css';
+@import 'files/css/_header.css';
+@import 'files/css/_hero.css';
+@import 'files/css/_about.css';
+@import 'files/css/_education.css';
+@import 'files/css/_certifications.css';
+@import 'files/css/_skills.css';
+@import 'files/css/_gallery.css';
+@import 'files/css/_gate.css';
+@import 'files/css/_work.css';
+@import 'files/css/_projects.css';
+@import 'files/css/_projects-3d-extensions.css';
+@import 'files/css/_activities.css';
+@import 'files/css/_interests.css';
+@import 'files/css/_resume.css';
+@import 'files/css/_contact.css';
+@import 'files/css/_languages.css';
+@import 'files/css/_chatbot.css';
+@import 'files/css/_notifications.css';
+@import 'files/css/_search.css';
+@import 'files/css/_training.css';
+@import 'files/css/_voice.css';
+@import 'files/css/_linkedin.css';
+@import 'files/css/_testimonials.css';
+@import 'files/css/_footer.css';
+
+/* Add any final overrides or specific global styles here if needed */
