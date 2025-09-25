@@ -339,62 +339,49 @@
         transform: translate(-50%, -50%) rotate(360deg);
     }
 }
-
-/* Gallery View Styles */
 .gallery-grid.view-masonry {
     column-count: 3;
     column-gap: 1.5rem;
 }
-
 .gallery-grid.view-masonry .gallery-item {
     display: block;
     break-inside: avoid;
     margin-bottom: 1.5rem;
 }
-
 .gallery-grid.view-list {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
-
 .gallery-grid.view-list .gallery-item {
     display: flex;
     flex-direction: row;
     height: auto;
 }
-
 .gallery-grid.view-list .gallery-img {
     width: 30%;
     height: 15vh;
 }
-
 .gallery-grid.view-list .gallery-info {
     width: 70%;
 }
-
-/* Gallery Animation Effects */
 .gallery-item {
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                box-shadow 0.4s ease, 
-                opacity 0.4s ease;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        box-shadow 0.4s ease,
+        opacity 0.4s ease;
 }
-
-.filter-tag, 
-.view-option-btn, 
+.filter-tag,
+.view-option-btn,
 .gallery-action-btn,
 .gallery-load-more {
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-
-.filter-tag:hover, 
-.view-option-btn:hover, 
+.filter-tag:hover,
+.view-option-btn:hover,
 .gallery-action-btn:hover,
 .gallery-load-more:hover {
     transform: translateY(-.3vh) scale(1.05);
 }
-
-/* Enhanced Immersive View/Lightbox */
 .gallery-lightbox-modal {
     position: fixed;
     top: 0;
@@ -414,31 +401,37 @@
     align-items: center;
     justify-content: center;
 }
-
 .gallery-lightbox-modal.active {
     display: flex !important;
     opacity: 1 !important;
     visibility: visible !important;
 }
-
 .gallery-lightbox-modal.animating {
     animation: modalFadeIn 0.5s ease forwards;
 }
-
 .gallery-lightbox-modal.animating-out {
     animation: modalFadeOut 0.3s ease forwards;
 }
-
 @keyframes modalFadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
-
 @keyframes modalFadeOut {
-    from { opacity: 1; transform: scale(1); }
-    to { opacity: 0; transform: scale(0.95); }
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.95);
+    }
 }
-
 .lightbox-wrapper {
     max-width: 90%;
     max-height: 90vh;
@@ -455,7 +448,6 @@
     flex-direction: column;
     overflow: hidden;
 }
-
 .gallery-close {
     position: absolute;
     top: 1rem;
@@ -474,12 +466,10 @@
     justify-content: center;
     transition: all 0.3s ease;
 }
-
 .gallery-close:hover {
     background-color: var(--primary-color);
     transform: rotate(90deg);
 }
-
 .gallery-modal-content {
     display: flex;
     flex-direction: column;
@@ -487,18 +477,15 @@
     height: 100%;
     overflow: hidden;
 }
-
 .immersive-header {
     padding: 1.5rem;
     border-bottom: .1vh solid var(--card-border);
 }
-
 .immersive-header h3 {
     margin: 0;
     font-size: 1.5rem;
     color: var(--text-color);
 }
-
 .immersive-content {
     display: flex;
     flex-direction: column;
@@ -507,7 +494,6 @@
     display: flex !important;
     flex-direction: column;
 }
-
 .immersive-image-container {
     flex: 1;
     position: relative;
@@ -523,29 +509,48 @@
     align-items: center;
     justify-content: center;
 }
-
 .immersive-image-container.sliding-next {
     animation: slideNext 0.5s ease;
 }
-
 .immersive-image-container.sliding-prev {
     animation: slidePrev 0.5s ease;
 }
-
 @keyframes slideNext {
-    0% { transform: translateX(0); opacity: 1; }
-    20% { transform: translateX(-10%); opacity: 0; }
-    40% { transform: translateX(10%); opacity: 0; }
-    100% { transform: translateX(0); opacity: 1; }
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    20% {
+        transform: translateX(-10%);
+        opacity: 0;
+    }
+    40% {
+        transform: translateX(10%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
-
 @keyframes slidePrev {
-    0% { transform: translateX(0); opacity: 1; }
-    20% { transform: translateX(10%); opacity: 0; }
-    40% { transform: translateX(-10%); opacity: 0; }
-    100% { transform: translateX(0); opacity: 1; }
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    20% {
+        transform: translateX(10%);
+        opacity: 0;
+    }
+    40% {
+        transform: translateX(-10%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
-
 .immersive-image {
     max-width: 100%;
     max-height: 70vh;
@@ -554,7 +559,6 @@
     opacity: 1 !important;
     display: block !important;
 }
-
 .image-controls {
     position: absolute;
     bottom: 1rem;
@@ -568,7 +572,6 @@
     border-radius: 2rem;
     z-index: 999998 !important;
 }
-
 .image-control {
     width: 3rem;
     height: 3rem;
@@ -582,12 +585,10 @@
     justify-content: center;
     transition: all 0.3s ease;
 }
-
 .image-control:hover {
     background-color: var(--primary-color);
     transform: scale(1.1);
 }
-
 .image-action-btn {
     width: 3rem;
     height: 3rem;
@@ -601,31 +602,25 @@
     justify-content: center;
     transition: all 0.3s ease;
 }
-
 .image-action-btn:hover {
     background-color: var(--primary-color);
     transform: scale(1.1);
 }
-
 .download-btn:hover {
     background-color: #28a745;
 }
-
 .immersive-info {
     width: 100%;
     padding: 1.5rem;
     max-height: 40vh;
     overflow-y: auto;
 }
-
-
 .immersive-description {
     margin: 0 0 1.5rem;
     font-size: 1rem;
     line-height: 1.6;
     color: var(--text-color);
 }
-
 .immersive-metadata {
     margin-bottom: 1.5rem;
     padding: 1rem;
@@ -633,7 +628,6 @@
     border-radius: 0.5rem;
     border: .1vh solid var(--card-border);
 }
-
 .metadata-item {
     display: flex;
     gap: 0.5rem;
@@ -641,11 +635,9 @@
     font-size: 0.9rem;
     color: var(--text-color-light);
 }
-
 .metadata-item:last-child {
     margin-bottom: 0;
 }
-
 .immersive-thumbnails {
     display: flex;
     gap: 0.5rem;
@@ -655,7 +647,6 @@
     border-top: .1vh solid var(--card-border);
     margin-top: auto;
 }
-
 .thumbnail-item {
     width: 8vh;
     height: 6vh;
@@ -666,24 +657,19 @@
     transition: all 0.3s ease;
     flex-shrink: 0;
 }
-
 .thumbnail-item.active {
     opacity: 1;
     box-shadow: 0 0 0 .2vh var(--primary-color);
 }
-
 .thumbnail-item:hover {
     opacity: 0.9;
     transform: translateY(-.3vh);
 }
-
 .thumbnail-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-
-/* AI Analysis Styles */
 .immersive-ai-analysis {
     margin-top: 1.5rem;
     padding: 1.5rem;
@@ -691,7 +677,6 @@
     border-radius: 0.5rem;
     border: .1vh solid var(--card-border);
 }
-
 .immersive-ai-analysis h4 {
     display: flex;
     align-items: center;
@@ -700,14 +685,12 @@
     font-size: 1rem;
     color: var(--text-color);
 }
-
 .analysis-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-bottom: 1rem;
 }
-
 .loading-analysis {
     width: 100%;
     text-align: center;
@@ -715,7 +698,6 @@
     color: var(--text-color-light);
     font-style: italic;
 }
-
 .ai-tag {
     padding: 0.3rem 0.8rem;
     background-color: rgba(var(--primary-rgb), 0.1);
@@ -727,29 +709,24 @@
     gap: 0.5rem;
     align-items: center;
 }
-
 .ai-tag .confidence {
     opacity: 0.7;
     font-size: 0.7rem;
 }
-
 .analysis-insights {
     margin-top: 1rem;
 }
-
 .ai-insight {
     margin: 0 0 0.5rem;
     font-size: 0.9rem;
     color: var(--text-color);
     line-height: 1.5;
 }
-
 .ai-detail {
     margin: 0 0 0.5rem;
     font-size: 0.8rem;
     color: var(--text-color-light);
 }
-
 .ai-notice {
     font-size: 0.7rem;
     color: var(--text-color-light);
@@ -757,13 +734,14 @@
     font-style: italic;
     text-align: right;
 }
-
-/* Loading indicators and animations */
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
-
 .lightbox-loading {
     position: absolute;
     top: 0;
@@ -779,18 +757,15 @@
     visibility: hidden;
     transition: all 0.3s ease;
 }
-
 .lightbox-loading.active {
     opacity: 1;
     visibility: visible;
 }
-
 .spinner-wrapper {
     width: 5vh;
     height: 5vh;
     position: relative;
 }
-
 .spinner {
     width: 100%;
     height: 100%;
@@ -799,21 +774,17 @@
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
-
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
-
-
-
-/* Add these new styles for sorting, favorites, and animations */
-
-/* Gallery controls - sorting */
 .gallery-sort {
     position: relative;
 }
-
 .sort-toggle {
     display: flex;
     align-items: center;
@@ -826,14 +797,12 @@
     cursor: pointer;
     transition: all 0.3s ease;
 }
-
 .sort-toggle:hover {
     background: var(--primary-color);
     color: white;
     border-color: var(--primary-color);
     transform: translateY(-.3vh);
 }
-
 .sort-menu {
     position: absolute;
     top: calc(100% + 0.5rem);
@@ -849,13 +818,11 @@
     transform: translateY(-1vh);
     transition: all 0.3s ease;
 }
-
 .sort-menu.active {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
 }
-
 .sort-option {
     display: flex;
     align-items: center;
@@ -865,23 +832,18 @@
     cursor: pointer;
     transition: all 0.2s ease;
 }
-
 .sort-option:hover {
     background: rgba(var(--primary-rgb), 0.1);
 }
-
 .sort-option.active {
     background: var(--primary-color);
     color: white;
 }
-
 .sort-option i {
     font-size: 0.9rem;
     width: 2vh;
     text-align: center;
 }
-
-/* Favorites count in filter tags */
 .filter-tag .count {
     display: inline-flex;
     align-items: center;
@@ -894,16 +856,12 @@
     font-size: 0.7rem;
     margin-left: 0.3rem;
 }
-
 .filter-tag.active .count {
     background: rgba(255, 255, 255, 0.2);
 }
-
-/* Favorite item styles */
 .gallery-item.favorited {
     border: .2vh solid #ff6b6b;
 }
-
 .gallery-item.favorited::before {
     content: '❤️';
     position: absolute;
@@ -913,8 +871,6 @@
     z-index: 2;
     filter: drop-shadow(0 0 .2vh rgba(0, 0, 0, 0.5));
 }
-
-/* Heart animation when favoriting */
 .floating-heart {
     position: fixed;
     pointer-events: none;
@@ -924,7 +880,6 @@
     transform: translate(-50%, -50%);
     animation: float-heart 1s ease-out forwards;
 }
-
 @keyframes float-heart {
     0% {
         opacity: 1;
@@ -939,19 +894,14 @@
         transform: translate(-50%, -150%) scale(0.8);
     }
 }
-
-/* Item visibility animations */
 .gallery-item.visible {
     opacity: 1;
     transform: translateY(0);
 }
-
-/* Load more animation */
 .gallery-load-more {
     position: relative;
     overflow: hidden;
 }
-
 .gallery-load-more::after {
     content: '';
     position: absolute;
@@ -962,7 +912,6 @@
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     animation: loading-shimmer 2s infinite;
 }
-
 @keyframes loading-shimmer {
     0% {
         left: -100%;
@@ -971,8 +920,6 @@
         left: 100%;
     }
 }
-
-/* Enhanced view modes */
 .gallery-grid.view-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(30vh, 1fr));
@@ -980,61 +927,46 @@
     display: grid !important;
     visibility: visible !important;
 }
-
 .gallery-grid.view-masonry {
     column-count: 3;
     column-gap: 1.5rem;
 }
-
 .gallery-grid.view-list .gallery-item {
     display: flex;
     margin-bottom: 1rem;
     height: auto;
 }
-
 .gallery-grid.view-list .gallery-img {
     width: 35%;
     height: 20vh;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
-
 .gallery-grid.view-list .gallery-info {
     width: 65%;
     display: flex;
     flex-direction: column;
 }
-
-
-
-/* Lazy loading animation */
 .gallery-img {
     opacity: 0;
     transition: opacity 0.5s ease;
 }
-
 .gallery-img.loaded {
     opacity: 1;
 }
-
-/* Download button */
 .download-btn {
     background-color: var(--bg-color);
 }
-
 .download-btn:hover {
     background-color: #28a745;
     color: white;
 }
-
-/* Improved gallery item hover effects */
 .gallery-item {
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                box-shadow 0.4s ease, 
-                opacity 0.4s ease,
-                border-color 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        box-shadow 0.4s ease,
+        opacity 0.4s ease,
+        border-color 0.3s ease;
 }
-
 .gallery-item:hover::after {
     content: '';
     position: absolute;
@@ -1049,7 +981,6 @@
     opacity: 0;
     animation: pulse 1.5s ease infinite;
 }
-
 @keyframes pulse {
     0% {
         opacity: 0;
@@ -1064,26 +995,19 @@
         transform: scale(1.05);
     }
 }
-
-/* Improve immersive mode body styling */
 body.immersive-mode {
     overflow: hidden;
 }
-
-/* Add styles for image lazy loading placeholder */
 .gallery-img.loading {
     background: linear-gradient(110deg, var(--bg-color) 30%, var(--card-border) 50%, var(--bg-color) 70%);
     background-size: 200% 100%;
     animation: loading-wave 1.5s infinite linear;
 }
-
 @keyframes loading-wave {
     100% {
         background-position: -200% 0;
     }
 }
-
-/* Empty state message for when no items match filters */
 .gallery-empty-state {
     display: flex;
     flex-direction: column;
@@ -1096,19 +1020,16 @@ body.immersive-mode {
     margin: 2rem auto;
     max-width: 50vh;
 }
-
 .gallery-empty-state i {
     font-size: 3rem;
     color: var(--muted-color);
     margin-bottom: 1rem;
 }
-
 .gallery-empty-state p {
     font-size: 1.2rem;
     color: var(--text-color);
     margin-bottom: 1.5rem;
 }
-
 .gallery-empty-state button {
     cursor: pointer;
     background-color: var(--primary-color);
@@ -1119,15 +1040,10 @@ body.immersive-mode {
     font-size: 1rem;
     transition: all 0.3s ease;
 }
-
 .gallery-empty-state button:hover {
     background-color: var(--accent-color);
     transform: translateY(-.2vh);
 }
-
-
-
-/* Fix immersive view specifics */
 .immersive-image {
     max-width: 100%;
     max-height: 70vh;
@@ -1135,16 +1051,12 @@ body.immersive-mode {
     transition: opacity 0.3s ease;
     opacity: 1;
 }
-
-/* Fixed section positioning */
 .gallery-section {
     position: relative;
     padding: 6rem 0;
     background-color: var(--bg-color);
     overflow: hidden;
 }
-
-/* Make sure lightbox content is visible and properly styled */
 .lightbox-wrapper {
     max-width: 90%;
     max-height: 90vh;
@@ -1157,7 +1069,6 @@ body.immersive-mode {
     display: flex;
     flex-direction: column;
 }
-
 .gallery-modal-content {
     display: flex;
     flex-direction: column;
@@ -1165,8 +1076,6 @@ body.immersive-mode {
     height: 100%;
     overflow: hidden;
 }
-
-/* Fix base visibility for thumbnails */
 .immersive-thumbnails {
     display: flex;
     gap: 0.5rem;
@@ -1176,7 +1085,6 @@ body.immersive-mode {
     border-top: .1vh solid var(--card-border);
     margin-top: auto;
 }
-
 .thumbnail-item {
     width: 8vh;
     height: 6vh;
@@ -1187,27 +1095,20 @@ body.immersive-mode {
     transition: all 0.3s ease;
     flex-shrink: 0;
 }
-
 .thumbnail-item.active {
     opacity: 1;
     box-shadow: 0 0 0 .2vh var(--primary-color);
 }
-
-/* Ensure images are properly sized */
 .thumbnail-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-
-/* Fix gallery info styling */
 .gallery-info {
     padding: 1rem;
     z-index: 2;
     background: var(--card-bg);
 }
-
-/* Ensure Z-index is high enough for lightbox */
 .gallery-lightbox-modal {
     z-index: 99999 !important;
     position: fixed;
@@ -1216,8 +1117,6 @@ body.immersive-mode {
     width: 100%;
     height: 100%;
 }
-
-/* Ensure image controls are visible */
 .image-controls {
     position: absolute;
     bottom: 1rem;
@@ -1231,49 +1130,37 @@ body.immersive-mode {
     border-radius: 2rem;
     z-index: 999998 !important;
 }
-
-/* Improve animation transitions */
 .gallery-item.visible {
     opacity: 1;
     transform: translateY(0);
 }
-
 .gallery-item:hover {
     transform: translateY(-.5vh);
     box-shadow: 0 1vh 2vh rgba(0, 0, 0, 0.1);
 }
-
 .gallery-item:hover .gallery-img {
     transform: scale(1.05);
 }
-
-/* Fix image opacity */
 .gallery-img.loaded {
     opacity: 1;
 }
-
-/* Fix aspect ratio issues */
 .gallery-item {
     aspect-ratio: 1 / 1.2;
     display: flex;
     flex-direction: column;
 }
-
 .gallery-img {
     flex: 1;
     min-height: 0;
     height: 60% !important;
     min-height: 20vh;
 }
-
 .gallery-info {
     height: 40% !important;
     min-height: 10vh;
     display: flex;
     flex-direction: column;
 }
-
-/* Fix filter tags styling */
 .filter-tag {
     padding: 0.5rem 1rem;
     background: var(--card-bg);

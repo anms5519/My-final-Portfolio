@@ -243,8 +243,8 @@ window.ProjectsContent = {
                 </div>
 
                 <!-- Project Details Modal -->
-                <div class="project-modal">
-                    <div class="project-modal-content quantum-glass">
+                <div class="project-modal1">
+                    <div class="project-modal1-content quantum-glass">
                         <button class="close-modal-btn">
                             <i class="fas fa-times"></i>
                         </button>
@@ -1767,7 +1767,7 @@ window.ProjectsContent = {
     },
 
     setupProjectModals: function() {
-        const projectModal = document.querySelector('.project-modal');
+        const projectModal = document.querySelector('.project-modal1');
         const closeModalBtn = document.querySelector('.close-modal-btn');
         const modalTitle = document.querySelector('#modal-title');
         const modalDescription = document.querySelector('.modal-description');
@@ -1995,7 +1995,7 @@ window.ProjectsContent = {
         // Add click event to all share buttons
         document.addEventListener('click', (e) => {
             if (e.target.closest('.share-btn')) {
-                const projectCard = e.target.closest('.project-modal-content');
+                const projectCard = e.target.closest('.project-modal1-content');
                 const projectId = projectCard.querySelector('.modal-main-image img').alt;
                 shareProject(projectId);
             }

@@ -14,7 +14,7 @@
 }
 .feed-header {
     padding: 2vh;
-    border-bottom: .1vh solid var(--border-color);
+    border-bottom: 0.1vh solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -31,7 +31,7 @@
     object-fit: cover;
 }
 .profile-info h3 {
-    margin: 0 0 .5vh 0;
+    margin: 0 0 0.5vh 0;
     font-size: 1.2rem;
 }
 .profile-info p {
@@ -42,12 +42,12 @@
 .linkedin-follow-btn {
     display: inline-flex;
     align-items: center;
-    gap: .8vh;
+    gap: 0.8vh;
     background: #0077b5;
     color: white;
     text-decoration: none;
-    padding: .8vh 1.6vh;
-    border-radius: .4vh;
+    padding: 0.8vh 1.6vh;
+    border-radius: 0.4vh;
     font-weight: 500;
     transition: all 0.3s ease;
 }
@@ -63,14 +63,14 @@
     gap: 2vh;
 }
 .linkedin-post {
-    border: .1vh solid var(--border-color);
-    border-radius: .8vh;
+    border: 0.1vh solid var(--border-color);
+    border-radius: 0.8vh;
     overflow: hidden;
     background: var(--card-bg);
     transition: all 0.3s ease;
 }
 .linkedin-post:hover {
-    transform: translateY(-.5vh);
+    transform: translateY(-0.5vh);
     box-shadow: 0 1vh 3vh rgba(0, 0, 0, 0.1);
 }
 .post-header {
@@ -111,25 +111,25 @@
 .post-engagement {
     padding: 1.2vh 1.5vh;
     display: flex;
-    border-top: .1vh solid var(--border-color);
+    border-top: 0.1vh solid var(--border-color);
     gap: 2vh;
 }
 .engagement-item {
     display: flex;
     align-items: center;
-    gap: .6vh;
+    gap: 0.6vh;
     color: var(--text-color-light);
     font-size: 0.9rem;
 }
 .feed-footer {
     padding: 2vh;
     text-align: center;
-    border-top: .1vh solid var(--border-color);
+    border-top: 0.1vh solid var(--border-color);
 }
 .view-more-btn {
     display: inline-flex;
     align-items: center;
-    gap: .8vh;
+    gap: 0.8vh;
     color: #0077b5;
     text-decoration: none;
     font-weight: 500;

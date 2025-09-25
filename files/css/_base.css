@@ -4,24 +4,23 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    /* Selective transitions for performance and intent */
     transition: background-color var(--anim-speed-normal) var(--transition-ease),
-                color var(--anim-speed-normal) var(--transition-ease),
-                border-color var(--anim-speed-normal) var(--transition-ease),
-                box-shadow var(--anim-speed-normal) var(--transition-ease),
-                opacity var(--anim-speed-normal) var(--transition-ease);
+        color var(--anim-speed-normal) var(--transition-ease),
+        border-color var(--anim-speed-normal) var(--transition-ease),
+        box-shadow var(--anim-speed-normal) var(--transition-ease),
+        opacity var(--anim-speed-normal) var(--transition-ease);
 }
 html {
     scroll-behavior: smooth;
-    font-size: 1.6vh; /* Base font size relative to viewport height */
+    font-size: 1.6vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 body {
-    font-family: var(--font-family-primary); /* Default to primary font */
+    font-family: var(--font-family-primary);
     background-color: var(--bg-color);
     color: var(--text-color);
-    line-height: 1.65; /* Slightly more spacious */
+    line-height: 1.65;
     overflow-x: hidden;
     position: relative;
     min-height: 100vh;
@@ -38,41 +37,56 @@ a:hover {
     color: var(--secondary-color);
     text-shadow: 0 0 0.8vh rgba(var(--secondary-color-rgb), 0.5);
 }
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-family-secondary); /* Use secondary for headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-family-secondary);
     font-weight: 700;
-    line-height: 1.3; /* Adjusted line height */
-    margin-bottom: 1.5vh; /* Consistent margin */
-    color: var(--text-color-headings); /* Themed heading color */
+    line-height: 1.3;
+    margin-bottom: 1.5vh;
+    color: var(--text-color-headings);
     letter-spacing: var(--letter-spacing-normal);
 }
-h1 { font-size: clamp(2.8rem, 7vw, 4rem); } /* Responsive heading sizes */
-h2 { font-size: clamp(2.2rem, 5.5vw, 3rem); }
-h3 { font-size: clamp(1.8rem, 4.5vw, 2.4rem); }
-h4 { font-size: clamp(1.5rem, 3.8vw, 2rem); }
-
-ul { list-style: none; }
-img, video {
+h1 {
+    font-size: clamp(2.8rem, 7vw, 4rem);
+}
+h2 {
+    font-size: clamp(2.2rem, 5.5vw, 3rem);
+}
+h3 {
+    font-size: clamp(1.8rem, 4.5vw, 2.4rem);
+}
+h4 {
+    font-size: clamp(1.5rem, 3.8vw, 2rem);
+}
+ul {
+    list-style: none;
+}
+img,
+video {
     max-width: 100%;
     height: auto;
     display: block;
-    border-radius: var(--border-radius-sharp); /* Subtle rounding for images */
+    border-radius: var(--border-radius-sharp);
 }
 .container {
     width: 100%;
     max-width: 120vh;
     margin: 0 auto;
-    padding: 0 2vh; /* Consistent padding */
+    padding: 0 2vh;
 }
 .section {
     padding: var(--section-padding);
     position: relative;
-    overflow: hidden; /* Prevent accidental overflow from pseudo-elements */
+    overflow: hidden;
 }
-.section-title { /* General section title styling */
+.section-title {
     position: relative;
     display: inline-block;
-    font-size: clamp(2rem, 5vw, 2.8rem); /* Responsive */
+    font-size: clamp(2rem, 5vw, 2.8rem);
     margin-bottom: 3vh;
     text-transform: uppercase;
     letter-spacing: var(--letter-spacing-wide);
@@ -90,35 +104,32 @@ img, video {
     border-radius: var(--border-radius-sharp);
     box-shadow: 0 0 1vh var(--primary-color);
 }
-
-/* Button Styles */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 1vh 2.5vh; /* Adjusted padding */
-    border-radius: var(--border-radius-soft); /* Softer radius */
+    padding: 1vh 2.5vh;
+    border-radius: var(--border-radius-soft);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: var(--letter-spacing-normal);
     cursor: pointer;
     transition: transform var(--anim-speed-fast) var(--transition-sharp),
-                box-shadow var(--anim-speed-fast) var(--transition-sharp),
-                background-color var(--anim-speed-fast) var(--transition-sharp),
-                color var(--anim-speed-fast) var(--transition-sharp);
-    border: 0.15vh solid transparent; /* For consistent sizing */
+        box-shadow var(--anim-speed-fast) var(--transition-sharp),
+        background-color var(--anim-speed-fast) var(--transition-sharp),
+        color var(--anim-speed-fast) var(--transition-sharp);
+    border: 0.15vh solid transparent;
     position: relative;
     overflow: hidden;
     font-family: var(--font-family-secondary);
-    font-size: 1.4vh; /* Base button font size */
+    font-size: 1.4vh;
     line-height: 1.5;
 }
 .btn:hover {
     transform: translateY(-0.2vh) scale(1.03);
 }
-
 .glow-btn {
-    background: var(--button-bg, var(--primary-color)); /* Use themed button variables */
+    background: var(--button-bg, var(--primary-color));
     color: var(--button-text-color, var(--bg-color));
     border-color: var(--button-border, var(--primary-color));
     box-shadow: var(--button-glow);
@@ -128,7 +139,6 @@ img, video {
     color: var(--button-hover-text-color, var(--bg-color));
     box-shadow: 0 0.5vh 2vh rgba(var(--primary-color-rgb), 0.5), var(--button-glow);
 }
-
 .outline-btn {
     background: transparent;
     color: var(--primary-color);
@@ -136,31 +146,31 @@ img, video {
 }
 .outline-btn:hover {
     background: var(--primary-color);
-    color: var(--bg-color); /* Contrast text */
+    color: var(--bg-color);
     box-shadow: 0 0 1.5vh rgba(var(--primary-color-rgb), 0.4);
 }
-
 .scroll-indicator {
     position: fixed;
-    top: 0; left: 0;
-    height: .35vh; /* Slightly thicker */
+    top: 0;
+    left: 0;
+    height: .35vh;
     background: var(--primary-color);
     box-shadow: 0 0 1vh var(--primary-color);
-    z-index: 2000; /* Ensure visibility */
+    z-index: 2000;
     width: 0;
-    transition: width 0.05s linear; /* Smoother update */
+    transition: width 0.05s linear;
 }
-
-/* Section Background Effects (Subtle) */
 .about-section::before,
 .skills-section::before,
 .projects-section::before,
 .contact-section::before {
     content: '';
     position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    opacity: 0.1; /* Very subtle */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.1;
     z-index: -1;
     pointer-events: none;
     transition: background var(--anim-speed-slow) ease;
@@ -174,83 +184,108 @@ img, video {
 .projects-section::before {
     background: radial-gradient(ellipse at 90% 80%, rgba(var(--accent-color-rgb), 0.1) 0%, transparent 50%);
 }
-
-/* Ensure cards with backdrop filter have a solid fallback for non-supporting browsers */
-.card-bg-base { /* Apply this class to elements using var(--card-bg) */
-    background-color: var(--card-bg); /* Fallback */
+.card-bg-base {
+    background-color: var(--card-bg);
     backdrop-filter: var(--glass-effect);
     -webkit-backdrop-filter: var(--glass-effect);
 }
-
-
-/* Content visibility for performance */
-img, video { content-visibility: auto; }
-
-/* Training Modal Styles (from _base.css, now themed) */
+img,
+video {
+    content-visibility: auto;
+}
 .training-modal {
-    position: fixed; top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(var(--bg-color-rgb), 0.7); /* Themed overlay */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(var(--bg-color-rgb), 0.7);
     backdrop-filter: blur(0.5vh);
     -webkit-backdrop-filter: blur(0.5vh);
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     z-index: 9999;
     padding: 1.5rem;
-    opacity: 0; visibility: hidden;
+    opacity: 0;
+    visibility: hidden;
     transition: opacity var(--anim-speed-normal) ease, visibility var(--anim-speed-normal) ease;
 }
-.training-modal.show { opacity: 1; visibility: visible; }
-
+.training-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
 .training-modal-content {
-    background-color: var(--card-bg); /* Themed card bg */
+    background-color: var(--card-bg);
     border-radius: var(--border-radius-soft);
-    width: 100%; max-width: 85vh;
-    max-height: 90vh; overflow-y: auto;
-    padding: 2.5rem; /* Increased padding */
+    width: 100%;
+    max-width: 85vh;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 2.5rem;
     position: relative;
     border: 0.1vh solid var(--card-border);
     box-shadow: var(--card-shadow);
     transform: scale(0.95);
     transition: transform var(--anim-speed-normal) var(--transition-sharp);
 }
-.training-modal.show .training-modal-content { transform: scale(1); }
-
+.training-modal.show .training-modal-content {
+    transform: scale(1);
+}
 .training-modal-header {
     border-bottom: .1vh solid var(--card-border);
-    padding-bottom: 1.8rem; margin-bottom: 1.8rem;
+    padding-bottom: 1.8rem;
+    margin-bottom: 1.8rem;
 }
 .training-modal-header h3 {
-    font-size: 1.8rem; margin-bottom: 0.6rem;
-    color: var(--primary-color); /* Themed title */
+    font-size: 1.8rem;
+    margin-bottom: 0.6rem;
+    color: var(--primary-color);
 }
-/* ... other training modal elements can be themed similarly ... */
-.modal-provider-logo i { color: var(--primary-color); }
-.modal-training-detail i { color: var(--primary-color); }
-.topic-item i { color: var(--primary-color); }
+.modal-provider-logo i {
+    color: var(--primary-color);
+}
+.modal-training-detail i {
+    color: var(--primary-color);
+}
+.topic-item i {
+    color: var(--primary-color);
+}
 .modal-skill {
     background-color: rgba(var(--primary-color-rgb), 0.1);
     color: var(--primary-color);
     border: 0.1vh solid rgba(var(--primary-color-rgb), 0.2);
-    padding: 0.5rem 1rem; border-radius: var(--border-radius-round);
-    font-size: 0.85rem; transition: all var(--anim-speed-fast) ease;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-round);
+    font-size: 0.85rem;
+    transition: all var(--anim-speed-fast) ease;
 }
 .modal-skill:hover {
     background-color: var(--primary-color);
-    color: var(--bg-color); /* Contrast */
+    color: var(--bg-color);
 }
-.certificate-btn { /* Example of theming a button inside modal */
+.certificate-btn {
     background-color: var(--primary-color);
-    color: var(--bg-color); /* Contrast */
+    color: var(--bg-color);
 }
-.certificate-btn:hover { background-color: var(--secondary-color); }
-
+.certificate-btn:hover {
+    background-color: var(--secondary-color);
+}
 .modal-close-btn {
-    position: absolute; top: 1.5rem; right: 1.5rem;
-    font-size: 2rem; color: var(--text-color-light);
-    background: transparent; border: none; cursor: pointer;
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 2rem;
+    color: var(--text-color-light);
+    background: transparent;
+    border: none;
+    cursor: pointer;
     transition: color var(--anim-speed-fast) ease, transform var(--anim-speed-fast) ease;
-    width: 3.5vh; height: 3.5vh;
-    display: flex; align-items: center; justify-content: center;
+    width: 3.5vh;
+    height: 3.5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: var(--border-radius-circle);
 }
 .modal-close-btn:hover {

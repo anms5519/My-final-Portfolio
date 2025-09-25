@@ -1,18 +1,14 @@
-/* Utility Classes and Common Styles */
-
 .container {
     width: 100%;
     max-width: 120vh;
     margin: 0 auto;
     padding: 0 1.5vh;
 }
-
 .section {
     padding: var(--section-padding);
     position: relative;
     overflow: hidden;
 }
-
 .section-title {
     position: relative;
     display: inline-block;
@@ -21,7 +17,6 @@
     text-transform: uppercase;
     letter-spacing: .1vh;
 }
-
 .section-title::after {
     content: '';
     position: absolute;
@@ -32,7 +27,6 @@
     background: var(--gradient-primary);
     border-radius: .2vh;
 }
-
 .btn {
     display: inline-flex;
     align-items: center;
@@ -50,49 +44,40 @@
     position: relative;
     overflow: hidden;
     font-family: var(--font-family-primary);
-    font-size: 0.875vh; /* Using vh */
+    font-size: 0.875vh;
 }
-
 .btn:hover {
     transform: translateY(-0.3vh) scale(1.02);
 }
-
 .glow-btn {
     background: var(--gradient-primary);
     color: white;
-    box-shadow: 0 .5vh 1.5vh rgba(138, 79, 255, 0.3); /* Hardcoded color, should use variable */
+    box-shadow: 0 .5vh 1.5vh rgba(138, 79, 255, 0.3);
 }
-
 .glow-btn:hover {
-    box-shadow: 0 0.7vh 2vh rgba(138, 79, 255, 0.5); /* Hardcoded color, should use variable */
+    box-shadow: 0 0.7vh 2vh rgba(138, 79, 255, 0.5);
 }
-
 .outline-btn {
     background: transparent;
     color: var(--primary-color);
     border: 0.2vh solid var(--primary-color);
 }
-
 .outline-btn:hover {
     background: var(--primary-color);
     color: white;
 }
-
 .gradient-text {
     background: var(--gradient-primary);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
 }
-
 .accent-text {
-    background: var(--gradient-primary); /* This seems inconsistent with other uses of accent-text */
+    background: var(--gradient-primary);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
 }
-
-/* Common Section Backgrounds */
 .about-section::before {
     content: '';
     position: absolute;
@@ -105,7 +90,6 @@
     pointer-events: none;
     background: radial-gradient(circle at 10% 20%, rgba(var(--primary-color-rgb), 0.2) 0%, transparent 40%);
 }
-
 .skills-section::before {
     content: '';
     position: absolute;
@@ -118,7 +102,6 @@
     pointer-events: none;
     background: linear-gradient(120deg, rgba(var(--accent-color-rgb), 0.2) 0%, transparent 70%);
 }
-
 .projects-section::before {
     content: '';
     position: absolute;
@@ -131,7 +114,6 @@
     pointer-events: none;
     background: radial-gradient(circle at 90% 10%, rgba(var(--secondary-color-rgb), 0.2) 0%, transparent 50%);
 }
-
 .contact-section::before {
     content: '';
     position: absolute;
@@ -144,8 +126,6 @@
     background: radial-gradient(circle at 10% 20%, var(--primary-color-transparent) 0%, transparent 20%),
         radial-gradient(circle at 90% 80%, var(--secondary-color-transparent) 0%, transparent 20%);
 }
-
-/* Dark mode specific overrides for common elements */
 [data-theme="dark"] .card-bg,
 [data-theme="dark"] .timeline-card,
 [data-theme="dark"] .skill-card,
@@ -153,7 +133,6 @@
     backdrop-filter: blur(1vh);
     -webkit-backdrop-filter: blur(1vh);
 }
-
 [data-theme="dark"] .glow-btn {
     text-shadow: 0 0 .8vh rgba(var(--primary-color-rgb), 0.5);
 }

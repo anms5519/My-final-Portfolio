@@ -1,11 +1,10 @@
 .about-section {
     background-color: var(--bg-color-alt);
     position: relative;
-    overflow: hidden; /* Important for background patterns/effects */
+    overflow: hidden;
     padding-top: 6rem;
     padding-bottom: 6rem;
 }
-
 .about-section .section-title {
     text-align: center;
     margin-bottom: 4rem;
@@ -21,25 +20,20 @@
     margin-bottom: -0.5rem;
     letter-spacing: .2vh;
 }
-
 .about-content-wrapper {
     max-width: 120vh;
     margin: 0 auto;
 }
-
 .about-grid {
     display: grid;
-    grid-template-columns: 0.8fr 1.2fr; /* Adjust ratio as needed */
+    grid-template-columns: 0.8fr 1.2fr;
     gap: 4rem;
-    align-items: flex-start; /* Align items to the top */
+    align-items: flex-start;
 }
-
-/* --- Image Column --- */
 .about-image-column {
-    position: sticky; /* Makes the image column stick while scrolling text */
-    top: 10vh; /* Adjust based on your header height */
+    position: sticky;
+    top: 10vh;
 }
-
 .about-image-card {
     background: var(--card-bg);
     border-radius: 2vh;
@@ -52,14 +46,12 @@
     transform: translateY(-1vh) scale(1.02);
     box-shadow: var(--card-shadow-hover);
 }
-
 .image-tilt-container {
     position: relative;
     border-radius: 1.5vh;
     overflow: hidden;
-    transform-style: preserve-3d; /* For JS tilt effect */
+    transform-style: preserve-3d;
 }
-
 .profile-image {
     width: 100%;
     height: auto;
@@ -70,26 +62,23 @@
 .image-tilt-container:hover .profile-image {
     transform: scale(1.08);
 }
-
 .image-glow-orb {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 150%; /* Large for soft glow */
+    width: 150%;
     height: 150%;
-    background: radial-gradient(circle, 
-        rgba(var(--primary-color-rgb, 0, 170, 255), 0.2) 0%, /* Define --primary-color-rgb as r,g,b values */
-        rgba(var(--primary-color-rgb, 0, 170, 255), 0) 60%
-    );
+    background: radial-gradient(circle,
+            rgba(var(--primary-color-rgb, 0, 170, 255), 0.2) 0%,
+            rgba(var(--primary-color-rgb, 0, 170, 255), 0) 60%);
     transform: translate(-50%, -50%);
     opacity: 0;
     transition: opacity 0.5s ease;
-    pointer-events: none; /* So it doesn't interfere with hover */
+    pointer-events: none;
 }
 .image-tilt-container:hover .image-glow-orb {
     opacity: 0.7;
 }
-
 #image-particles-canvas {
     position: absolute;
     top: 0;
@@ -98,7 +87,6 @@
     height: 100%;
     pointer-events: none;
 }
-
 .profile-intro {
     text-align: center;
     margin-top: 1.5rem;
@@ -117,7 +105,6 @@
     background-clip: text;
     color: transparent;
 }
-
 .experience-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(10vh, 1fr));
@@ -129,13 +116,13 @@
     padding: 1.2rem 1rem;
     border-radius: 1vh;
     text-align: center;
-    box-shadow: 0 .5vh 1.5vh rgba(0,0,0,0.2);
+    box-shadow: 0 .5vh 1.5vh rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border-left: .3vh solid var(--primary-color);
 }
 .stat-item:hover {
     transform: translateY(-.5vh);
-    box-shadow: 0 .8vh 2vh rgba(0,0,0,0.25);
+    box-shadow: 0 .8vh 2vh rgba(0, 0, 0, 0.25);
 }
 .stat-icon {
     font-size: 1.5rem;
@@ -156,23 +143,19 @@
     text-transform: uppercase;
     letter-spacing: 0..5vh;
 }
-
-/* --- Text Column --- */
 .about-text-column {
-    padding-left: 1rem; /* Optional: if more separation needed */
+    padding-left: 1rem;
 }
-
 .dynamic-typing-container {
     margin-bottom: 2rem;
-    min-height: 3em; /* Adjust based on longest string and font size */
-    font-size: 1.8rem; /* Base size for typed text */
+    min-height: 3em;
+    font-size: 1.8rem;
     font-weight: 600;
     color: var(--primary-color);
     border-left: .3vh solid var(--primary-color);
     padding-left: 1rem;
 }
 .typed-text-output {
-    /* JS will populate this */
 }
 .typing-cursor {
     display: inline-block;
@@ -180,13 +163,17 @@
     background-color: var(--primary-color);
     margin-left: 0.2rem;
     animation: blink-caret 0.75s step-end infinite;
-    vertical-align: bottom; /* Align with text */
+    vertical-align: bottom;
 }
 @keyframes blink-caret {
-    from, to { background-color: transparent; }
-    50% { background-color: var(--primary-color); }
+    from,
+    to {
+        background-color: transparent;
+    }
+    50% {
+        background-color: var(--primary-color);
+    }
 }
-
 .about-narrative p {
     font-size: 1.05rem;
     line-height: 1.8;
@@ -196,11 +183,10 @@
 .about-narrative p:last-child {
     margin-bottom: 0;
 }
-
 .about-philosophy {
     margin: 2.5rem 0;
     padding: 1.5rem;
-    background: rgba(var(--primary-color-rgb, 0, 170, 255), 0.05); /* Subtle background */
+    background: rgba(var(--primary-color-rgb, 0, 170, 255), 0.05);
     border-left: .4vh solid var(--primary-color);
     border-radius: .8vh;
 }
@@ -220,13 +206,11 @@
     display: flex;
     gap: 1.5rem;
     margin-top: 2.5rem;
-    justify-content: flex-start; /* Or center if preferred */
+    justify-content: flex-start;
 }
-
-/* --- General Button Styles (Example - adapt to your existing btn styles) --- */
 .btn {
     padding: 0.8rem 1.8rem;
-    border-radius: 5vh; /* Pill shape */
+    border-radius: 5vh;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.3s ease;
@@ -262,9 +246,6 @@
     left: 0;
     width: 100%;
     height: 100%;
-    /* Example: subtle dots or lines */
-    /* background-image: radial-gradient(var(--text-color-light) 0..5vh, transparent 0..5vh);
-    background-size: 1.5vh 1.5vh; */
     opacity: 0.03;
     z-index: -1;
     pointer-events: none;
