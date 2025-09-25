@@ -37,19 +37,6 @@
   opacity: 0;
   pointer-events: none;
 }
-#chatbot-container.chatbot-minimized {
-  height: 6vh;
-  width: 20vh; /* Smaller when minimized */
-  cursor: pointer;
-  transform: translateY(0) scale(1);
-  box-shadow: 0 0.3vh 1vh rgba(0,0,0,0.2);
-}
-#chatbot-container.chatbot-minimized #chatbot-messages,
-#chatbot-container.chatbot-minimized #chatbot-input-area,
-#chatbot-container.chatbot-minimized .chatbot-toolbar,
-#chatbot-container.chatbot-minimized .chatbot-search-box {
-  display: none;
-}
 #chatbot-header {
   padding: 1.5vh;
   background: var(--gradient-bg);

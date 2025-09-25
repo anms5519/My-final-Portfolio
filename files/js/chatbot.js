@@ -3104,16 +3104,8 @@ I'd love to tell you more about my skills, projects, and experiences . what are 
         }
         if (chatbotClose) {
             chatbotClose.addEventListener("click", () => {
-                chatbotContainer.classList.add("chatbot-closed");
-                if (chatbotContainer.classList.contains("chatbot-minimized")) {
-                    chatbotContainer.classList.remove("chatbot-minimized");
-                }
+                chatbotContainer.classList.add("chatbot-closed");  
                 endAnalyticsSession();
-            });
-        }
-        if (chatbotMinimize) {
-            chatbotMinimize.addEventListener("click", () => {
-                chatbotContainer.classList.toggle("chatbot-minimized");
             });
         }
         if (chatbotInput) {
