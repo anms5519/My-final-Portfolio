@@ -241,7 +241,7 @@
                     display: flex;
                     justify-content: flex-end;
                     padding: 0.8vh 1.5vh;
-                    background: rgba(30, 30, 50, 0.6);
+                    background: var(--gradient-bg);
                     border-bottom: 0.1vh solid rgba(100, 100, 255, 0.2);
                     gap: 1vh;
                 }

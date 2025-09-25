@@ -11,7 +11,7 @@
 .lsearch-bar {
     display: flex;
     align-items: center;
-    background: var(--lsearch-input-bg);
+    background: var(--gradient-bg);
     border: 0.1vh solid var(--lsearch-input-border);
     border-radius: var(--lsearch-radius-soft);
     padding: 0.8vh 1.2vh;
@@ -100,16 +100,6 @@
     background-size: 1.2em; /* Adjust arrow size */
 }
 
-/* Themed SVG arrows (same as original, adjust fill colors if needed) */
-[data-theme="light"] .lsearch-category-select,
-.lsearch-category-select { /* Default to light if no theme or dark theme not specified */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23007bff' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
-    /* Example: fill='%23007bff' (a generic blue) if primary color is not known for SVG */
-}
-[data-theme="dark"] .lsearch-category-select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2300c6ff' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
-    /* Use var(--lsearch-primary-color) hex value for fill if possible, URL encode it */
-}
 
 
 .lsearch-category-select:hover {
@@ -121,7 +111,7 @@
     box-shadow: 0 0 0 0.2vh rgba(var(--lsearch-primary-rgb), 0.2);
 }
 .lsearch-category-select option {
-    background-color: var(--lsearch-card-bg);
+    background-color: var(--gradient-bg);
     color: var(--lsearch-text-color);
     padding: 0.8vh 1vh;
 }
@@ -132,7 +122,7 @@
     top: calc(100% + 1vh); /* Position below search bar wrapper */
     left: 0;
     width: 100%;
-    background: var(--lsearch-card-bg);
+    background: var(--gradient-bg);
     border-radius: var(--lsearch-radius-soft);
     border: 0.1vh solid var(--lsearch-card-border);
     box-shadow: var(--lsearch-shadow-strong);

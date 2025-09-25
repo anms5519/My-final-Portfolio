@@ -6,7 +6,7 @@
     left: 0;
     width: 100%;
     height: var(--header-height);
-    background: var(--nav-bg);
+    background: var(--gradient-bg);
     backdrop-filter: var(--glass-effect);
     -webkit-backdrop-filter: var(--glass-effect);
     z-index: 2147483646;
@@ -248,7 +248,7 @@
     position: absolute;
     top: 0.2vh; right: 0.2vh;
     background: var(--secondary-color);
-    color: var(--bg-color);
+    color: var(--text-color-headings);
     border-radius: var(--border-radius-circle);
     width: 1.8vh; height: 1.8vh;
     font-size: 1vh; font-weight: 700;
