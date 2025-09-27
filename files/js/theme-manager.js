@@ -1,23 +1,20 @@
-// theme-manager.js - Advanced theme management system for portfolio
 window.ThemeManager = {
-    // Theme definitions for different times of day
     themes: {
         midnight: {
             name: "Midnight",
             timeRange: { start: 0, end: 2 },
             variables: {
-                // Ultra dark with cosmic accents
                 "bg-color": "#0A0A14",
                 "bg-color-alt": "#12121E",
                 "bg-color-rgb": "10, 10, 20",
-                "primary-color": "#7214FF", // Deep purple
+                "primary-color": "#7214FF", 
                 "primary-color-rgb": "114, 20, 255",
-                "secondary-color": "#3A10E5", // Midnight blue
+                "secondary-color": "#3A10E5", 
                 "secondary-color-rgb": "58, 16, 229",
                 "accent-color": "#131335",
-                "accent-color-alt": "#7B42FF", // Soft violet
+                "accent-color-alt": "#7B42FF", 
                 "accent-color-alt-rgb": "123, 66, 255",
-                "text-color": "#C2C2E0", // Soft lavender text
+                "text-color": "#C2C2E0", 
                 "text-color-headings": "#FFFFFF",
                 "text-color-light": "#8585AD",
                 "text-color-darker": "#4C4C6E",
@@ -30,11 +27,13 @@ window.ThemeManager = {
                 "glass-effect": "saturate(180%) blur(1.2vh)",
                 "card-bg": "rgba(20, 20, 35, 0.9)",
                 "card-border": "rgba(114, 20, 255, 0.3)",
-                "card-shadow": "0 .8vh 2vh rgba(114, 20, 255, 0.15), 0 0 .5vh rgba(114, 20, 255, 0.3)",
-                "gradient-bg": "linear-gradient(180deg, #12121E 0%, #0A0A14 100%)",
+                "card-shadow":
+                    "0 .8vh 2vh rgba(114, 20, 255, 0.15), 0 0 .5vh rgba(114, 20, 255, 0.3)",
+                "gradient-bg":
+                    "linear-gradient(180deg, #12121E 0%, #0A0A14 100%)",
                 "gradient-primary": "linear-gradient(135deg, #7214FF, #3A10E5)",
                 "cosmic-glow-color1": "#7214FF",
-                "cosmic-glow-color2": "#3A10E5"
+                "cosmic-glow-color2": "#3A10E5",
             },
             extraStyles: `
                 body::before {
@@ -53,24 +52,23 @@ window.ThemeManager = {
                 .section-title::after {
                     background: linear-gradient(90deg, #7214FF, #3A10E5);
                 }
-            `
+            `,
         },
         earlyMorning: {
             name: "Early Morning",
             timeRange: { start: 3, end: 5 },
             variables: {
-                // Deep blue with hints of coming sunrise
                 "bg-color": "#0F1A2F",
                 "bg-color-alt": "#172A45",
                 "bg-color-rgb": "15, 26, 47",
-                "primary-color": "#5065DA", // Dusky blue
+                "primary-color": "#5065DA", 
                 "primary-color-rgb": "80, 101, 218",
-                "secondary-color": "#3F88C5", // Morning blue
+                "secondary-color": "#3F88C5", 
                 "secondary-color-rgb": "63, 136, 197",
                 "accent-color": "#1D2F50",
-                "accent-color-alt": "#D47FB8", // Hint of pink for coming sunrise
+                "accent-color-alt": "#D47FB8", 
                 "accent-color-alt-rgb": "212, 127, 184",
-                "text-color": "#C4D4E3", // Soft blue-white
+                "text-color": "#C4D4E3", 
                 "text-color-headings": "#FFFFFF",
                 "text-color-light": "#8DA9C4",
                 "text-color-darker": "#5D7599",
@@ -83,11 +81,13 @@ window.ThemeManager = {
                 "glass-effect": "saturate(160%) blur(1vh)",
                 "card-bg": "rgba(29, 47, 80, 0.85)",
                 "card-border": "rgba(80, 101, 218, 0.25)",
-                "card-shadow": "0 .7vh 1.8vh rgba(63, 136, 197, 0.15), 0 0 .5vh rgba(80, 101, 218, 0.2)",
-                "gradient-bg": "linear-gradient(180deg, #172A45 0%, #0F1A2F 100%)",
+                "card-shadow":
+                    "0 .7vh 1.8vh rgba(63, 136, 197, 0.15), 0 0 .5vh rgba(80, 101, 218, 0.2)",
+                "gradient-bg":
+                    "linear-gradient(180deg, #172A45 0%, #0F1A2F 100%)",
                 "gradient-primary": "linear-gradient(135deg, #5065DA, #3F88C5)",
                 "cosmic-glow-color1": "#5065DA",
-                "cosmic-glow-color2": "#3F88C5"
+                "cosmic-glow-color2": "#3F88C5",
             },
             extraStyles: `
                 body::before {
@@ -106,24 +106,23 @@ window.ThemeManager = {
                 .section-title::after {
                     background: linear-gradient(90deg, #5065DA, #3F88C5);
                 }
-            `
+            `,
         },
         dawn: {
             name: "Dawn",
             timeRange: { start: 6, end: 7 },
             variables: {
-                // Pink and lavender sunrise colors
                 "bg-color": "#1F2247",
                 "bg-color-alt": "#2A2C57",
                 "bg-color-rgb": "31, 34, 71",
-                "primary-color": "#FF9E7A", // Sunrise orange
+                "primary-color": "#FF9E7A", 
                 "primary-color-rgb": "255, 158, 122",
-                "secondary-color": "#E37A90", // Sunrise pink
+                "secondary-color": "#E37A90", 
                 "secondary-color-rgb": "227, 122, 144",
                 "accent-color": "#2D3163",
-                "accent-color-alt": "#FFD56A", // Golden sunrise
+                "accent-color-alt": "#FFD56A", 
                 "accent-color-alt-rgb": "255, 213, 106",
-                "text-color": "#D6D7F3", // Lavender-white
+                "text-color": "#D6D7F3", 
                 "text-color-headings": "#FFE8D6",
                 "text-color-light": "#AAB0E6",
                 "text-color-darker": "#7175A3",
@@ -136,11 +135,13 @@ window.ThemeManager = {
                 "glass-effect": "saturate(140%) blur(1vh)",
                 "card-bg": "rgba(45, 49, 99, 0.8)",
                 "card-border": "rgba(255, 158, 122, 0.3)",
-                "card-shadow": "0 .7vh 1.8vh rgba(227, 122, 144, 0.15), 0 0 .5vh rgba(255, 158, 122, 0.25)",
-                "gradient-bg": "linear-gradient(180deg, #2A2C57 0%, #1F2247 100%)",
+                "card-shadow":
+                    "0 .7vh 1.8vh rgba(227, 122, 144, 0.15), 0 0 .5vh rgba(255, 158, 122, 0.25)",
+                "gradient-bg":
+                    "linear-gradient(180deg, #2A2C57 0%, #1F2247 100%)",
                 "gradient-primary": "linear-gradient(135deg, #FF9E7A, #E37A90)",
                 "cosmic-glow-color1": "#FF9E7A",
-                "cosmic-glow-color2": "#E37A90"
+                "cosmic-glow-color2": "#E37A90",
             },
             extraStyles: `
                 body::before {
@@ -159,24 +160,23 @@ window.ThemeManager = {
                 .section-title::after {
                     background: linear-gradient(90deg, #FF9E7A, #E37A90);
                 }
-            `
+            `,
         },
         morning: {
             name: "Morning",
             timeRange: { start: 8, end: 9 },
             variables: {
-                // Bright, energetic morning
                 "bg-color": "#EFF5FB",
                 "bg-color-alt": "#FFFFFF",
                 "bg-color-rgb": "239, 245, 251",
-                "primary-color": "#3498DB", // Fresh sky blue
+                "primary-color": "#3498DB", 
                 "primary-color-rgb": "52, 152, 219",
-                "secondary-color": "#26C6DA", // Aqua accent
+                "secondary-color": "#26C6DA", 
                 "secondary-color-rgb": "38, 198, 218",
                 "accent-color": "#F0F8FF",
-                "accent-color-alt": "#F1C40F", // Morning sun
+                "accent-color-alt": "#F1C40F", 
                 "accent-color-alt-rgb": "241, 196, 15",
-                "text-color": "#2C3E50", 
+                "text-color": "#2C3E50",
                 "text-color-headings": "#1A365D",
                 "text-color-light": "#718096",
                 "text-color-darker": "#4A5568",
@@ -189,11 +189,13 @@ window.ThemeManager = {
                 "glass-effect": "saturate(100%) blur(.8vh)",
                 "card-bg": "#FFFFFF",
                 "card-border": "rgba(52, 152, 219, 0.2)",
-                "card-shadow": "0 .5vh 1.5vh rgba(0, 0, 0, 0.06), 0 0 .3vh rgba(52, 152, 219, 0.1)",
-                "gradient-bg": "linear-gradient(180deg, #FFFFFF 0%, #EFF5FB 100%)",
+                "card-shadow":
+                    "0 .5vh 1.5vh rgba(0, 0, 0, 0.06), 0 0 .3vh rgba(52, 152, 219, 0.1)",
+                "gradient-bg":
+                    "linear-gradient(180deg, #FFFFFF 0%, #EFF5FB 100%)",
                 "gradient-primary": "linear-gradient(135deg, #3498DB, #26C6DA)",
                 "cosmic-glow-color1": "#3498DB",
-                "cosmic-glow-color2": "#26C6DA"
+                "cosmic-glow-color2": "#26C6DA",
             },
             extraStyles: `
                 body::before {
@@ -212,24 +214,23 @@ window.ThemeManager = {
                 .section-title::after {
                     background: linear-gradient(90deg, #3498DB, #26C6DA);
                 }
-            `
+            `,
         },
         lateMorning: {
             name: "Late Morning",
             timeRange: { start: 10, end: 11 },
             variables: {
-                // Vibrant and bright
                 "bg-color": "#F2F9FF",
                 "bg-color-alt": "#FFFFFF",
                 "bg-color-rgb": "242, 249, 255",
-                "primary-color": "#00B4D8", // Bright cyan
+                "primary-color": "#00B4D8", 
                 "primary-color-rgb": "0, 180, 216",
-                "secondary-color": "#38E54D", // Fresh green
+                "secondary-color": "#38E54D", 
                 "secondary-color-rgb": "56, 229, 77",
                 "accent-color": "#F7FBFF",
-                "accent-color-alt": "#FF9F1C", // Energetic orange
+                "accent-color-alt": "#FF9F1C", 
                 "accent-color-alt-rgb": "255, 159, 28",
-                "text-color": "#1E293B", 
+                "text-color": "#1E293B",
                 "text-color-headings": "#0F172A",
                 "text-color-light": "#64748B",
                 "text-color-darker": "#334155",
@@ -242,11 +243,13 @@ window.ThemeManager = {
                 "glass-effect": "saturate(110%) blur(.7vh)",
                 "card-bg": "#FFFFFF",
                 "card-border": "rgba(0, 180, 216, 0.15)",
-                "card-shadow": "0 .5vh 1.2vh rgba(0, 0, 0, 0.05), 0 0 .3vh rgba(0, 180, 216, 0.08)",
-                "gradient-bg": "linear-gradient(180deg, #FFFFFF 0%, #F2F9FF 100%)",
+                "card-shadow":
+                    "0 .5vh 1.2vh rgba(0, 0, 0, 0.05), 0 0 .3vh rgba(0, 180, 216, 0.08)",
+                "gradient-bg":
+                    "linear-gradient(180deg, #FFFFFF 0%, #F2F9FF 100%)",
                 "gradient-primary": "linear-gradient(135deg, #00B4D8, #38E54D)",
                 "cosmic-glow-color1": "#00B4D8",
-                "cosmic-glow-color2": "#38E54D"
+                "cosmic-glow-color2": "#38E54D",
             },
             extraStyles: `
                 body::before {
@@ -265,24 +268,23 @@ window.ThemeManager = {
                 .section-title::after {
                     background: linear-gradient(90deg, #00B4D8, #38E54D);
                 }
-            `
+            `,
         },
         noon: {
             name: "Noon",
             timeRange: { start: 12, end: 13 },
             variables: {
-                // Bright, maximum light
                 "bg-color": "#F9FAFB",
                 "bg-color-alt": "#FFFFFF",
                 "bg-color-rgb": "249, 250, 251",
-                "primary-color": "#0EA5E9", // Sky blue
+                "primary-color": "#0EA5E9", 
                 "primary-color-rgb": "14, 165, 233",
-                "secondary-color": "#F59E0B", // Golden sun
+                "secondary-color": "#F59E0B", 
                 "secondary-color-rgb": "245, 158, 11",
                 "accent-color": "#F8FAFC",
-                "accent-color-alt": "#FBBF24", // Yellow sunshine
+                "accent-color-alt": "#FBBF24", 
                 "accent-color-alt-rgb": "251, 191, 36",
-                "text-color": "#0F172A", 
+                "text-color": "#0F172A",
                 "text-color-headings": "#111827",
                 "text-color-light": "#64748B",
                 "text-color-darker": "#1E293B",
@@ -295,11 +297,13 @@ window.ThemeManager = {
                 "glass-effect": "saturate(105%) blur(.7vh)",
                 "card-bg": "#FFFFFF",
                 "card-border": "rgba(14, 165, 233, 0.15)",
-                "card-shadow": "0 .5vh 1.2vh rgba(0, 0, 0, 0.04), 0 0 .3vh rgba(14, 165, 233, 0.07)",
-                "gradient-bg": "linear-gradient(180deg, #FFFFFF 0%, #F9FAFB 100%)",
+                "card-shadow":
+                    "0 .5vh 1.2vh rgba(0, 0, 0, 0.04), 0 0 .3vh rgba(14, 165, 233, 0.07)",
+                "gradient-bg":
+                    "linear-gradient(180deg, #FFFFFF 0%, #F9FAFB 100%)",
                 "gradient-primary": "linear-gradient(135deg, #0EA5E9, #F59E0B)",
                 "cosmic-glow-color1": "#0EA5E9",
-                "cosmic-glow-color2": "#F59E0B"
+                "cosmic-glow-color2": "#F59E0B",
             },
             extraStyles: `
                 body::before {
@@ -318,24 +322,23 @@ window.ThemeManager = {
                 .section-title::after {
                     background: linear-gradient(90deg, #0EA5E9, #F59E0B);
                 }
-            `
+            `,
         },
         afternoon: {
             name: "Afternoon",
             timeRange: { start: 14, end: 15 },
             variables: {
-                // Warm afternoon glow
                 "bg-color": "#F5F7FA",
                 "bg-color-alt": "#FFFFFF",
                 "bg-color-rgb": "245, 247, 250",
-                "primary-color": "#DD6B20", // Warm orange
+                "primary-color": "#DD6B20", 
                 "primary-color-rgb": "221, 107, 32",
-                "secondary-color": "#F6AD55", // Soft peach
+                "secondary-color": "#F6AD55", 
                 "secondary-color-rgb": "246, 173, 85",
                 "accent-color": "#F9FAFB",
-                "accent-color-alt": "#ED8936", // Sunset orange
+                "accent-color-alt": "#ED8936", 
                 "accent-color-alt-rgb": "237, 137, 54",
-                "text-color": "#1A202C", 
+                "text-color": "#1A202C",
                 "text-color-headings": "#2D3748",
                 "text-color-light": "#718096",
                 "text-color-darker": "#4A5568",
@@ -348,11 +351,13 @@ window.ThemeManager = {
                 "glass-effect": "saturate(105%) blur(.7vh)",
                 "card-bg": "#FFFFFF",
                 "card-border": "rgba(221, 107, 32, 0.15)",
-                "card-shadow": "0 .5vh 1.2vh rgba(221, 107, 32, 0.05), 0 0 .3vh rgba(221, 107, 32, 0.08)",
-                "gradient-bg": "linear-gradient(180deg, #FFFFFF 0%, #F5F7FA 100%)",
+                "card-shadow":
+                    "0 .5vh 1.2vh rgba(221, 107, 32, 0.05), 0 0 .3vh rgba(221, 107, 32, 0.08)",
+                "gradient-bg":
+                    "linear-gradient(180deg, #FFFFFF 0%, #F5F7FA 100%)",
                 "gradient-primary": "linear-gradient(135deg, #DD6B20, #F6AD55)",
                 "cosmic-glow-color1": "#DD6B20",
-                "cosmic-glow-color2": "#F6AD55"
+                "cosmic-glow-color2": "#F6AD55",
             },
             extraStyles: `
                 body::before {
@@ -371,24 +376,23 @@ window.ThemeManager = {
                 .section-title::after {
                     background: linear-gradient(90deg, #DD6B20, #F6AD55);
                 }
-            `
+            `,
         },
         lateAfternoon: {
             name: "Late Afternoon",
             timeRange: { start: 16, end: 17 },
             variables: {
-                // Golden hour
                 "bg-color": "#FCF5F0",
                 "bg-color-alt": "#FFFFFF",
                 "bg-color-rgb": "252, 245, 240",
-                "primary-color": "#D6806A", // Golden rose
+                "primary-color": "#D6806A", 
                 "primary-color-rgb": "214, 128, 106",
-                "secondary-color": "#E9B872", // Golden sunset
+                "secondary-color": "#E9B872", 
                 "secondary-color-rgb": "233, 184, 114",
                 "accent-color": "#FDF8F5",
-                "accent-color-alt": "#FE9255", // Warm sunset
+                "accent-color-alt": "#FE9255", 
                 "accent-color-alt-rgb": "254, 146, 85",
-                "text-color": "#43302B", 
+                "text-color": "#43302B",
                 "text-color-headings": "#2E1F1B",
                 "text-color-light": "#8D7A74",
                 "text-color-darker": "#5E4C45",
@@ -401,11 +405,13 @@ window.ThemeManager = {
                 "glass-effect": "saturate(120%) blur(.7vh)",
                 "card-bg": "#FFFFFF",
                 "card-border": "rgba(214, 128, 106, 0.18)",
-                "card-shadow": "0 .5vh 1.5vh rgba(233, 184, 114, 0.1), 0 0 .3vh rgba(214, 128, 106, 0.1)",
-                "gradient-bg": "linear-gradient(180deg, #FFFFFF 0%, #FCF5F0 100%)",
+                "card-shadow":
+                    "0 .5vh 1.5vh rgba(233, 184, 114, 0.1), 0 0 .3vh rgba(214, 128, 106, 0.1)",
+                "gradient-bg":
+                    "linear-gradient(180deg, #FFFFFF 0%, #FCF5F0 100%)",
                 "gradient-primary": "linear-gradient(135deg, #D6806A, #E9B872)",
                 "cosmic-glow-color1": "#D6806A",
-                "cosmic-glow-color2": "#E9B872"
+                "cosmic-glow-color2": "#E9B872",
             },
             extraStyles: `
                 body::before {
@@ -424,24 +430,23 @@ window.ThemeManager = {
                 .section-title::after {
                     background: linear-gradient(90deg, #D6806A, #E9B872);
                 }
-            `
+            `,
         },
         evening: {
             name: "Evening",
             timeRange: { start: 18, end: 19 },
             variables: {
-                // Sunset colors
                 "bg-color": "#463449",
                 "bg-color-alt": "#5A445F",
                 "bg-color-rgb": "70, 52, 73",
-                "primary-color": "#FF7B54", // Sunset orange
+                "primary-color": "#FF7B54", 
                 "primary-color-rgb": "255, 123, 84",
-                "secondary-color": "#A460ED", // Evening purple
+                "secondary-color": "#A460ED", 
                 "secondary-color-rgb": "164, 96, 237",
                 "accent-color": "#382B3A",
-                "accent-color-alt": "#FFB26B", // Soft sunset gold
+                "accent-color-alt": "#FFB26B", 
                 "accent-color-alt-rgb": "255, 178, 107",
-                "text-color": "#E3D8E9", 
+                "text-color": "#E3D8E9",
                 "text-color-headings": "#FFE2D4",
                 "text-color-light": "#BCA9C9",
                 "text-color-darker": "#7D6985",
@@ -454,11 +459,13 @@ window.ThemeManager = {
                 "glass-effect": "saturate(150%) blur(1vh)",
                 "card-bg": "rgba(56, 43, 58, 0.85)",
                 "card-border": "rgba(255, 123, 84, 0.25)",
-                "card-shadow": "0 .6vh 1.8vh rgba(164, 96, 237, 0.15), 0 0 .5vh rgba(255, 123, 84, 0.2)",
-                "gradient-bg": "linear-gradient(180deg, #5A445F 0%, #463449 100%)",
+                "card-shadow":
+                    "0 .6vh 1.8vh rgba(164, 96, 237, 0.15), 0 0 .5vh rgba(255, 123, 84, 0.2)",
+                "gradient-bg":
+                    "linear-gradient(180deg, #5A445F 0%, #463449 100%)",
                 "gradient-primary": "linear-gradient(135deg, #FF7B54, #A460ED)",
                 "cosmic-glow-color1": "#FF7B54",
-                "cosmic-glow-color2": "#A460ED"
+                "cosmic-glow-color2": "#A460ED",
             },
             extraStyles: `
                 body::before {
@@ -477,24 +484,23 @@ window.ThemeManager = {
                 .section-title::after {
                     background: linear-gradient(90deg, #FF7B54, #A460ED);
                 }
-            `
+            `,
         },
         dusk: {
             name: "Dusk",
             timeRange: { start: 20, end: 20 },
             variables: {
-                // Deep sunset, first stars
                 "bg-color": "#282D4F",
                 "bg-color-alt": "#313862",
                 "bg-color-rgb": "40, 45, 79",
-                "primary-color": "#FF5277", // Dusky rose
+                "primary-color": "#FF5277", 
                 "primary-color-rgb": "255, 82, 119",
-                "secondary-color": "#6C63FF", // Twilight purple
+                "secondary-color": "#6C63FF", 
                 "secondary-color-rgb": "108, 99, 255",
                 "accent-color": "#2C3154",
-                "accent-color-alt": "#FFD369", // Last light
+                "accent-color-alt": "#FFD369", 
                 "accent-color-alt-rgb": "255, 211, 105",
-                "text-color": "#D5D9F0", 
+                "text-color": "#D5D9F0",
                 "text-color-headings": "#FFFFFF",
                 "text-color-light": "#A2ABDB",
                 "text-color-darker": "#636EA6",
@@ -507,11 +513,13 @@ window.ThemeManager = {
                 "glass-effect": "saturate(160%) blur(1vh)",
                 "card-bg": "rgba(44, 49, 84, 0.85)",
                 "card-border": "rgba(255, 82, 119, 0.25)",
-                "card-shadow": "0 .6vh 1.8vh rgba(108, 99, 255, 0.15), 0 0 .5vh rgba(255, 82, 119, 0.2)",
-                "gradient-bg": "linear-gradient(180deg, #313862 0%, #282D4F 100%)",
+                "card-shadow":
+                    "0 .6vh 1.8vh rgba(108, 99, 255, 0.15), 0 0 .5vh rgba(255, 82, 119, 0.2)",
+                "gradient-bg":
+                    "linear-gradient(180deg, #313862 0%, #282D4F 100%)",
                 "gradient-primary": "linear-gradient(135deg, #FF5277, #6C63FF)",
                 "cosmic-glow-color1": "#FF5277",
-                "cosmic-glow-color2": "#6C63FF"
+                "cosmic-glow-color2": "#6C63FF",
             },
             extraStyles: `
                 body::before {
@@ -530,24 +538,23 @@ window.ThemeManager = {
                 .section-title::after {
                     background: linear-gradient(90deg, #FF5277, #6C63FF);
                 }
-            `
+            `,
         },
         night: {
             name: "Night",
             timeRange: { start: 21, end: 22 },
             variables: {
-                // Dark evening with hints of color
                 "bg-color": "#0F1A2A",
                 "bg-color-alt": "#162A45",
                 "bg-color-rgb": "15, 26, 42",
-                "primary-color": "#36B5D0", // Night blue
+                "primary-color": "#36B5D0", 
                 "primary-color-rgb": "54, 181, 208",
-                "secondary-color": "#9C54FF", // Evening purple
+                "secondary-color": "#9C54FF", 
                 "secondary-color-rgb": "156, 84, 255",
                 "accent-color": "#1E2B3D",
-                "accent-color-alt": "#FFDA85", // City lights gold
+                "accent-color-alt": "#FFDA85", 
                 "accent-color-alt-rgb": "255, 218, 133",
-                "text-color": "#C9D4DD", 
+                "text-color": "#C9D4DD",
                 "text-color-headings": "#F0F7FF",
                 "text-color-light": "#8DA1B5",
                 "text-color-darker": "#506477",
@@ -560,11 +567,13 @@ window.ThemeManager = {
                 "glass-effect": "saturate(170%) blur(1vh)",
                 "card-bg": "rgba(30, 43, 61, 0.85)",
                 "card-border": "rgba(54, 181, 208, 0.25)",
-                "card-shadow": "0 .7vh 2vh rgba(54, 181, 208, 0.15), 0 0 .5vh rgba(54, 181, 208, 0.25)",
-                "gradient-bg": "linear-gradient(180deg, #162A45 0%, #0F1A2A 100%)",
+                "card-shadow":
+                    "0 .7vh 2vh rgba(54, 181, 208, 0.15), 0 0 .5vh rgba(54, 181, 208, 0.25)",
+                "gradient-bg":
+                    "linear-gradient(180deg, #162A45 0%, #0F1A2A 100%)",
                 "gradient-primary": "linear-gradient(135deg, #36B5D0, #9C54FF)",
                 "cosmic-glow-color1": "#36B5D0",
-                "cosmic-glow-color2": "#9C54FF"
+                "cosmic-glow-color2": "#9C54FF",
             },
             extraStyles: `
                 body::before {
@@ -583,24 +592,23 @@ window.ThemeManager = {
                 .section-title::after {
                     background: linear-gradient(90deg, #36B5D0, #9C54FF);
                 }
-            `
+            `,
         },
         lateNight: {
             name: "Late Night",
             timeRange: { start: 23, end: 23 },
             variables: {
-                // Deep night with cosmic blues
                 "bg-color": "#0D111D",
                 "bg-color-alt": "#131A2C",
                 "bg-color-rgb": "13, 17, 29",
-                "primary-color": "#4285F4", // Deep night blue
+                "primary-color": "#4285F4", 
                 "primary-color-rgb": "66, 133, 244",
-                "secondary-color": "#7367F0", // Cosmic purple
+                "secondary-color": "#7367F0", 
                 "secondary-color-rgb": "115, 103, 240",
                 "accent-color": "#111729",
-                "accent-color-alt": "#6ECDDD", // Starlight blue
+                "accent-color-alt": "#6ECDDD", 
                 "accent-color-alt-rgb": "110, 205, 221",
-                "text-color": "#C8D8FE", 
+                "text-color": "#C8D8FE",
                 "text-color-headings": "#F5FBFF",
                 "text-color-light": "#8C9DBE",
                 "text-color-darker": "#506181",
@@ -613,11 +621,13 @@ window.ThemeManager = {
                 "glass-effect": "saturate(180%) blur(1vh)",
                 "card-bg": "rgba(17, 23, 41, 0.9)",
                 "card-border": "rgba(66, 133, 244, 0.28)",
-                "card-shadow": "0 .7vh 2vh rgba(66, 133, 244, 0.15), 0 0 .5vh rgba(66, 133, 244, 0.25)",
-                "gradient-bg": "linear-gradient(180deg, #131A2C 0%, #0D111D 100%)",
+                "card-shadow":
+                    "0 .7vh 2vh rgba(66, 133, 244, 0.15), 0 0 .5vh rgba(66, 133, 244, 0.25)",
+                "gradient-bg":
+                    "linear-gradient(180deg, #131A2C 0%, #0D111D 100%)",
                 "gradient-primary": "linear-gradient(135deg, #4285F4, #7367F0)",
                 "cosmic-glow-color1": "#4285F4",
-                "cosmic-glow-color2": "#7367F0"
+                "cosmic-glow-color2": "#7367F0",
             },
             extraStyles: `
                 body::before {
@@ -636,24 +646,23 @@ window.ThemeManager = {
                 .section-title::after {
                     background: linear-gradient(90deg, #4285F4, #7367F0);
                 }
-            `
+            `,
         },
         deadOfNight: {
             name: "Dead of Night",
             timeRange: { start: 1, end: 2 },
             variables: {
-                // Darkest night with subtle cosmic accents
                 "bg-color": "#090C14",
                 "bg-color-alt": "#0F1525",
                 "bg-color-rgb": "9, 12, 20",
-                "primary-color": "#5D3FD3", // Deep purple
+                "primary-color": "#5D3FD3", 
                 "primary-color-rgb": "93, 63, 211",
-                "secondary-color": "#266ED7", // Midnight blue
+                "secondary-color": "#266ED7", 
                 "secondary-color-rgb": "38, 110, 215",
                 "accent-color": "#0B0F1A",
-                "accent-color-alt": "#DF4B9C", // Deep rose
+                "accent-color-alt": "#DF4B9C", 
                 "accent-color-alt-rgb": "223, 75, 156",
-                "text-color": "#B3C5E6", // Soft blue-white
+                "text-color": "#B3C5E6", 
                 "text-color-headings": "#E4ECFF",
                 "text-color-light": "#7E94BC",
                 "text-color-darker": "#475877",
@@ -666,11 +675,13 @@ window.ThemeManager = {
                 "glass-effect": "saturate(180%) blur(1vh)",
                 "card-bg": "rgba(11, 15, 26, 0.95)",
                 "card-border": "rgba(93, 63, 211, 0.3)",
-                "card-shadow": "0 .8vh 2vh rgba(38, 110, 215, 0.15), 0 0 .5vh rgba(93, 63, 211, 0.3)",
-                "gradient-bg": "linear-gradient(180deg, #0F1525 0%, #090C14 100%)",
+                "card-shadow":
+                    "0 .8vh 2vh rgba(38, 110, 215, 0.15), 0 0 .5vh rgba(93, 63, 211, 0.3)",
+                "gradient-bg":
+                    "linear-gradient(180deg, #0F1525 0%, #090C14 100%)",
                 "gradient-primary": "linear-gradient(135deg, #5D3FD3, #266ED7)",
                 "cosmic-glow-color1": "#5D3FD3",
-                "cosmic-glow-color2": "#266ED7"
+                "cosmic-glow-color2": "#266ED7",
             },
             extraStyles: `
                 body::before {
@@ -689,63 +700,43 @@ window.ThemeManager = {
                 .section-title::after {
                     background: linear-gradient(90deg, #5D3FD3, #266ED7);
                 }
-            `
-        }
+            `,
+        },
     },
-
-    // State
-    currentTheme: '',
+    currentTheme: "",
     manuallySelectedTheme: null,
     styleElement: null,
-    
-    // Initialize the theme manager
-    init: function() {
-        // Create style element for dynamic styles
-        this.styleElement = document.createElement('style');
-        this.styleElement.id = 'dynamic-theme-styles';
+    init: function () {
+        this.styleElement = document.createElement("style");
+        this.styleElement.id = "dynamic-theme-styles";
         document.head.appendChild(this.styleElement);
-        
-        // Attach theme toggle event
-        const themeToggle = document.getElementById('theme-toggle');
+        const themeToggle = document.getElementById("theme-toggle");
         if (themeToggle) {
-            themeToggle.addEventListener('click', () => {
+            themeToggle.addEventListener("click", () => {
                 this.toggleNextTheme();
             });
         }
-        
-        // Load saved theme if present, otherwise set time-based theme
         this.loadThemePreference();
-        
-        // Setup automatic time-based theme updates
         this.setupTimeBasedUpdates();
     },
-    
-    // Get current hour of day (0-23)
-    getCurrentHour: function() {
+    getCurrentHour: function () {
         return new Date().getHours();
     },
-    
-    // Determine which theme to use based on current time
-    getTimeBasedTheme: function() {
+    getTimeBasedTheme: function () {
         const currentHour = this.getCurrentHour();
-        
-        // Find theme matching current hour
         for (const [themeKey, theme] of Object.entries(this.themes)) {
             const { timeRange } = theme;
-            
-            if (currentHour >= timeRange.start && currentHour <= timeRange.end) {
+            if (
+                currentHour >= timeRange.start &&
+                currentHour <= timeRange.end
+            ) {
                 return themeKey;
             }
         }
-        
-        // Default to night if no match
-        return 'night';
+        return "night";
     },
-    
-    // Load theme from preferences or set based on time
-    loadThemePreference: function() {
-        const savedTheme = localStorage.getItem('portfolio-theme-key');
-        
+    loadThemePreference: function () {
+        const savedTheme = localStorage.getItem("portfolio-theme-key");
         if (savedTheme && this.themes[savedTheme]) {
             this.manuallySelectedTheme = savedTheme;
             this.applyTheme(savedTheme);
@@ -754,68 +745,49 @@ window.ThemeManager = {
             this.applyTheme(timeBasedTheme);
         }
     },
-    
-    // Apply a specific theme
-    applyTheme: function(themeKey) {
+    applyTheme: function (themeKey) {
         if (!this.themes[themeKey]) {
             console.error(`Theme '${themeKey}' not found!`);
             return;
         }
-        
         const theme = this.themes[themeKey];
         this.currentTheme = themeKey;
-        
-        // Apply CSS variables
-        let cssVars = '';
+        let cssVars = "";
         for (const [varName, value] of Object.entries(theme.variables)) {
             cssVars += `--${varName}: ${value};\n`;
         }
-        
-        // Set HTML data attributes (for legacy theme toggle)
-        document.documentElement.setAttribute('data-theme', 'custom');
-        document.documentElement.setAttribute('data-theme-name', theme.name);
-        
-        // Update theme toggle button if available
-        const themeToggle = document.getElementById('theme-toggle');
+        document.documentElement.setAttribute("data-theme", "custom");
+        document.documentElement.setAttribute("data-theme-name", theme.name);
+        const themeToggle = document.getElementById("theme-toggle");
         if (themeToggle) {
-            themeToggle.setAttribute('aria-label', `Theme: ${theme.name}`);
-            themeToggle.setAttribute('title', `Current theme: ${theme.name}. Click to change.`);
+            themeToggle.setAttribute("aria-label", `Theme: ${theme.name}`);
+            themeToggle.setAttribute(
+                "title",
+                `Current theme: ${theme.name}. Click to change.`
+            );
         }
-        
-        // Apply the CSS variables and extra styles
         this.styleElement.textContent = `
             :root {
                 ${cssVars}
             }
-            
             ${theme.extraStyles}
         `;
-        
-        // Create theme change event
-        const event = new CustomEvent('themechange', { 
-            detail: { theme: themeKey, themeName: theme.name } 
+        const event = new CustomEvent("themechange", {
+            detail: { theme: themeKey, themeName: theme.name },
         });
         document.dispatchEvent(event);
-        
-        // Log theme change
         console.log(`Applied theme: ${theme.name}`);
     },
-    
-    // Toggle to the next theme in sequence
-    toggleNextTheme: function() {
+    toggleNextTheme: function () {
         const themeKeys = Object.keys(this.themes);
         const currentIndex = themeKeys.indexOf(this.currentTheme);
         const nextIndex = (currentIndex + 1) % themeKeys.length;
         const nextTheme = themeKeys[nextIndex];
-        
         this.manuallySelectedTheme = nextTheme;
-        localStorage.setItem('portfolio-theme-key', nextTheme);
+        localStorage.setItem("portfolio-theme-key", nextTheme);
         this.applyTheme(nextTheme);
     },
-    
-    // Set up automatic time-based theme updates
-    setupTimeBasedUpdates: function() {
-        // Update theme every hour if not manually selected
+    setupTimeBasedUpdates: function () {
         setInterval(() => {
             if (!this.manuallySelectedTheme) {
                 const timeBasedTheme = this.getTimeBasedTheme();
@@ -823,13 +795,11 @@ window.ThemeManager = {
                     this.applyTheme(timeBasedTheme);
                 }
             }
-        }, 60000); // Check every minute
-        
-        // Also set up a check for the next hour change
+        }, 60000); 
         const now = new Date();
         const minutesToNextHour = 60 - now.getMinutes();
-        const msToNextHour = minutesToNextHour * 60 * 1000 - now.getSeconds() * 1000;
-        
+        const msToNextHour =
+            minutesToNextHour * 60 * 1000 - now.getSeconds() * 1000;
         setTimeout(() => {
             if (!this.manuallySelectedTheme) {
                 const timeBasedTheme = this.getTimeBasedTheme();
@@ -837,8 +807,6 @@ window.ThemeManager = {
                     this.applyTheme(timeBasedTheme);
                 }
             }
-            
-            // Then check every hour
             setInterval(() => {
                 if (!this.manuallySelectedTheme) {
                     const timeBasedTheme = this.getTimeBasedTheme();
@@ -846,34 +814,28 @@ window.ThemeManager = {
                         this.applyTheme(timeBasedTheme);
                     }
                 }
-            }, 3600000); // Check every hour
+            }, 3600000); 
         }, msToNextHour);
     },
-    
-    // Get all theme names for UI
-    getThemeList: function() {
+    getThemeList: function () {
         return Object.entries(this.themes).map(([key, theme]) => ({
             key,
-            name: theme.name
+            name: theme.name,
         }));
     },
-    
-    // Manually set a specific theme
-    setTheme: function(themeKey) {
+    setTheme: function (themeKey) {
         if (this.themes[themeKey]) {
             this.manuallySelectedTheme = themeKey;
-            localStorage.setItem('portfolio-theme-key', themeKey);
+            localStorage.setItem("portfolio-theme-key", themeKey);
             this.applyTheme(themeKey);
             return true;
         }
         return false;
     },
-    
-    // Reset to automatic time-based theme
-    resetToAutoTheme: function() {
+    resetToAutoTheme: function () {
         this.manuallySelectedTheme = null;
-        localStorage.removeItem('portfolio-theme-key');
+        localStorage.removeItem("portfolio-theme-key");
         const timeBasedTheme = this.getTimeBasedTheme();
         this.applyTheme(timeBasedTheme);
-    }
+    },
 };

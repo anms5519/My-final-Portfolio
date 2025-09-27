@@ -1,6 +1,6 @@
 window.TrainingsContent = {
-  getHTML: function() {
-      return `
+    getHTML: function () {
+        return `
           <div class="container">
               <h2 class="section-title" data-aos="fade-right">
                   <span class="title-icon"
@@ -366,99 +366,109 @@ window.TrainingsContent = {
               <div class="bg-glow"></div>
           </div>
               `;
-  },
-  init: function() {
-      initTrainingsSection();
-      function initTrainingsSection() {
-          const trainingsSection = document.getElementById("trainings");
-          if (!trainingsSection) return;
-          setupFilterButtons();
-          setupTrainingCards();
-          applyCardEffects();
+    },
+    init: function () {
+        initTrainingsSection();
+        function initTrainingsSection() {
+            const trainingsSection = document.getElementById("trainings");
+            if (!trainingsSection) return;
+            setupFilterButtons();
+            setupTrainingCards();
+            applyCardEffects();
         }
         function setupFilterButtons() {
-          const filterButtons = document.querySelectorAll(".filter-btn");
-          const trainingCards = document.querySelectorAll(".training-card");
-          if (filterButtons.length > 0) {
-              filterButtons.forEach((btn) => {
-                  btn.addEventListener("click", function () {
-                      filterButtons.forEach((b) => b.classList.remove("active"));
-                      this.classList.add("active");
-                      const filterValue = this.getAttribute("data-filter");
-                      filterTrainingCards(filterValue);
-                  });
-              });
-          }
-          function filterTrainingCards(filterValue) {
-              const trainingCards = document.querySelectorAll(".training-card");
-              let visibleCount = 0;
-              trainingCards.forEach((card, index) => {
-                  const category = card.getAttribute("data-category");
-                  if (filterValue === "all" || category === filterValue) {
-                      card.style.display = "flex";
-                      card.style.opacity = "0";
-                      card.style.transform = "translateY(2vh)";
-                      setTimeout(() => {
-                          card.style.opacity = "1";
-                          card.style.transform = "translateY(0)";
-                      }, visibleCount * 50);
-                      visibleCount++;
-                  } else {
-                      card.style.opacity = "0";
-                      card.style.transform = "translateY(2vh)";
-                      setTimeout(() => {
-                          card.style.display = "none";
-                      }, 300);
-                  }
-              });
-          }
+            const filterButtons = document.querySelectorAll(".filter-btn");
+            const trainingCards = document.querySelectorAll(".training-card");
+            if (filterButtons.length > 0) {
+                filterButtons.forEach((btn) => {
+                    btn.addEventListener("click", function () {
+                        filterButtons.forEach((b) =>
+                            b.classList.remove("active")
+                        );
+                        this.classList.add("active");
+                        const filterValue = this.getAttribute("data-filter");
+                        filterTrainingCards(filterValue);
+                    });
+                });
+            }
+            function filterTrainingCards(filterValue) {
+                const trainingCards = document.querySelectorAll(
+                    ".training-card"
+                );
+                let visibleCount = 0;
+                trainingCards.forEach((card, index) => {
+                    const category = card.getAttribute("data-category");
+                    if (filterValue === "all" || category === filterValue) {
+                        card.style.display = "flex";
+                        card.style.opacity = "0";
+                        card.style.transform = "translateY(2vh)";
+                        setTimeout(() => {
+                            card.style.opacity = "1";
+                            card.style.transform = "translateY(0)";
+                        }, visibleCount * 50);
+                        visibleCount++;
+                    } else {
+                        card.style.opacity = "0";
+                        card.style.transform = "translateY(2vh)";
+                        setTimeout(() => {
+                            card.style.display = "none";
+                        }, 300);
+                    }
+                });
+            }
         }
         function setupTrainingCards() {
-          const trainingCards = document.querySelectorAll(".training-card");
-          trainingCards.forEach((card) => {
-              card.addEventListener("click", function () {
-                  const title = this.querySelector("h3").textContent;
-                  const description = this.querySelector("p").textContent;
-                  const icon = this.querySelector(".training-icon i").className;
-                  const details = Array.from(
-                      this.querySelectorAll(".training-details span")
-                  ).map((span) => span.textContent);
-                  createTrainingModal(title, description, details[0] || "2023", icon);
-              });
-          });
+            const trainingCards = document.querySelectorAll(".training-card");
+            trainingCards.forEach((card) => {
+                card.addEventListener("click", function () {
+                    const title = this.querySelector("h3").textContent;
+                    const description = this.querySelector("p").textContent;
+                    const icon = this.querySelector(".training-icon i")
+                        .className;
+                    const details = Array.from(
+                        this.querySelectorAll(".training-details span")
+                    ).map((span) => span.textContent);
+                    createTrainingModal(
+                        title,
+                        description,
+                        details[0] || "2023",
+                        icon
+                    );
+                });
+            });
         }
         function createTrainingModal(title, description, date, iconClass) {
-          const existingModal = document.querySelector(".training-modal");
-          if (existingModal) {
-              existingModal.remove();
-          }
-          const keywords = [
-              "Concepts",
-              "Techniques",
-              "Applications",
-              "Implementation",
-              "Practices",
-              "Optimization",
-          ];
-          const topics = [
-              `Introduction to ${title} Concepts`,
-              `Practical Applications in ${title}`,
-              `Technical Implementation Strategies`,
-              `Best Practices for ${title}`,
-              `Advanced Techniques and Methods`,
-              `Real-world Examples and Case Studies`,
-          ];
-          const skills = [
-              "Problem Solving",
-              "Technical Communication",
-              "Analytical Thinking",
-              "Project Management",
-              "Critical Analysis",
-              "Team Collaboration",
-          ];
-          const modal = document.createElement("div");
-          modal.className = "training-modal";
-          modal.innerHTML = `
+            const existingModal = document.querySelector(".training-modal");
+            if (existingModal) {
+                existingModal.remove();
+            }
+            const keywords = [
+                "Concepts",
+                "Techniques",
+                "Applications",
+                "Implementation",
+                "Practices",
+                "Optimization",
+            ];
+            const topics = [
+                `Introduction to ${title} Concepts`,
+                `Practical Applications in ${title}`,
+                `Technical Implementation Strategies`,
+                `Best Practices for ${title}`,
+                `Advanced Techniques and Methods`,
+                `Real-world Examples and Case Studies`,
+            ];
+            const skills = [
+                "Problem Solving",
+                "Technical Communication",
+                "Analytical Thinking",
+                "Project Management",
+                "Critical Analysis",
+                "Team Collaboration",
+            ];
+            const modal = document.createElement("div");
+            modal.className = "training-modal";
+            modal.innerHTML = `
         <div class="training-modal-content">
           <button class="modal-close-btn">&times;</button>
           <div class="training-modal-header">
@@ -528,74 +538,74 @@ window.TrainingsContent = {
           </div>
         </div>
         `;
-          document.body.appendChild(modal);
-          setTimeout(() => {
-              modal.classList.add("active");
-          }, 10);
-          const closeBtn = modal.querySelector(".modal-close-btn");
-          closeBtn.addEventListener("click", () => {
-              modal.classList.remove("active");
-              setTimeout(() => {
-                  modal.remove();
-              }, 500);
-          });
-          modal.addEventListener("click", (e) => {
-              if (e.target === modal) {
-                  modal.classList.remove("active");
-                  setTimeout(() => {
-                      modal.remove();
-                  }, 500);
-              }
-          });
-          document.addEventListener("keydown", function (e) {
-              if (e.key === "Escape") {
-                  modal.classList.remove("active");
-                  setTimeout(() => {
-                      modal.remove();
-                  }, 500);
-              }
-          });
+            document.body.appendChild(modal);
+            setTimeout(() => {
+                modal.classList.add("active");
+            }, 10);
+            const closeBtn = modal.querySelector(".modal-close-btn");
+            closeBtn.addEventListener("click", () => {
+                modal.classList.remove("active");
+                setTimeout(() => {
+                    modal.remove();
+                }, 500);
+            });
+            modal.addEventListener("click", (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove("active");
+                    setTimeout(() => {
+                        modal.remove();
+                    }, 500);
+                }
+            });
+            document.addEventListener("keydown", function (e) {
+                if (e.key === "Escape") {
+                    modal.classList.remove("active");
+                    setTimeout(() => {
+                        modal.remove();
+                    }, 500);
+                }
+            });
         }
         function applyCardEffects() {
-          const trainingCards = document.querySelectorAll(".training-card");
-          trainingCards.forEach((card) => {
-              card.addEventListener("mousemove", function (e) {
-                  const cardRect = this.getBoundingClientRect();
-                  const x = e.clientX - cardRect.left;
-                  const y = e.clientY - cardRect.top;
-                  const centerX = cardRect.width / 2;
-                  const centerY = cardRect.height / 2;
-                  const deltaX = (x - centerX) / centerX;
-                  const deltaY = (y - centerY) / centerY;
-                  this.style.transform = `perspective(100vh) rotateX(${
-                      -deltaY * 10
-                  }deg) rotateY(${deltaX * 10}deg) translateZ(1vh)`;
-                  const shine =
-                      this.querySelector(".card-shine") ||
-                      document.createElement("div");
-                  if (!this.querySelector(".card-shine")) {
-                      shine.classList.add("card-shine");
-                      this.appendChild(shine);
-                  }
-                  shine.style.backgroundImage = `
+            const trainingCards = document.querySelectorAll(".training-card");
+            trainingCards.forEach((card) => {
+                card.addEventListener("mousemove", function (e) {
+                    const cardRect = this.getBoundingClientRect();
+                    const x = e.clientX - cardRect.left;
+                    const y = e.clientY - cardRect.top;
+                    const centerX = cardRect.width / 2;
+                    const centerY = cardRect.height / 2;
+                    const deltaX = (x - centerX) / centerX;
+                    const deltaY = (y - centerY) / centerY;
+                    this.style.transform = `perspective(100vh) rotateX(${
+                        -deltaY * 10
+                    }deg) rotateY(${deltaX * 10}deg) translateZ(1vh)`;
+                    const shine =
+                        this.querySelector(".card-shine") ||
+                        document.createElement("div");
+                    if (!this.querySelector(".card-shine")) {
+                        shine.classList.add("card-shine");
+                        this.appendChild(shine);
+                    }
+                    shine.style.backgroundImage = `
             radial-gradient(
               circle at ${(x / cardRect.width) * 100}% ${
-                      (y / cardRect.height) * 100
-                  }%, 
+                        (y / cardRect.height) * 100
+                    }%, 
               rgba(255, 255, 255, 0.4), 
               transparent
             )
           `;
-              });
-              card.addEventListener("mouseleave", function () {
-                  this.style.transform =
-                      "perspective(100vh) rotateX(0) rotateY(0) translateZ(0)";
-                  const shine = this.querySelector(".card-shine");
-                  if (shine) {
-                      shine.style.backgroundImage = "none";
-                  }
-              });
-          });
+                });
+                card.addEventListener("mouseleave", function () {
+                    this.style.transform =
+                        "perspective(100vh) rotateX(0) rotateY(0) translateZ(0)";
+                    const shine = this.querySelector(".card-shine");
+                    if (shine) {
+                        shine.style.backgroundImage = "none";
+                    }
+                });
+            });
         }
-  }
+    },
 };

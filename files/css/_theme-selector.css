@@ -35,9 +35,9 @@
     border-radius: var(--border-radius-circle);
     color: var(--text-color);
     cursor: pointer;
-    font-size: 1.2rem;
-    height: 3.5vh;
-    width: 3.5vh;
+    font-size: 2vh;
+    height: 2vh;
+    width: 2vh;
     position: relative;
     transition: all var(--anim-speed-normal) var(--transition-sharp);
     backdrop-filter: var(--glass-effect);
@@ -45,7 +45,7 @@
 }
 #theme-toggle:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 1vh rgba(var(--primary-color-rgb), 0.4);
+    box-shadow: 0 0 2vh rgba(var(--primary-color-rgb), 0.4);
 }
 #theme-toggle .header-tool-tooltip {
     position: absolute;
@@ -56,7 +56,7 @@
     border: 1px solid var(--card-border);
     color: var(--text-color);
     font-size: 0.8rem;
-    padding: 0.5vh 1vh;
+    padding: 0.5vh 2vh;
     border-radius: var(--border-radius-soft);
     white-space: nowrap;
     opacity: 0;
@@ -200,7 +200,7 @@
     border: 1px solid var(--button-border);
     border-radius: var(--border-radius-soft);
     font-size: 0.9rem;
-    padding: 1vh 1.5vh;
+    padding: 2vh 1.5vh;
     cursor: pointer;
     transition: all var(--anim-speed-fast) var(--transition-sharp);
     margin: 0 auto;
@@ -244,7 +244,7 @@
     font-size: 0.9rem;
 }
 .theme-notice-icon {
-    margin-right: 1vh;
+    margin-right: 2vh;
     color: var(--primary-color);
 }
 .theme-time-indicator {

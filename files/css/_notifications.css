@@ -6,7 +6,7 @@
     background: transparent;
     border: none;
     color: var(--text-color);
-    font-size: 1.2vh;
+    font-size: 2vh;
     cursor: pointer;
     width: 4vh;
     height: 4vh;
@@ -14,7 +14,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 1.5vh;
     position: relative;
     transition: all 0.3s ease;
 }
@@ -45,7 +44,7 @@
     width: 35vh;
     background: var(--card-bg);
     border-radius: 1.2vh;
-    box-shadow: 0 1vh 3vh rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2vh 3vh rgba(0, 0, 0, 0.2);
     z-index: 2147483646;
     overflow: hidden;
     transform: translateY(-2vh);

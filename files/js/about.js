@@ -1,5 +1,5 @@
 window.AboutContent = {
-    getHTML: function() {
+    getHTML: function () {
         return `
             <div class="container">
                 <h2
@@ -150,55 +150,49 @@ window.AboutContent = {
             <div class="section-background-pattern"></div>
                 `;
     },
-    init: function() {
-        const counters = document.querySelectorAll('.stat-number');
-        const speed = 200; // Lower = faster
-    
+    init: function () {
+        const counters = document.querySelectorAll(".stat-number");
+        const speed = 200; 
         const animateCounter = (counter) => {
-            const target = +counter.getAttribute('data-count');
+            const target = +counter.getAttribute("data-count");
             const increment = target / speed;
-    
             const updateCount = () => {
                 const current = +counter.innerText;
                 if (current < target) {
                     counter.innerText = Math.ceil(current + increment);
-                    setTimeout(updateCount, 15); // Adjust timing for smoothness
+                    setTimeout(updateCount, 15); 
                 } else {
-                    counter.innerText = target; // Ensure it ends on target
+                    counter.innerText = target; 
                 }
             };
             updateCount();
         };
-    
-        // Intersection Observer for counters
         const observerOptions = {
             root: null,
-            threshold: 0.1 // Trigger when 10% of the element is visible
+            threshold: 0.1, 
         };
-    
-        const counterObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateCounter(entry.target);
-                    observer.unobserve(entry.target); // Animate only once
-                }
-            });
-        }, observerOptions);
-    
-        counters.forEach(counter => {
+        const counterObserver = new IntersectionObserver(
+            (entries, observer) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        animateCounter(entry.target);
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            },
+            observerOptions
+        );
+        counters.forEach((counter) => {
             counterObserver.observe(counter);
         });
-    
-    
-        // 2. Enhanced Typing Animation
-        const typedTextOutput = document.querySelector('.typed-text-output');
-        const typingCursor = document.querySelector('.typing-cursor');
+        const typedTextOutput = document.querySelector(".typed-text-output");
+        const typingCursor = document.querySelector(".typing-cursor");
         if (typedTextOutput) {
             const phrases = [
                 "AI-Powered Image Enhancement",
                 "Unreal Engine Game Developer",
                 "Full-Stack Web Artisan",
-                "Passionate Tech Innovator"
+                "Passionate Tech Innovator",
             ];
             let phraseIndex = 0;
             let charIndex = 0;
@@ -206,17 +200,21 @@ window.AboutContent = {
             const typingSpeed = 100;
             const deletingSpeed = 50;
             const delayBetweenPhrases = 1500;
-    
             function type() {
                 const currentPhrase = phrases[phraseIndex];
                 if (isDeleting) {
-                    typedTextOutput.textContent = currentPhrase.substring(0, charIndex - 1);
+                    typedTextOutput.textContent = currentPhrase.substring(
+                        0,
+                        charIndex - 1
+                    );
                     charIndex--;
                 } else {
-                    typedTextOutput.textContent = currentPhrase.substring(0, charIndex + 1);
+                    typedTextOutput.textContent = currentPhrase.substring(
+                        0,
+                        charIndex + 1
+                    );
                     charIndex++;
                 }
-    
                 if (!isDeleting && charIndex === currentPhrase.length) {
                     isDeleting = true;
                     setTimeout(type, delayBetweenPhrases);
@@ -228,41 +226,42 @@ window.AboutContent = {
                     setTimeout(type, isDeleting ? deletingSpeed : typingSpeed);
                 }
             }
-            setTimeout(type, 500); // Initial delay
+            setTimeout(type, 500); 
         }
-    
-    
-        // 3. Image Tilt Effect (Simple example, libraries like tilt.js offer more)
-        const tiltContainer = document.querySelector('.image-tilt-container');
+        const tiltContainer = document.querySelector(".image-tilt-container");
         if (tiltContainer) {
-            tiltContainer.addEventListener('mousemove', (e) => {
-                const { left, top, width, height } = tiltContainer.getBoundingClientRect();
+            tiltContainer.addEventListener("mousemove", (e) => {
+                const {
+                    left,
+                    top,
+                    width,
+                    height,
+                } = tiltContainer.getBoundingClientRect();
                 const x = (e.clientX - left - width / 2) / (width / 2);
                 const y = (e.clientY - top - height / 2) / (height / 2);
-                const tiltAmount = 10; // Max tilt in degrees
-    
-                tiltContainer.style.transform = `perspective(1000px) rotateY(${x * tiltAmount}deg) rotateX(${-y * tiltAmount}deg) scale3d(1.05, 1.05, 1.05)`;
+                const tiltAmount = 10; 
+                tiltContainer.style.transform = `perspective(1000px) rotateY(${
+                    x * tiltAmount
+                }deg) rotateX(${-y * tiltAmount}deg) scale3d(1.05, 1.05, 1.05)`;
             });
-    
-            tiltContainer.addEventListener('mouseleave', () => {
-                tiltContainer.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale3d(1,1,1)';
+            tiltContainer.addEventListener("mouseleave", () => {
+                tiltContainer.style.transform =
+                    "perspective(1000px) rotateY(0deg) rotateX(0deg) scale3d(1,1,1)";
             });
         }
-    
-        // 4. Image Particle Canvas (Basic Example)
-        const particleCanvas = document.getElementById('image-particles-canvas');
+        const particleCanvas = document.getElementById(
+            "image-particles-canvas"
+        );
         if (particleCanvas) {
-            const ctx = particleCanvas.getContext('2d');
+            const ctx = particleCanvas.getContext("2d");
             let particles = [];
             const numParticles = 30;
-    
             function resizeCanvas() {
                 particleCanvas.width = particleCanvas.offsetWidth;
                 particleCanvas.height = particleCanvas.offsetHeight;
             }
             resizeCanvas();
-            window.addEventListener('resize', resizeCanvas);
-    
+            window.addEventListener("resize", resizeCanvas);
             class Particle {
                 constructor() {
                     this.x = Math.random() * particleCanvas.width;
@@ -270,8 +269,10 @@ window.AboutContent = {
                     this.size = Math.random() * 3 + 1;
                     this.speedX = Math.random() * 1 - 0.5;
                     this.speedY = Math.random() * 1 - 0.5;
-                    // Use --primary-color for particles if available, else default
-                    this.color = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim() || 'rgba(0,170,255,0.5)';
+                    this.color =
+                        getComputedStyle(document.documentElement)
+                            .getPropertyValue("--primary-color")
+                            .trim() || "rgba(0,170,255,0.5)";
                 }
                 update() {
                     this.x += this.speedX;
@@ -279,13 +280,14 @@ window.AboutContent = {
                     if (this.size > 0.1) this.size -= 0.02;
                 }
                 draw() {
-                    ctx.fillStyle = this.color.replace(')', `,${Math.max(0, this.size / 3)})`).replace('rgb(', 'rgba('); // Fade out
+                    ctx.fillStyle = this.color
+                        .replace(")", `,${Math.max(0, this.size / 3)})`)
+                        .replace("rgb(", "rgba("); 
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                     ctx.fill();
                 }
             }
-    
             function initParticles() {
                 particles = [];
                 for (let i = 0; i < numParticles; i++) {
@@ -293,48 +295,54 @@ window.AboutContent = {
                 }
             }
             initParticles();
-    
             function animateParticles() {
-                ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+                ctx.clearRect(
+                    0,
+                    0,
+                    particleCanvas.width,
+                    particleCanvas.height
+                );
                 for (let i = 0; i < particles.length; i++) {
                     particles[i].update();
                     particles[i].draw();
                     if (particles[i].size <= 0.1) {
                         particles.splice(i, 1);
-                        particles.push(new Particle()); // Replace with a new one
+                        particles.push(new Particle()); 
                         i--;
                     }
                 }
                 requestAnimationFrame(animateParticles);
             }
-            
-            // Only start animation if image is hovered (optional, for performance)
-            const imageWrapper = document.querySelector('.about-image-card .image-tilt-container');
+            const imageWrapper = document.querySelector(
+                ".about-image-card .image-tilt-container"
+            );
             let animationFrameId;
             if (imageWrapper) {
-                imageWrapper.addEventListener('mouseenter', () => {
+                imageWrapper.addEventListener("mouseenter", () => {
                     if (!animationFrameId) {
-                        initParticles(); // Re-init if needed
+                        initParticles(); 
                         animateParticles();
                     }
                 });
-                imageWrapper.addEventListener('mouseleave', () => {
+                imageWrapper.addEventListener("mouseleave", () => {
                     cancelAnimationFrame(animationFrameId);
                     animationFrameId = null;
-                    ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+                    ctx.clearRect(
+                        0,
+                        0,
+                        particleCanvas.width,
+                        particleCanvas.height
+                    );
                 });
             }
-            // Or just start it always:
-         animateParticles(); 
+            animateParticles();
         }
-    
-        // Initialize AOS (if you're still using it for other scroll animations)
-        if (typeof AOS !== 'undefined') {
+        if (typeof AOS !== "undefined") {
             AOS.init({
                 duration: 800,
-                easing: 'ease-in-out-quad',
-                once: true, // Animate elements only once
+                easing: "ease-in-out-quad",
+                once: true, 
             });
         }
-    }
+    },
 };

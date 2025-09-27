@@ -26,38 +26,38 @@
         constructor() {
             this.projects = [];
             this.currentProject = null;
-            this.currentGameInstance = null; 
+            this.currentGameInstance = null;
             this.container = null;
             this.isDarkMode =
                 window.matchMedia &&
                 window.matchMedia("(prefers-color-scheme: dark)").matches;
             this.soundEnabled = true;
-            this.gameStates = this.loadGameStates(); 
-            this.activeListeners = []; 
-            this.audioContext = null; 
-            this.particleEffects = true; 
-            this.gamepadSupport = false; 
-            this.recentlyPlayed = []; 
-            this.lastPlayedTime = {}; 
-            this.achievementSystem = new AchievementSystem(this); 
+            this.gameStates = this.loadGameStates();
+            this.activeListeners = [];
+            this.audioContext = null;
+            this.particleEffects = true;
+            this.gamepadSupport = false;
+            this.recentlyPlayed = [];
+            this.lastPlayedTime = {};
+            this.achievementSystem = new AchievementSystem(this);
         }
         init() {
             this.createTriggerButton();
             this.createContainer();
             this.addEventListeners();
-            this.addStyles(); 
-            this.loadProjects(); 
-            this.populateGameList(); 
-            this.updateFooterStats(); 
-            this.applyInitialTheme(); 
+            this.addStyles();
+            this.loadProjects();
+            this.populateGameList();
+            this.updateFooterStats();
+            this.applyInitialTheme();
             setTimeout(() => {
                 this.container.classList.add("loaded");
                 this.loadRandomProject();
-            }, 500); 
+            }, 500);
         }
         createContainer() {
             this.container = document.createElement("div");
-            this.container.className = "project-showcase"; 
+            this.container.className = "project-showcase";
             this.container.innerHTML = `
                 <div class="showcase-header">
                     <div class="showcase-title-area">
@@ -163,7 +163,7 @@
             button.className = "showcase-trigger";
             button.innerHTML = '<i class="fas fa-gamepad-alt"></i> Open Arcade';
             button.addEventListener("click", () => this.show());
-            document.body.appendChild(button); 
+            document.body.appendChild(button);
             this.triggerButton = button;
         }
         initParticleEffects() {
@@ -179,7 +179,7 @@
                     localStorage.getItem("game-particles-enabled") || "true"
                 );
             } catch (e) {
-                this.particleEffects = true; 
+                this.particleEffects = true;
             }
             const effectsButton = $(".toggle-effects", this.container);
             if (effectsButton) {
@@ -214,8 +214,8 @@
                 speedX: (Math.random() - 0.5) * 0.5,
                 speedY: (Math.random() - 0.5) * 0.5,
                 opacity: Math.random() * 0.5 + 0.2,
-                life: 1, 
-                maxLife: usePremiumEffects ? 0.5 + Math.random() * 0.5 : 1, 
+                life: 1,
+                maxLife: usePremiumEffects ? 0.5 + Math.random() * 0.5 : 1,
             };
             if (usePremiumEffects) {
                 particle.glow = true;
@@ -233,11 +233,11 @@
         }
         getRandomParticleColor() {
             const colors = [
-                "#fbcb5b", 
-                "#e67e22", 
-                "#f39c12", 
-                "#3498db", 
-                "#9b59b6", 
+                "#fbcb5b",
+                "#e67e22",
+                "#f39c12",
+                "#3498db",
+                "#9b59b6",
             ];
             return colors[Math.floor(Math.random() * colors.length)];
         }
@@ -366,7 +366,7 @@
             for (let i = 0; i < gamepads.length; i++) {
                 if (gamepads[i]) {
                     this.handleGamepadConnected(gamepads[i]);
-                    break; 
+                    break;
                 }
             }
             setTimeout(() => this.pollGamepads(), 5000);
@@ -530,7 +530,7 @@
                         const tab = btn.dataset.tab;
                         switch (tab) {
                             case "all":
-                                this.filterProjects(""); 
+                                this.filterProjects("");
                                 break;
                             case "recent":
                                 this.showRecentlyPlayed();
@@ -579,7 +579,7 @@
             if (exitBtn) {
                 exitBtn.addEventListener("click", () => {
                     this.resumeGame();
-                    this.loadProject(null); 
+                    this.loadProject(null);
                 });
             }
             $(".category-filters", this.container).addEventListener(
@@ -632,8 +632,7 @@
                         this.pauseGame();
                         e.preventDefault();
                         return;
-                    }
-                    else if (
+                    } else if (
                         this.currentProject &&
                         $(".game-overlay", this.container).classList.contains(
                             "visible"
@@ -642,8 +641,9 @@
                         this.resumeGame();
                         e.preventDefault();
                         return;
-                    }
-                    else if (!this.container.classList.contains("fullscreen")) {
+                    } else if (
+                        !this.container.classList.contains("fullscreen")
+                    ) {
                         this.hide();
                         e.preventDefault();
                         return;
@@ -2305,7 +2305,7 @@
         }
         populateGameList() {
             const projectList = $(".project-list", this.container);
-            projectList.innerHTML = ""; 
+            projectList.innerHTML = "";
             const categories = new Set();
             this.projects.forEach((project) => {
                 const projectItem = document.createElement("div");
@@ -2363,7 +2363,7 @@
             const project = this.projects.find((p) => p.id === projectId);
             if (!project) return;
             this.showLoadingIndicator();
-            this.cleanupCurrentGame(); 
+            this.cleanupCurrentGame();
             this.currentProject = project;
             const previewWrapper = $(
                 ".project-preview-wrapper",
@@ -2378,21 +2378,21 @@
             instructions.textContent =
                 this.currentProject.instructions ||
                 "No instructions available.";
-            this.updateScoreDisplay(); 
-            preview.innerHTML = ""; 
+            this.updateScoreDisplay();
+            preview.innerHTML = "";
             preview.insertAdjacentHTML(
                 "beforeend",
                 this.currentProject.preview
-            ); 
-            const gameElement = preview.children[0]; 
+            );
+            const gameElement = preview.children[0];
             if (gameElement) {
                 if (gameElement.tagName === "CANVAS") {
                     gameElement.style.width = "100%";
                     gameElement.style.height = "100%";
                     gameElement.style.display = "block";
-                    gameElement.style.objectFit = "contain"; 
+                    gameElement.style.objectFit = "contain";
                 }
-                gameElement.classList.add("game-canvas"); 
+                gameElement.classList.add("game-canvas");
             }
             this.highlightProjectItem(projectId);
             const startGameOverlay = document.createElement("div");
@@ -2608,7 +2608,7 @@
                 ".project-preview-wrapper",
                 this.container
             );
-            previewWrapperEl.style.position = "relative"; 
+            previewWrapperEl.style.position = "relative";
             previewWrapperEl.appendChild(startGameOverlay);
             this.hideLoadingIndicator();
             const initializeGame = () => {
@@ -2670,8 +2670,8 @@
             } else {
                 this.gameStates[projectId].lastPlayed = new Date();
             }
-            this.saveGameStates(); 
-            this.playSound("load"); 
+            this.saveGameStates();
+            this.playSound("load");
         }
         cleanupCurrentGame() {
             if (this.currentGameInstance) {
@@ -2693,7 +2693,7 @@
                 );
             }
             const preview = $(".project-preview", this.container);
-            preview.innerHTML = ""; 
+            preview.innerHTML = "";
             this.currentGameInstance = null;
         }
         highlightProjectItem(projectId) {
@@ -2712,7 +2712,7 @@
             const availableProjects = this.projects.filter(
                 (p) => p.id !== this.currentProject?.id
             );
-            if (availableProjects.length === 0) return; 
+            if (availableProjects.length === 0) return;
             const randomIndex = Math.floor(
                 Math.random() * availableProjects.length
             );
@@ -2818,24 +2818,24 @@
                 console.warn("Could not load dark mode preference.");
             }
             this.container.classList.add("active");
-            this.triggerButton.style.opacity = "0"; 
+            this.triggerButton.style.opacity = "0";
             this.triggerButton.style.pointerEvents = "none";
             this.playSound("open");
         }
         hide() {
             this.container.classList.remove("active");
-            this.triggerButton.style.opacity = "1"; 
+            this.triggerButton.style.opacity = "1";
             this.triggerButton.style.pointerEvents = "all";
             this.playSound("close");
             this.cleanupCurrentGame();
-            this.currentProject = null; 
+            this.currentProject = null;
         }
         toggleGameFullscreen() {
             if (!this.currentProject) return;
             const preview = $(".project-preview", this.container);
             if (!document.fullscreenElement) {
                 preview
-                    .requestFullscreen?.({ navigationUI: "hide" }) 
+                    .requestFullscreen?.({ navigationUI: "hide" })
                     .catch((err) =>
                         console.error("Fullscreen request failed:", err)
                     );
@@ -2847,9 +2847,9 @@
         restartCurrentGame() {
             if (!this.currentProject || !this.currentProject.init) return;
             this.showLoadingIndicator();
-            this.cleanupCurrentGame(); 
+            this.cleanupCurrentGame();
             const preview = $(".project-preview", this.container);
-            preview.innerHTML = this.currentProject.preview; 
+            preview.innerHTML = this.currentProject.preview;
             const gameElement = preview.children[0];
             if (gameElement && gameElement.tagName === "CANVAS") {
                 gameElement.style.width = "100%";
@@ -2860,7 +2860,7 @@
             if (this.gameStates[this.currentProject.id]) {
                 this.gameStates[this.currentProject.id].score = 0;
             }
-            this.updateScoreDisplay(); 
+            this.updateScoreDisplay();
             const startGameOverlay = document.createElement("div");
             startGameOverlay.className = "start-game-overlay";
             startGameOverlay.style.position = "absolute";
@@ -3042,7 +3042,7 @@
                 ".project-preview-wrapper",
                 this.container
             );
-            previewWrapperElement.style.position = "relative"; 
+            previewWrapperElement.style.position = "relative";
             previewWrapperElement.appendChild(startGameOverlay);
             this.hideLoadingIndicator();
             const initializeRestartedGame = () => {
@@ -3092,7 +3092,7 @@
                 ? "fas fa-volume-up"
                 : "fas fa-volume-mute";
             if (this.soundEnabled) {
-                this.playSound("ui"); 
+                this.playSound("ui");
             }
             if (
                 this.currentGameInstance &&
@@ -3105,7 +3105,7 @@
             const indicator = $(".loading-indicator", this.container);
             const canvas = $("canvas", this.container);
             if (indicator) indicator.classList.add("visible");
-            if (canvas) canvas.classList.add("loading"); 
+            if (canvas) canvas.classList.add("loading");
         }
         hideLoadingIndicator() {
             const indicator = $(".loading-indicator", this.container);
@@ -3131,7 +3131,7 @@
                     console.error(
                         "Web Audio API is not supported in this browser."
                     );
-                    this.soundEnabled = false; 
+                    this.soundEnabled = false;
                 }
             }
             return this.audioContext;
@@ -3147,97 +3147,97 @@
                     duration: 0.05,
                     vol: 0.3,
                     decay: 0.04,
-                }, 
+                },
                 ui: {
                     type: "triangle",
                     freq: 660,
                     duration: 0.06,
                     vol: 0.25,
                     decay: 0.05,
-                }, 
+                },
                 open: {
                     type: "sine",
                     freq: 523.25,
                     duration: 0.15,
                     vol: 0.4,
                     decay: 0.1,
-                }, 
+                },
                 close: {
                     type: "sine",
                     freq: 440,
                     duration: 0.15,
                     vol: 0.4,
                     decay: 0.1,
-                }, 
+                },
                 load: {
                     type: "square",
                     freq: 110,
                     duration: 0.1,
                     vol: 0.2,
                     decay: 0.08,
-                }, 
+                },
                 restart: {
                     type: "sawtooth",
                     freq: [220, 440],
                     duration: 0.15,
                     vol: 0.3,
                     decay: 0.1,
-                }, 
+                },
                 point: {
                     type: "triangle",
                     freq: 1046.5,
                     duration: 0.08,
                     vol: 0.35,
                     decay: 0.07,
-                }, 
+                },
                 shoot: {
                     type: "square",
                     freq: 440,
                     duration: 0.05,
                     vol: 0.2,
                     decay: 0.04,
-                }, 
+                },
                 explosion: {
                     type: "noise",
                     duration: 0.3,
                     vol: 0.5,
                     decay: 0.25,
-                }, 
+                },
                 jump: {
                     type: "sine",
                     freq: [660, 880],
                     duration: 0.1,
                     vol: 0.3,
                     decay: 0.08,
-                }, 
+                },
                 hit: {
                     type: "sawtooth",
                     freq: 220,
                     duration: 0.1,
                     vol: 0.4,
                     decay: 0.09,
-                }, 
+                },
                 powerup: {
                     type: "sine",
                     freq: [523, 659, 783],
                     duration: 0.3,
                     vol: 0.4,
                     decay: 0.25,
-                }, 
+                },
                 win: {
                     type: "sine",
                     freq: [523, 783, 1046],
                     duration: 0.5,
                     vol: 0.5,
                     decay: 0.4,
-                }, 
+                },
                 gameOver: {
                     type: "sawtooth",
                     freq: [220, 110],
                     duration: 0.8,
                     vol: 0.5,
                     decay: 0.7,
-                }, 
+                },
             };
             const sound = sounds[soundType];
             if (!sound) return;
@@ -3253,7 +3253,7 @@
                     );
                     const output = buffer.getChannelData(0);
                     for (let i = 0; i < bufferSize; i++) {
-                        output[i] = Math.random() * 2 - 1; 
+                        output[i] = Math.random() * 2 - 1;
                     }
                     oscillator.buffer = buffer;
                 } else {
@@ -3283,7 +3283,7 @@
                 gainNode.gain.exponentialRampToValueAtTime(
                     0.001,
                     audioCtx.currentTime + sound.decay
-                ); 
+                );
                 oscillator.connect(gainNode);
                 gainNode.connect(audioCtx.destination);
                 oscillator.start(audioCtx.currentTime);
@@ -3315,9 +3315,9 @@
                 state.highScore = score;
                 newHighScore = true;
             }
-            this.updateScoreDisplay(); 
-            this.saveGameStates(); 
-            return newHighScore; 
+            this.updateScoreDisplay();
+            this.saveGameStates();
+            return newHighScore;
         }
         updateScoreDisplay() {
             const scoreDisplay = $(".current-score", this.container);
@@ -3372,7 +3372,7 @@
             if (gameElement.tagName === "CANVAS") {
                 const ctx = gameElement.getContext("2d");
                 const canvas = gameElement;
-                ctx.fillStyle = "#111"; 
+                ctx.fillStyle = "#111";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.font = "bold 2.4vh var(--font-heading)";
                 ctx.fillStyle = "var(--primary-color)";
@@ -3410,12 +3410,12 @@
                     <p style="font-size: 0.9em; margin-top: 1vh;">Select another game or try restarting.</p>
                 `;
             }
-            this.hideLoadingIndicator(); 
+            this.hideLoadingIndicator();
         }
         initBreakoutGame(canvas) {
             if (!canvas) return null;
             const ctx = canvas.getContext("2d");
-            const self = this; 
+            const self = this;
             let animationFrameId;
             let score = 0;
             let lives = 3;
@@ -3454,7 +3454,7 @@
             let rightPressed = false;
             let leftPressed = false;
             function createBricks() {
-                bricks.length = 0; 
+                bricks.length = 0;
                 for (let c = 0; c < brickInfo.cols; c++) {
                     bricks[c] = [];
                     for (let r = 0; r < brickInfo.rows; r++) {
@@ -3541,7 +3541,7 @@
                                     cancelAnimationFrame(animationFrameId);
                                     self.restartCurrentGame();
                                 }
-                                return; 
+                                return;
                             }
                         }
                     }
@@ -3563,7 +3563,7 @@
                     if (ball.x > paddle.x && ball.x < paddle.x + paddle.width) {
                         ball.dy = -ball.dy;
                         let deltaX = ball.x - (paddle.x + paddle.width / 2);
-                        ball.dx = deltaX * 0.15; 
+                        ball.dx = deltaX * 0.15;
                         ball.dx = Math.max(
                             -ball.speed * 0.9,
                             Math.min(ball.speed * 0.9, ball.dx)
@@ -3575,11 +3575,11 @@
                         if (!lives) {
                             alert("GAME OVER");
                             cancelAnimationFrame(animationFrameId);
-                            self.restartCurrentGame(); 
+                            self.restartCurrentGame();
                         } else {
                             ball.x = canvas.width / 2;
                             ball.y = canvas.height - 30;
-                            ball.dx = 3 * (Math.random() > 0.5 ? 1 : -1); 
+                            ball.dx = 3 * (Math.random() > 0.5 ? 1 : -1);
                             ball.dy = -3;
                             paddle.x = (canvas.width - paddle.width) / 2;
                         }
@@ -3623,7 +3623,7 @@
             };
             const mouseMoveHandler = (e) => {
                 const rect = canvas.getBoundingClientRect();
-                const scaleX = canvas.width / rect.width; 
+                const scaleX = canvas.width / rect.width;
                 const relativeX = (e.clientX - rect.left) * scaleX;
                 if (relativeX > 0 && relativeX < canvas.width) {
                     paddle.x = relativeX - paddle.width / 2;
@@ -3654,16 +3654,16 @@
             if (!canvas) return null;
             const ctx = canvas.getContext("2d");
             const self = this;
-            const box = 20; 
-            const canvasSize = canvas.width; 
+            const box = 20;
+            const canvasSize = canvas.width;
             const boxesCount = canvasSize / box;
             let score = 0;
             let snake;
             let food;
-            let direction; 
-            let changingDirection; 
+            let direction;
+            let changingDirection;
             let gameInterval;
-            let gameSpeed = 120; 
+            let gameSpeed = 120;
             function initGame() {
                 snake = [
                     {
@@ -3673,8 +3673,8 @@
                 ];
                 createFood();
                 score = 0;
-                self.updateScore(score); 
-                direction = undefined; 
+                self.updateScore(score);
+                direction = undefined;
                 changingDirection = false;
             }
             function createFood() {
@@ -3686,12 +3686,12 @@
                     snake.some(
                         (segment) => segment.x === foodX && segment.y === foodY
                     )
-                ); 
+                );
                 food = { x: foodX, y: foodY };
             }
             function drawSnakePart(snakePart, index) {
-                ctx.fillStyle = index === 0 ? "#32ff7e" : "#2ecc71"; 
-                ctx.strokeStyle = "#1b1b1b"; 
+                ctx.fillStyle = index === 0 ? "#32ff7e" : "#2ecc71";
+                ctx.strokeStyle = "#1b1b1b";
                 ctx.fillRect(snakePart.x, snakePart.y, box, box);
                 ctx.strokeRect(snakePart.x, snakePart.y, box, box);
             }
@@ -3699,7 +3699,7 @@
                 snake.forEach(drawSnakePart);
             }
             function drawFood() {
-                ctx.fillStyle = "#ff4757"; 
+                ctx.fillStyle = "#ff4757";
                 ctx.strokeStyle = "#darkred";
                 ctx.fillRect(food.x, food.y, box, box);
                 ctx.strokeRect(food.x, food.y, box, box);
@@ -3711,7 +3711,7 @@
                 ctx.fillText("Score: " + score, box, box);
             }
             function moveSnake() {
-                if (!direction) return; 
+                if (!direction) return;
                 let headX = snake[0].x;
                 let headY = snake[0].y;
                 if (direction === "LEFT") headX -= box;
@@ -3729,16 +3729,16 @@
                     gameOver();
                     return;
                 }
-                snake.unshift(newHead); 
+                snake.unshift(newHead);
                 if (headX === food.x && headY === food.y) {
                     score += 10;
                     self.updateScore(score);
                     self.playSound("point");
                     createFood();
                 } else {
-                    snake.pop(); 
+                    snake.pop();
                 }
-                changingDirection = false; 
+                changingDirection = false;
             }
             function didCollide(head) {
                 for (let i = 1; i < snake.length; i++) {
@@ -3749,7 +3749,7 @@
                 return false;
             }
             function changeDirection(event) {
-                if (changingDirection) return; 
+                if (changingDirection) return;
                 const keyPressed = event.key;
                 const goingUp = direction === "UP";
                 const goingDown = direction === "DOWN";
@@ -3811,9 +3811,9 @@
                 );
             }
             function gameLoop() {
-                ctx.fillStyle = "#1a1a2e"; 
+                ctx.fillStyle = "#1a1a2e";
                 ctx.fillRect(0, 0, canvasSize, canvasSize);
-                moveSnake(); 
+                moveSnake();
                 if (gameInterval) {
                     drawFood();
                     drawSnake();
@@ -3828,7 +3828,7 @@
             return {
                 cleanup: () => {
                     clearInterval(gameInterval);
-                    gameInterval = null; 
+                    gameInterval = null;
                 },
             };
         }
@@ -3836,7 +3836,7 @@
             if (!canvas) return null;
             const ctx = canvas.getContext("2d");
             const self = this;
-            const scale = 30; 
+            const scale = 30;
             const rows = canvas.height / scale;
             const cols = canvas.width / scale;
             const colors = [
@@ -3847,13 +3847,13 @@
                 "#F538FF",
                 "#FF8E0D",
                 "#FFE138",
-                "#3877FF", 
+                "#3877FF",
             ];
-            const pieces = "TJLOSZI"; 
+            const pieces = "TJLOSZI";
             let board;
             let player;
             let dropCounter;
-            let dropInterval; 
+            let dropInterval;
             let lastTime;
             let score;
             let level;
@@ -3924,7 +3924,7 @@
                                 scale,
                                 scale
                             );
-                            ctx.strokeStyle = "rgba(0,0,0,0.3)"; 
+                            ctx.strokeStyle = "rgba(0,0,0,0.3)";
                             ctx.strokeRect(
                                 (x + offset.x) * scale,
                                 (y + offset.y) * scale,
@@ -3957,13 +3957,13 @@
                 }
             }
             function drawGhostPiece() {
-                const ghost = { ...player }; 
-                ghost.matrix = player.matrix; 
-                ghost.pos = { x: player.pos.x, y: player.pos.y }; 
+                const ghost = { ...player };
+                ghost.matrix = player.matrix;
+                ghost.pos = { x: player.pos.x, y: player.pos.y };
                 while (!collide(board, ghost)) {
                     ghost.pos.y++;
                 }
-                ghost.pos.y--; 
+                ghost.pos.y--;
                 ctx.globalAlpha = 0.2;
                 drawMatrix(ghost.matrix, ghost.pos);
                 ctx.globalAlpha = 1.0;
@@ -4009,42 +4009,42 @@
                     player.pos.x += offset;
                     offset = -(offset + (offset > 0 ? 1 : -1));
                     if (offset > player.matrix[0].length + 1) {
-                        rotate(player.matrix, -dir); 
-                        player.pos.x = pos; 
-                        return; 
+                        rotate(player.matrix, -dir);
+                        player.pos.x = pos;
+                        return;
                     }
                 }
-                self.playSound("click"); 
+                self.playSound("click");
             }
             function playerMove(offset) {
                 player.pos.x += offset;
                 if (collide(board, player)) {
-                    player.pos.x -= offset; 
+                    player.pos.x -= offset;
                 }
             }
             function playerDrop() {
                 player.pos.y++;
                 if (collide(board, player)) {
-                    player.pos.y--; 
-                    merge(board, player); 
-                    self.playSound("hit"); 
-                    playerReset(); 
-                    arenaSweep(); 
-                    updateGameStats(); 
+                    player.pos.y--;
+                    merge(board, player);
+                    self.playSound("hit");
+                    playerReset();
+                    arenaSweep();
+                    updateGameStats();
                 }
-                dropCounter = 0; 
+                dropCounter = 0;
             }
             function playerHardDrop() {
                 while (!collide(board, player)) {
                     player.pos.y++;
                 }
-                player.pos.y--; 
+                player.pos.y--;
                 merge(board, player);
                 self.playSound("hit");
                 playerReset();
                 arenaSweep();
                 updateGameStats();
-                dropCounter = 0; 
+                dropCounter = 0;
             }
             function collide(board, player) {
                 const [m, o] = [player.matrix, player.pos];
@@ -4061,20 +4061,20 @@
                                     board[boardY] &&
                                     board[boardY][boardX] !== 0)
                             ) {
-                                return true; 
+                                return true;
                             }
                         }
                     }
                 }
-                return false; 
+                return false;
             }
             function playerReset() {
                 const type = pieces[Math.floor(Math.random() * pieces.length)];
                 player.matrix = createPiece(type);
-                player.pos.y = 0; 
+                player.pos.y = 0;
                 player.pos.x =
                     Math.floor(cols / 2) -
-                    Math.floor(player.matrix[0].length / 2); 
+                    Math.floor(player.matrix[0].length / 2);
                 if (collide(board, player)) {
                     gameOver();
                 }
@@ -4084,25 +4084,25 @@
                 outer: for (let y = board.length - 1; y >= 0; --y) {
                     for (let x = 0; x < board[y].length; ++x) {
                         if (board[y][x] === 0) {
-                            continue outer; 
+                            continue outer;
                         }
                     }
-                    const row = board.splice(y, 1)[0].fill(0); 
-                    board.unshift(row); 
-                    ++y; 
+                    const row = board.splice(y, 1)[0].fill(0);
+                    board.unshift(row);
+                    ++y;
                     rowsClearedThisTurn++;
                 }
                 if (rowsClearedThisTurn > 0) {
-                    const lineScores = [0, 100, 300, 500, 800]; 
+                    const lineScores = [0, 100, 300, 500, 800];
                     score += lineScores[rowsClearedThisTurn] * level;
                     linesCleared += rowsClearedThisTurn;
-                    self.playSound(rowsClearedThisTurn >= 4 ? "win" : "point"); 
+                    self.playSound(rowsClearedThisTurn >= 4 ? "win" : "point");
                     level = Math.floor(linesCleared / 10) + 1;
-                    dropInterval = Math.max(100, 1000 - (level - 1) * 75); 
+                    dropInterval = Math.max(100, 1000 - (level - 1) * 75);
                 }
             }
             function updateGameStats() {
-                self.updateScore(score); 
+                self.updateScore(score);
             }
             function gameOver() {
                 cancelAnimationFrame(animationFrameId);
@@ -4132,29 +4132,29 @@
                 );
             }
             function update(time = 0) {
-                if (paused || !animationFrameId) return; 
+                if (paused || !animationFrameId) return;
                 const deltaTime = time - lastTime;
                 lastTime = time;
                 dropCounter += deltaTime;
                 if (dropCounter > dropInterval) {
-                    playerDrop(); 
+                    playerDrop();
                 }
                 draw();
                 animationFrameId = requestAnimationFrame(update);
             }
             function handleKeyDown(event) {
-                if (!animationFrameId) return; 
+                if (!animationFrameId) return;
                 if (event.key === "p" || event.key === "P") {
                     paused = !paused;
                     if (!paused) {
-                        lastTime = performance.now(); 
-                        update(); 
+                        lastTime = performance.now();
+                        update();
                     }
                     self.playSound("ui");
-                    draw(); 
-                    return; 
+                    draw();
+                    return;
                 }
-                if (paused) return; 
+                if (paused) return;
                 switch (event.key) {
                     case "ArrowLeft":
                     case "a":
@@ -4168,15 +4168,15 @@
                     case "s":
                         playerDrop();
                         break;
-                    case "ArrowUp": 
+                    case "ArrowUp":
                     case "w":
                     case "x":
                         playerRotate(1);
                         break;
-                    case "z": 
+                    case "z":
                         playerRotate(-1);
                         break;
-                    case " ": 
+                    case " ":
                         playerHardDrop();
                         break;
                 }
@@ -4191,10 +4191,10 @@
                 dropCounter = 0;
                 lastTime = 0;
                 paused = false;
-                self.updateScore(score); 
-                playerReset(); 
-                if (animationFrameId) cancelAnimationFrame(animationFrameId); 
-                animationFrameId = requestAnimationFrame(update); 
+                self.updateScore(score);
+                playerReset();
+                if (animationFrameId) cancelAnimationFrame(animationFrameId);
+                animationFrameId = requestAnimationFrame(update);
             }
             self.addManagedListener(document, "keydown", handleKeyDown, {
                 gameId: "tetris",
@@ -4218,7 +4218,7 @@
                 paddleHeight = 100,
                 ballRadius = 8;
             const playerSpeed = 6,
-                aiSpeed = 4; 
+                aiSpeed = 4;
             let ball = {
                 x: canvas.width / 2,
                 y: canvas.height / 2,
@@ -4241,7 +4241,7 @@
                 height: paddleHeight,
                 score: 0,
                 dy: 0,
-            }; 
+            };
             let keys = {};
             function drawRect(x, y, w, h, color) {
                 ctx.fillStyle = color;
@@ -4275,9 +4275,9 @@
             function resetBall() {
                 ball.x = canvas.width / 2;
                 ball.y = canvas.height / 2;
-                ball.dx = 5 * (Math.random() > 0.5 ? 1 : -1); 
-                ball.dy = Math.random() * 6 - 3; 
-                if (Math.abs(ball.dy) < 1) ball.dy = ball.dy < 0 ? -1 : 1; 
+                ball.dx = 5 * (Math.random() > 0.5 ? 1 : -1);
+                ball.dy = Math.random() * 6 - 3;
+                if (Math.abs(ball.dy) < 1) ball.dy = ball.dy < 0 ? -1 : 1;
             }
             function update() {
                 if (keys["w"] || keys["W"]) player1.y -= playerSpeed;
@@ -4307,19 +4307,19 @@
                 }
                 let player = ball.x < canvas.width / 2 ? player1 : player2;
                 if (
-                    ball.x - ball.radius < player.x + player.width && 
-                    ball.x + ball.radius > player.x && 
-                    ball.y + ball.radius > player.y && 
+                    ball.x - ball.radius < player.x + player.width &&
+                    ball.x + ball.radius > player.x &&
+                    ball.y + ball.radius > player.y &&
                     ball.y - ball.radius < player.y + player.height
                 ) {
                     ball.dx = -ball.dx;
                     let collidePoint = ball.y - (player.y + player.height / 2);
-                    collidePoint = collidePoint / (player.height / 2); 
-                    let angleRad = collidePoint * (Math.PI / 4); 
+                    collidePoint = collidePoint / (player.height / 2);
+                    let angleRad = collidePoint * (Math.PI / 4);
                     let direction = ball.x < canvas.width / 2 ? 1 : -1;
                     let speed = Math.sqrt(
                         ball.dx * ball.dx + ball.dy * ball.dy
-                    ); 
+                    );
                     ball.dx = direction * speed * Math.cos(angleRad);
                     ball.dy = speed * Math.sin(angleRad);
                     self.playSound("hit");
@@ -4335,7 +4335,7 @@
                 }
             }
             function render() {
-                drawRect(0, 0, canvas.width, canvas.height, "#1a1a2e"); 
+                drawRect(0, 0, canvas.width, canvas.height, "#1a1a2e");
                 drawNet();
                 drawRect(
                     player1.x,
@@ -4371,7 +4371,7 @@
             self.addManagedListener(document, "keyup", handleKeyUp, {
                 gameId: "pong",
             });
-            resetBall(); 
+            resetBall();
             animationFrameId = requestAnimationFrame(gameLoop);
             return {
                 cleanup: () => {
@@ -4406,8 +4406,8 @@
                 speed: 0.5,
                 drop: 20,
                 fireRate: 0.01,
-            }; 
-            let invaderDirection = 1; 
+            };
+            let invaderDirection = 1;
             let score = 0;
             let gameOver = false;
             let gameWon = false;
@@ -4420,7 +4420,7 @@
                             invaderInfo.padding)) /
                     2;
                 const startY = 50;
-                const colors = ["#e74c3c", "#e74c3c", "#f1c40f", "#f1c40f"]; 
+                const colors = ["#e74c3c", "#e74c3c", "#f1c40f", "#f1c40f"];
                 for (let r = 0; r < invaderInfo.rows; r++) {
                     for (let c = 0; c < invaderInfo.cols; c++) {
                         invaders.push({
@@ -4432,7 +4432,7 @@
                                 r *
                                     (invaderInfo.height +
                                         invaderInfo.padding +
-                                        5), 
+                                        5),
                             width: invaderInfo.width,
                             height: invaderInfo.height,
                             color: colors[r % colors.length],
@@ -4451,11 +4451,11 @@
                 ctx.fill();
             }
             function drawBullets() {
-                ctx.fillStyle = "#00ffff"; 
+                ctx.fillStyle = "#00ffff";
                 bullets.forEach((bullet) => {
                     ctx.fillRect(bullet.x - 2, bullet.y, 4, 10);
                 });
-                ctx.fillStyle = "#ff4757"; 
+                ctx.fillStyle = "#ff4757";
                 invaderBullets.forEach((bullet) => {
                     ctx.fillRect(bullet.x - 2, bullet.y, 4, 8);
                 });
@@ -4562,7 +4562,7 @@
                 for (let i = bullets.length - 1; i >= 0; i--) {
                     bullets[i].y -= bullets[i].speed;
                     if (bullets[i].y < 0) {
-                        bullets.splice(i, 1); 
+                        bullets.splice(i, 1);
                     } else {
                         for (let j = invaders.length - 1; j >= 0; j--) {
                             const invader = invaders[j];
@@ -4574,7 +4574,7 @@
                                 bullets[i].y < invader.y + invader.height
                             ) {
                                 invader.alive = false;
-                                bullets.splice(i, 1); 
+                                bullets.splice(i, 1);
                                 score += 100;
                                 self.updateScore(score);
                                 self.playSound("explosion");
@@ -4582,7 +4582,7 @@
                                     gameWon = true;
                                     self.playSound("win");
                                 }
-                                break; 
+                                break;
                             }
                         }
                     }
@@ -4640,7 +4640,7 @@
                     }
                 });
                 if (furthestRight > canvas.width || furthestLeft < 0) {
-                    invaderDirection *= -1; 
+                    invaderDirection *= -1;
                     moveDown = true;
                     invaderInfo.speed *= 1.05;
                 }
@@ -4656,19 +4656,19 @@
             let rightPressed = false;
             function gameLoop() {
                 if (gameOver || gameWon) {
-                    drawUI(); 
-                    return; 
+                    drawUI();
+                    return;
                 }
                 if (leftPressed) movePlayer(-player.speed);
                 if (rightPressed) movePlayer(player.speed);
                 updateInvaders();
                 updateBullets();
-                ctx.fillStyle = "#111"; 
+                ctx.fillStyle = "#111";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 drawPlayer();
                 drawInvaders();
                 drawBullets();
-                drawUI(); 
+                drawUI();
                 animationFrameId = requestAnimationFrame(gameLoop);
             }
             const handleKeyDown = (e) => {
@@ -4713,7 +4713,7 @@
                 x: canvas.width / 2,
                 y: canvas.height / 2,
                 radius: 15,
-                angle: 0, 
+                angle: 0,
                 rotation: 0,
                 thrusting: false,
                 thrust: { x: 0, y: 0 },
@@ -4723,15 +4723,15 @@
             };
             const bullets = [];
             const asteroids = [];
-            const debris = []; 
-            const shipTurnSpeed = 0.08; 
+            const debris = [];
+            const shipTurnSpeed = 0.08;
             const shipThrust = 0.1;
             const friction = 0.99;
             const bulletSpeed = 5;
-            const asteroidNum = 5; 
+            const asteroidNum = 5;
             const asteroidSpeed = 1;
-            const asteroidVertices = 10; 
-            const asteroidJag = 0.4; 
+            const asteroidVertices = 10;
+            const asteroidJag = 0.4;
             let score = 0;
             let gameOver = false;
             function createAsteroids(count, initialSize = 60) {
@@ -4748,13 +4748,13 @@
                 }
             }
             function newAsteroid(x, y, radius) {
-                const lvlMult = 1 + (0.1 * score) / 1000; 
+                const lvlMult = 1 + (0.1 * score) / 1000;
                 const angle = Math.random() * Math.PI * 2;
                 const vert = Math.floor(
                     Math.random() * (asteroidVertices + 1) +
                         asteroidVertices / 2
                 );
-                const offs = []; 
+                const offs = [];
                 for (let i = 0; i < vert; i++) {
                     offs.push(
                         Math.random() * asteroidJag * 2 + 1 - asteroidJag
@@ -4764,7 +4764,7 @@
                     x: x,
                     y: y,
                     radius: radius,
-                    angle: Math.random() * Math.PI * 2, 
+                    angle: Math.random() * Math.PI * 2,
                     vel: {
                         x:
                             Math.random() *
@@ -4778,7 +4778,7 @@
                             (Math.random() < 0.5 ? 1 : -1),
                     },
                     vert: vert,
-                    offs: offs, 
+                    offs: offs,
                 };
             }
             function distBetweenPoints(x1, y1, x2, y2) {
@@ -4786,14 +4786,14 @@
             }
             function drawShip() {
                 if (ship.invincible && Math.floor(Date.now() / 150) % 2 === 0) {
-                    return; 
+                    return;
                 }
                 ctx.strokeStyle = "white";
                 ctx.lineWidth = ship.radius / 15;
                 ctx.beginPath();
                 ctx.moveTo(
                     ship.x + ship.radius * Math.cos(ship.angle),
-                    ship.y - ship.radius * Math.sin(ship.angle) 
+                    ship.y - ship.radius * Math.sin(ship.angle)
                 );
                 ctx.lineTo(
                     ship.x -
@@ -4822,7 +4822,7 @@
                         ship.x -
                             ship.radius *
                                 (1.1 * Math.cos(ship.angle) +
-                                    0.0 * Math.sin(ship.angle)), 
+                                    0.0 * Math.sin(ship.angle)),
                         ship.y +
                             ship.radius *
                                 (1.1 * Math.sin(ship.angle) -
@@ -4836,7 +4836,7 @@
                         ship.x -
                             ship.radius *
                                 (1.1 * Math.cos(ship.angle) -
-                                    0.0 * Math.sin(ship.angle)), 
+                                    0.0 * Math.sin(ship.angle)),
                         ship.y +
                             ship.radius *
                                 (1.1 * Math.sin(ship.angle) +
@@ -4939,7 +4939,7 @@
                             x: Math.random() * 10 - 5,
                             y: Math.random() * 10 - 5,
                         },
-                        life: 60, 
+                        life: 60,
                     });
                 }
                 if (ship.lives <= 0) {
@@ -4951,7 +4951,7 @@
                     ship.thrust = { x: 0, y: 0 };
                     ship.angle = 0;
                     ship.invincible = true;
-                    ship.invincibleTimer = 180; 
+                    ship.invincibleTimer = 180;
                 }
             }
             function destroyAsteroid(index) {
@@ -4979,7 +4979,7 @@
                 asteroids.splice(index, 1);
                 if (asteroids.length === 0) {
                     self.playSound("win");
-                    createAsteroids(asteroidNum + Math.floor(score / 1000)); 
+                    createAsteroids(asteroidNum + Math.floor(score / 1000));
                 }
             }
             function update() {
@@ -4993,7 +4993,7 @@
                 ship.angle += ship.rotation;
                 if (ship.thrusting) {
                     ship.thrust.x += shipThrust * Math.cos(ship.angle);
-                    ship.thrust.y -= shipThrust * Math.sin(ship.angle); 
+                    ship.thrust.y -= shipThrust * Math.sin(ship.angle);
                 } else {
                     ship.thrust.x *= friction;
                     ship.thrust.y *= friction;
@@ -5036,7 +5036,7 @@
                         ) {
                             bullets.splice(i, 1);
                             destroyAsteroid(j);
-                            break; 
+                            break;
                         }
                     }
                 }
@@ -5068,8 +5068,8 @@
                             ship.radius + asteroids[i].radius
                         ) {
                             explodeShip();
-                            destroyAsteroid(i); 
-                            break; 
+                            destroyAsteroid(i);
+                            break;
                         }
                     }
                 }
@@ -5080,7 +5080,7 @@
                 drawAsteroids();
                 drawDebris();
                 drawBullets();
-                if (!gameOver) drawShip(); 
+                if (!gameOver) drawShip();
                 drawUI();
             }
             function gameLoop() {
@@ -5103,14 +5103,14 @@
                     case "w":
                         ship.thrusting = true;
                         break;
-                    case " ": 
+                    case " ":
                         if (bullets.length < 5) {
                             bullets.push({
                                 x: ship.x + ship.radius * Math.cos(ship.angle),
                                 y: ship.y - ship.radius * Math.sin(ship.angle),
                                 vel: {
                                     x: bulletSpeed * Math.cos(ship.angle),
-                                    y: -bulletSpeed * Math.sin(ship.angle), 
+                                    y: -bulletSpeed * Math.sin(ship.angle),
                                 },
                                 dist: 0,
                             });
@@ -5156,7 +5156,7 @@
             const ctx = canvas.getContext("2d");
             const self = this;
             let animationFrameId;
-            const scale = 16; 
+            const scale = 16;
             const map = [
                 "1111111111111111111111111111",
                 "1222222222222112222222222221",
@@ -5172,7 +5172,7 @@
                 "0000012110000440000112100000",
                 "0000012110111441110112100000",
                 "1111112110100000010112111111",
-                "0000002000100000010002000000", 
+                "0000002000100000010002000000",
                 "1111112110111111110112111111",
                 "0000012110100000010112100000",
                 "0000012110111111110112100000",
@@ -5181,7 +5181,7 @@
                 "1222222222222112222222222221",
                 "1211112111112112111112111121",
                 "1211112111112112111112111121",
-                "132211222222200222222112231", 
+                "132211222222200222222112231",
                 "111211211211111112112112111",
                 "111211211211111112112112111",
                 "1222222112222112222112222221",
@@ -5205,7 +5205,7 @@
                 speed: 2,
                 mouthOpen: 0,
             };
-            let ghosts = []; 
+            let ghosts = [];
             let score = 0;
             let dotsLeft = 0;
             let frightenedTimer = 0;
@@ -5218,7 +5218,7 @@
                 if (row >= 0 && row < rows && col >= 0 && col < cols) {
                     return map[row][col];
                 }
-                return "1"; 
+                return "1";
             }
             function getTileCoords(col, row) {
                 if (row >= 0 && row < rows && col >= 0 && col < cols) {
@@ -5293,7 +5293,7 @@
                         const x = c * scale;
                         const y = r * scale;
                         if (tile === "1") {
-                            ctx.fillStyle = "#0033cc"; 
+                            ctx.fillStyle = "#0033cc";
                             ctx.fillRect(x, y, scale, scale);
                         } else if (tile === "2") {
                             ctx.fillStyle = "yellow";
@@ -5329,7 +5329,7 @@
                 const mouthAngle =
                     (Math.sin((player.mouthOpen * Math.PI) / 10) + 1) *
                     0.2 *
-                    Math.PI; 
+                    Math.PI;
                 ctx.arc(
                     player.x,
                     player.y,
@@ -5337,17 +5337,17 @@
                     angleOffset + mouthAngle / 2,
                     angleOffset - mouthAngle / 2 + Math.PI * 2
                 );
-                ctx.lineTo(player.x, player.y); 
+                ctx.lineTo(player.x, player.y);
                 ctx.fill();
-                player.mouthOpen = (player.mouthOpen + 1) % 20; 
+                player.mouthOpen = (player.mouthOpen + 1) % 20;
             }
             function drawGhosts() {
                 ghosts.forEach((ghost) => {
                     ctx.fillStyle =
                         ghost.state === "frightened" ? "#aaa" : ghost.color;
                     ctx.beginPath();
-                    ctx.arc(ghost.x, ghost.y, scale * 0.45, Math.PI, 0); 
-                    ctx.lineTo(ghost.x + scale * 0.45, ghost.y + scale * 0.4); 
+                    ctx.arc(ghost.x, ghost.y, scale * 0.45, Math.PI, 0);
+                    ctx.lineTo(ghost.x + scale * 0.45, ghost.y + scale * 0.4);
                     ctx.lineTo(ghost.x + scale * 0.15, ghost.y + scale * 0.3);
                     ctx.lineTo(ghost.x - scale * 0.15, ghost.y + scale * 0.4);
                     ctx.lineTo(ghost.x - scale * 0.45, ghost.y + scale * 0.3);
@@ -5361,14 +5361,14 @@
                         scale * 0.1,
                         0,
                         Math.PI * 2
-                    ); 
+                    );
                     ctx.arc(
                         ghost.x + scale * 0.15,
                         ghost.y - scale * 0.1,
                         scale * 0.1,
                         0,
                         Math.PI * 2
-                    ); 
+                    );
                     ctx.fill();
                 });
             }
@@ -5376,7 +5376,7 @@
                 ctx.fillStyle = "#fff";
                 ctx.font = "1.6vh var(--font-main)";
                 ctx.textAlign = "left";
-                ctx.fillText(`Score: ${score}`, 10, scale - 4); 
+                ctx.fillText(`Score: ${score}`, 10, scale - 4);
                 ctx.textAlign = "right";
                 if (gameOver) {
                     ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
@@ -5431,7 +5431,7 @@
                 const currentTileRow = Math.floor(player.y / scale);
                 const xOffset = player.x % scale;
                 const yOffset = player.y % scale;
-                const tolerance = player.speed * 1.1; 
+                const tolerance = player.speed * 1.1;
                 const canTurn =
                     xOffset > scale / 2 - tolerance &&
                     xOffset < scale / 2 + tolerance &&
@@ -5485,7 +5485,7 @@
                     playerRow >= 0 &&
                     playerRow < rows
                 ) {
-                    const tileIndex = playerRow * cols + playerCol; 
+                    const tileIndex = playerRow * cols + playerCol;
                     const tileChar = map[playerRow][playerCol];
                     if (tileChar === "2") {
                         map[playerRow] =
@@ -5495,7 +5495,7 @@
                         score += 10;
                         dotsLeft--;
                         self.updateScore(score);
-                        self.playSound("click"); 
+                        self.playSound("click");
                     } else if (tileChar === "3") {
                         map[playerRow] =
                             map[playerRow].substring(0, playerCol) +
@@ -5505,7 +5505,7 @@
                         dotsLeft--;
                         self.updateScore(score);
                         self.playSound("powerup");
-                        frightenedTimer = 360; 
+                        frightenedTimer = 360;
                         ghosts.forEach((g) => {
                             if (g.state !== "eaten") g.state = "frightened";
                         });
@@ -5522,7 +5522,7 @@
                     if (frightenedTimer === 0) {
                         ghosts.forEach((g) => {
                             if (g.state === "frightened") g.state = "scatter";
-                        }); 
+                        });
                     }
                 }
                 ghosts.forEach((ghost) => {
@@ -5530,7 +5530,7 @@
                     const currentTileRow = Math.floor(ghost.y / scale);
                     const xOffset = ghost.x % scale;
                     const yOffset = ghost.y % scale;
-                    const tolerance = 1.5; 
+                    const tolerance = 1.5;
                     const atIntersection =
                         xOffset > scale / 2 - tolerance &&
                         xOffset < scale / 2 + tolerance &&
@@ -5539,13 +5539,13 @@
                     let possibleMoves = [];
                     if (atIntersection) {
                         if (!isWall(ghost.x, ghost.y - scale) && ghost.dy <= 0)
-                            possibleMoves.push({ dx: 0, dy: -1 }); 
+                            possibleMoves.push({ dx: 0, dy: -1 });
                         if (!isWall(ghost.x, ghost.y + scale) && ghost.dy >= 0)
-                            possibleMoves.push({ dx: 0, dy: 1 }); 
+                            possibleMoves.push({ dx: 0, dy: 1 });
                         if (!isWall(ghost.x - scale, ghost.y) && ghost.dx <= 0)
-                            possibleMoves.push({ dx: -1, dy: 0 }); 
+                            possibleMoves.push({ dx: -1, dy: 0 });
                         if (!isWall(ghost.x + scale, ghost.y) && ghost.dx >= 0)
-                            possibleMoves.push({ dx: 1, dy: 0 }); 
+                            possibleMoves.push({ dx: 1, dy: 0 });
                         if (possibleMoves.length > 0) {
                             const move =
                                 possibleMoves[
@@ -5562,7 +5562,7 @@
                             ghost.dy *= -1;
                         }
                     }
-                    const ghostSpeed = ghost.state === "frightened" ? 0.8 : 1.2; 
+                    const ghostSpeed = ghost.state === "frightened" ? 0.8 : 1.2;
                     const nextX = ghost.x + ghost.dx * ghostSpeed;
                     const nextY = ghost.y + ghost.dy * ghostSpeed;
                     if (
@@ -5591,7 +5591,7 @@
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     if (distance < player.radius + scale * 0.45) {
                         if (ghost.state === "frightened") {
-                            score += 200; 
+                            score += 200;
                             self.updateScore(score);
                             self.playSound("explosion");
                             ghost.state = "eaten";
@@ -5600,7 +5600,7 @@
                             setTimeout(() => {
                                 if (ghost.state === "eaten")
                                     ghost.state = "scatter";
-                            }, 3000); 
+                            }, 3000);
                         } else if (ghost.state !== "eaten") {
                             gameOver = true;
                             self.playSound("gameOver");
@@ -5665,7 +5665,7 @@
             const ctx = canvas.getContext("2d");
             const self = this;
             let animationFrameId;
-            const scale = 40; 
+            const scale = 40;
             const cols = canvas.width / scale;
             const rows = canvas.height / scale;
             let player = {
@@ -5673,10 +5673,10 @@
                 y: rows - 1,
                 width: scale * 0.8,
                 height: scale * 0.8,
-            }; 
+            };
             let score = 0;
-            let lives = 3; 
-            let homes = [false, false, false, false, false]; 
+            let lives = 3;
+            let homes = [false, false, false, false, false];
             let gameWon = false;
             let gameOver = false;
             const obstacles = [];
@@ -5765,20 +5765,20 @@
                     ) {
                         obstacles.push({
                             x: currentX,
-                            y: def.y * scale + (scale - scale * 0.8) / 2, 
+                            y: def.y * scale + (scale - scale * 0.8) / 2,
                             width: def.len * scale,
                             height: scale * 0.8,
                             speed: def.speed * def.dir,
                             type: def.type,
                             color: def.color,
-                            rowY: def.y, 
+                            rowY: def.y,
                         });
                         currentX += (def.len + def.space) * scale * def.dir;
                     }
                 });
             }
             function drawPlayer() {
-                ctx.fillStyle = "#2ecc71"; 
+                ctx.fillStyle = "#2ecc71";
                 ctx.fillRect(
                     player.x * scale + (scale - player.width) / 2,
                     player.y * scale + (scale - player.height) / 2,
@@ -5813,7 +5813,7 @@
                 ctx.fillRect(0, (rows / 2 - 1) * scale, canvas.width, scale);
                 ctx.fillStyle = "#555";
                 ctx.fillRect(0, 0, canvas.width, scale);
-                ctx.fillStyle = "#2ecc71"; 
+                ctx.fillStyle = "#2ecc71";
                 const homeWidth = scale * 1.5;
                 const homeSpacing =
                     (canvas.width - homes.length * homeWidth) /
@@ -5872,26 +5872,26 @@
                     ) {
                         if (!homes[i]) {
                             homes[i] = true;
-                            score += 100; 
+                            score += 100;
                             self.updateScore(score);
                             self.playSound("point");
                             landedHome = true;
                             resetPlayer();
                             if (homes.every((h) => h)) {
-                                gameWon = true; 
+                                gameWon = true;
                                 self.playSound("win");
-                                alert("Level Cleared!"); 
-                                homes.fill(false); 
-                                createObstacles(); 
+                                alert("Level Cleared!");
+                                homes.fill(false);
+                                createObstacles();
                             }
                         } else {
-                            resetPlayer(true); 
+                            resetPlayer(true);
                         }
                         break;
                     }
                 }
                 if (!landedHome) {
-                    resetPlayer(true); 
+                    resetPlayer(true);
                 }
             }
             function updateObstacles() {
@@ -5928,10 +5928,10 @@
                         }
                     });
                     if (!onLog) {
-                        resetPlayer(true); 
-                        return; 
+                        resetPlayer(true);
+                        return;
                     } else {
-                        player.x += logSpeed / scale; 
+                        player.x += logSpeed / scale;
                         if (
                             player.x * scale < -player.width ||
                             player.x * scale > canvas.width
@@ -5950,7 +5950,7 @@
                                 playerRect.y < obs.y + obs.height &&
                                 playerRect.y + playerRect.height > obs.y
                             ) {
-                                resetPlayer(true); 
+                                resetPlayer(true);
                             }
                         }
                     });
@@ -5960,7 +5960,7 @@
                 player.x = cols / 2;
                 player.y = rows - 1;
                 if (isDead) {
-                    self.playSound("hit"); 
+                    self.playSound("hit");
                 }
             }
             function gameLoop() {
@@ -5968,7 +5968,7 @@
                     return;
                 }
                 updateObstacles();
-                checkCollisions(); 
+                checkCollisions();
                 ctx.fillStyle = "#000";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 drawBackground();
@@ -6024,7 +6024,7 @@
         initMinesweeperGame(container) {
             if (!container) return null;
             const self = this;
-            container.innerHTML = ""; 
+            container.innerHTML = "";
             container.style.display = "flex";
             container.style.flexDirection = "column";
             container.style.alignItems = "center";
@@ -6032,7 +6032,7 @@
             const gridWidth = 16;
             const gridHeight = 16;
             const numMines = 40;
-            let board = []; 
+            let board = [];
             let minesLeft = numMines;
             let tilesRevealed = 0;
             let firstClick = true;
@@ -6047,7 +6047,7 @@
             header.style.color = "#fff";
             const minesDisplay = document.createElement("span");
             minesDisplay.textContent = `Mines: ${minesLeft}`;
-            const statusDisplay = document.createElement("span"); 
+            const statusDisplay = document.createElement("span");
             statusDisplay.textContent = "🙂";
             header.appendChild(minesDisplay);
             header.appendChild(statusDisplay);
@@ -6215,14 +6215,14 @@
                     firstClick = false;
                 }
                 if (board[r][c].mine) {
-                    revealTile(r, c); 
+                    revealTile(r, c);
                 } else {
                     revealTile(r, c);
                     self.playSound("click");
                 }
             }
             function handleTileRightClick(event) {
-                event.preventDefault(); 
+                event.preventDefault();
                 if (gameOver || gameWon) return;
                 const tile = event.target.closest("div[data-row]");
                 if (!tile) return;
@@ -6263,7 +6263,7 @@
                             handleTileRightClick
                         );
                     });
-                    container.innerHTML = ""; 
+                    container.innerHTML = "";
                 },
             };
         }
@@ -6278,17 +6278,17 @@
             const cellHeight = canvas.height / rows;
             let board = Array(rows)
                 .fill(null)
-                .map(() => Array(cols).fill(0)); 
-            let currentPlayer = 1; 
+                .map(() => Array(cols).fill(0));
+            let currentPlayer = 1;
             let gameOver = false;
             let winner = 0;
-            let dropColumn = -1; 
-            let dropY = 0; 
+            let dropColumn = -1;
+            let dropY = 0;
             let dropTargetY = 0;
             let dropPlayer = 0;
             let isDropping = false;
             function drawBoard() {
-                ctx.fillStyle = "#0033cc"; 
+                ctx.fillStyle = "#0033cc";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 for (let r = 0; r < rows; r++) {
                     for (let c = 0; c < cols; c++) {
@@ -6301,11 +6301,11 @@
                             Math.PI * 2
                         );
                         if (board[r][c] === 1) {
-                            ctx.fillStyle = "#ff4757"; 
+                            ctx.fillStyle = "#ff4757";
                         } else if (board[r][c] === 2) {
-                            ctx.fillStyle = "#f1c40f"; 
+                            ctx.fillStyle = "#f1c40f";
                         } else {
-                            ctx.fillStyle = "#1a1a2e"; 
+                            ctx.fillStyle = "#1a1a2e";
                         }
                         ctx.fill();
                     }
@@ -6369,7 +6369,7 @@
                         return r;
                     }
                 }
-                return -1; 
+                return -1;
             }
             function dropPiece(col, player) {
                 const row = findEmptyRow(col);
@@ -6377,12 +6377,12 @@
                     isDropping = true;
                     dropColumn = col;
                     dropPlayer = player;
-                    dropY = -pieceRadius; 
+                    dropY = -pieceRadius;
                     dropTargetY = row * cellHeight + cellHeight / 2;
                     self.playSound("click");
-                    return true; 
+                    return true;
                 }
-                return false; 
+                return false;
             }
             function checkWin(player) {
                 for (let r = 0; r < rows; r++) {
@@ -6427,7 +6427,7 @@
                 for (let c = 0; c < cols; c++) {
                     if (board[0][c] === 0) return false;
                 }
-                return true; 
+                return true;
             }
             function aiMove() {
                 let validCols = [];
@@ -6444,22 +6444,22 @@
             }
             function updateDropAnimation() {
                 if (!isDropping) return;
-                const dropSpeed = 15; 
+                const dropSpeed = 15;
                 dropY += dropSpeed;
                 if (dropY >= dropTargetY) {
-                    dropY = dropTargetY; 
-                    const row = findEmptyRow(dropColumn); 
+                    dropY = dropTargetY;
+                    const row = findEmptyRow(dropColumn);
                     if (row !== -1) {
-                        board[row][dropColumn] = dropPlayer; 
+                        board[row][dropColumn] = dropPlayer;
                     }
-                    isDropping = false; 
+                    isDropping = false;
                     if (checkWin(dropPlayer)) {
                         gameOver = true;
                         winner = dropPlayer;
                         self.playSound(winner === 1 ? "win" : "gameOver");
                     } else if (checkDraw()) {
                         gameOver = true;
-                        winner = 0; 
+                        winner = 0;
                         self.playSound("gameOver");
                     } else {
                         currentPlayer = dropPlayer === 1 ? 2 : 1;
@@ -6470,18 +6470,18 @@
                 }
             }
             function gameLoop() {
-                ctx.fillStyle = "#1a1a2e"; 
+                ctx.fillStyle = "#1a1a2e";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 drawBoard();
-                updateDropAnimation(); 
-                drawDroppingPiece(); 
-                drawUI(); 
+                updateDropAnimation();
+                drawDroppingPiece();
+                drawUI();
                 if (!gameOver) {
                     requestAnimationFrame(gameLoop);
                 }
             }
             const handleCanvasClick = (event) => {
-                if (gameOver || currentPlayer !== 1 || isDropping) return; 
+                if (gameOver || currentPlayer !== 1 || isDropping) return;
                 const rect = canvas.getBoundingClientRect();
                 const scaleX = canvas.width / rect.width;
                 const clickX = (event.clientX - rect.left) * scaleX;
@@ -6495,8 +6495,7 @@
             });
             requestAnimationFrame(gameLoop);
             return {
-                cleanup: () => {
-                },
+                cleanup: () => {},
             };
         }
         initFlappyBirdGame(canvas) {
@@ -6515,26 +6514,26 @@
             const pipes = [];
             const pipeWidth = 60;
             const pipeGap = 120;
-            const pipeFrequency = 90; 
+            const pipeFrequency = 90;
             let frameCount = 0;
             let score = 0;
             let gameOver = false;
             function drawBird() {
-                ctx.fillStyle = "#f1c40f"; 
+                ctx.fillStyle = "#f1c40f";
                 ctx.beginPath();
                 ctx.arc(bird.x, bird.y, bird.radius, 0, Math.PI * 2);
                 ctx.fill();
             }
             function drawPipes() {
-                ctx.fillStyle = "#2ecc71"; 
+                ctx.fillStyle = "#2ecc71";
                 pipes.forEach((pipe) => {
-                    ctx.fillRect(pipe.x, 0, pipeWidth, pipe.topHeight); 
+                    ctx.fillRect(pipe.x, 0, pipeWidth, pipe.topHeight);
                     ctx.fillRect(
                         pipe.x,
                         canvas.height - pipe.bottomHeight,
                         pipeWidth,
                         pipe.bottomHeight
-                    ); 
+                    );
                 });
             }
             function drawScore() {
@@ -6569,7 +6568,7 @@
             }
             function updateBird() {
                 bird.velocity += bird.gravity;
-                bird.velocity *= 0.95; 
+                bird.velocity *= 0.95;
                 bird.y += bird.velocity;
                 if (
                     bird.y + bird.radius > canvas.height ||
@@ -6593,7 +6592,7 @@
                     });
                 }
                 for (let i = pipes.length - 1; i >= 0; i--) {
-                    pipes[i].x -= 3; 
+                    pipes[i].x -= 3;
                     if (
                         bird.x + bird.radius > pipes[i].x &&
                         bird.x - bird.radius < pipes[i].x + pipeWidth
@@ -6622,16 +6621,16 @@
                 self.playSound("jump");
             }
             function endGame() {
-                if (gameOver) return; 
+                if (gameOver) return;
                 gameOver = true;
                 self.playSound("gameOver");
                 cancelAnimationFrame(animationFrameId);
-                animationFrameId = null; 
-                drawGameOver(); 
+                animationFrameId = null;
+                drawGameOver();
             }
             function gameLoop() {
                 if (gameOver) return;
-                ctx.fillStyle = "#87CEEB"; 
+                ctx.fillStyle = "#87CEEB";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 updateBird();
                 updatePipes();
@@ -6644,7 +6643,7 @@
             const handleInput = (e) => {
                 if (gameOver) return;
                 if (e.type === "keydown" && e.key !== " ") return;
-                if (e.type === "keydown") e.preventDefault(); 
+                if (e.type === "keydown") e.preventDefault();
                 flap();
             };
             self.addManagedListener(document, "keydown", handleInput, {
@@ -6688,8 +6687,8 @@
             const platformHeight = 15;
             const numPlatforms = 8;
             let score = 0;
-            let highestY = player.y; 
-            let cameraY = 0; 
+            let highestY = player.y;
+            let cameraY = 0;
             function createPlatforms() {
                 platforms.length = 0;
                 platforms.push({
@@ -6704,14 +6703,14 @@
                         y:
                             canvas.height -
                             i * (canvas.height / numPlatforms) -
-                            Math.random() * 30, 
+                            Math.random() * 30,
                         width: platformWidth,
                         height: platformHeight,
                     });
                 }
             }
             function drawPlayer() {
-                ctx.fillStyle = "#2ecc71"; 
+                ctx.fillStyle = "#2ecc71";
                 ctx.fillRect(
                     player.x - player.width / 2,
                     player.y - player.height / 2 - cameraY,
@@ -6720,7 +6719,7 @@
                 );
             }
             function drawPlatforms() {
-                ctx.fillStyle = "#8c5a30"; 
+                ctx.fillStyle = "#8c5a30";
                 platforms.forEach((p) => {
                     ctx.fillRect(p.x, p.y - cameraY, p.width, p.height);
                 });
@@ -6757,11 +6756,11 @@
                         if (
                             player.y + player.height / 2 > p.y &&
                             player.y + player.height / 2 <
-                                p.y + platformHeight + 10 && 
+                                p.y + platformHeight + 10 &&
                             player.x + player.width / 2 > p.x &&
                             player.x - player.width / 2 < p.x + p.width
                         ) {
-                            player.dy = player.lift; 
+                            player.dy = player.lift;
                             self.playSound("jump");
                         }
                     });
@@ -6783,7 +6782,7 @@
                         y:
                             highestPlatformY -
                             (canvas.height / numPlatforms) *
-                                (0.8 + Math.random() * 0.4), 
+                                (0.8 + Math.random() * 0.4),
                         width: platformWidth,
                         height: platformHeight,
                     });
@@ -6820,15 +6819,15 @@
                 updatePlayer();
                 checkPlatformCollisions();
                 managePlatforms();
-                ctx.fillStyle = "#87CEEB"; 
+                ctx.fillStyle = "#87CEEB";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 drawPlatforms();
                 drawPlayer();
-                drawScore(); 
+                drawScore();
                 animationFrameId = requestAnimationFrame(gameLoop);
             }
             const handleKeyDown = (e) => {
-                if (animationFrameId === null) return; 
+                if (animationFrameId === null) return;
                 if (e.key === "ArrowLeft" || e.key.toLowerCase() === "a")
                     player.dx = -player.speed;
                 if (e.key === "ArrowRight" || e.key.toLowerCase() === "d")
@@ -6867,11 +6866,11 @@
         initMemoryGame(container) {
             if (!container) return null;
             const self = this;
-            container.innerHTML = ""; 
-            container.style.display = "flex"; 
+            container.innerHTML = "";
+            container.style.display = "flex";
             container.style.justifyContent = "center";
             container.style.alignItems = "center";
-            container.style.flexWrap = "wrap"; 
+            container.style.flexWrap = "wrap";
             container.style.padding = "2vh";
             const symbols = [
                 "🍎",
@@ -6884,10 +6883,10 @@
                 "🍉",
                 "🍊",
                 "🍋",
-            ]; 
-            const gridSize = 4; 
+            ];
+            const gridSize = 4;
             const numPairs = (gridSize * gridSize) / 2;
-            let cards = []; 
+            let cards = [];
             let flippedCards = [];
             let canFlip = true;
             let matchesFound = 0;
@@ -6910,8 +6909,8 @@
                 cards = [];
                 const gameSymbols = symbols
                     .slice(0, numPairs)
-                    .concat(symbols.slice(0, numPairs)); 
-                gameSymbols.sort(() => 0.5 - Math.random()); 
+                    .concat(symbols.slice(0, numPairs));
+                gameSymbols.sort(() => 0.5 - Math.random());
                 for (let i = 0; i < gameSymbols.length; i++) {
                     cards.push({
                         id: i,
@@ -6921,7 +6920,7 @@
                     });
                     const cardElement = document.createElement("div");
                     cardElement.dataset.id = i;
-                    cardElement.style.backgroundColor = "#3498db"; 
+                    cardElement.style.backgroundColor = "#3498db";
                     cardElement.style.borderRadius = ".5vh";
                     cardElement.style.display = "flex";
                     cardElement.style.alignItems = "center";
@@ -6930,7 +6929,7 @@
                     cardElement.style.cursor = "pointer";
                     cardElement.style.transition =
                         "transform 0.5s, background-color 0.3s";
-                    cardElement.style.transformStyle = "preserve-3d"; 
+                    cardElement.style.transformStyle = "preserve-3d";
                     cardElement.addEventListener("click", handleCardClick);
                     gridElement.appendChild(cardElement);
                 }
@@ -6948,8 +6947,8 @@
                     self.playSound("click");
                 } else if (flippedCards.length === 2) {
                     moves++;
-                    canFlip = false; 
-                    setTimeout(checkForMatch, 800); 
+                    canFlip = false;
+                    setTimeout(checkForMatch, 800);
                 }
                 updateStatus();
             }
@@ -6961,19 +6960,19 @@
                 setTimeout(() => {
                     if (isFlippingUp) {
                         element.textContent = card.symbol;
-                        element.style.backgroundColor = "#f1c40f"; 
+                        element.style.backgroundColor = "#f1c40f";
                     } else {
                         element.textContent = "";
-                        element.style.backgroundColor = "#3498db"; 
+                        element.style.backgroundColor = "#3498db";
                     }
-                }, 250); 
+                }, 250);
             }
             function checkForMatch() {
                 const [card1Info, card2Info] = flippedCards;
                 if (card1Info.card.symbol === card2Info.card.symbol) {
                     card1Info.card.matched = true;
                     card2Info.card.matched = true;
-                    card1Info.element.style.backgroundColor = "#2ecc71"; 
+                    card1Info.element.style.backgroundColor = "#2ecc71";
                     card2Info.element.style.backgroundColor = "#2ecc71";
                     card1Info.element.style.cursor = "default";
                     card2Info.element.style.cursor = "default";
@@ -6988,8 +6987,8 @@
                     flipCard(card2Info.card, card2Info.element, false);
                     self.playSound("hit");
                 }
-                flippedCards = []; 
-                canFlip = true; 
+                flippedCards = [];
+                canFlip = true;
                 updateStatus();
             }
             function updateStatus() {
@@ -7010,7 +7009,7 @@
         initClickerGame(container) {
             if (!container) return null;
             const self = this;
-            container.innerHTML = ""; 
+            container.innerHTML = "";
             container.style.display = "flex";
             container.style.flexDirection = "column";
             container.style.alignItems = "center";
@@ -7019,7 +7018,7 @@
             container.style.color = "#fff";
             let score = 0;
             let scorePerClick = 1;
-            let autoClickRate = 0; 
+            let autoClickRate = 0;
             let autoClickInterval;
             const scoreDisplay = document.createElement("h2");
             scoreDisplay.textContent = `Score: ${score}`;
@@ -7065,7 +7064,7 @@
                 10,
                 () => {
                     scorePerClick++;
-                    return Math.floor(10 * Math.pow(1.15, scorePerClick)); 
+                    return Math.floor(10 * Math.pow(1.15, scorePerClick));
                 },
                 (cost) => `Upgrade Click (Cost: ${cost})`
             );
@@ -7075,7 +7074,7 @@
                 50,
                 () => {
                     autoClickRate++;
-                    startAutoClicker(); 
+                    startAutoClicker();
                     return Math.floor(50 * Math.pow(1.2, autoClickRate));
                 },
                 (cost) => `Buy Auto Clicker (Cost: ${cost})`
@@ -7097,11 +7096,11 @@
                 button.style.border = "none";
                 button.style.borderRadius = ".5vh";
                 button.style.cursor = "pointer";
-                button.disabled = true; 
+                button.disabled = true;
                 button.addEventListener("click", () => {
                     if (score >= currentCost) {
                         score -= currentCost;
-                        currentCost = action(); 
+                        currentCost = action();
                         button.textContent = updateTextFn(currentCost);
                         updateDisplay();
                         self.playSound("point");
@@ -7111,11 +7110,11 @@
                     button.disabled = score < currentCost;
                     button.style.opacity = button.disabled ? 0.6 : 1;
                 };
-                button.updateAvailability(); 
+                button.updateAvailability();
                 return button;
             }
             function updateDisplay() {
-                scoreDisplay.textContent = `Score: ${Math.floor(score)}`; 
+                scoreDisplay.textContent = `Score: ${Math.floor(score)}`;
                 statsDisplay.innerHTML = `Per Click: ${scorePerClick} | Auto/sec: ${autoClickRate}`;
                 upgradeClickButton.updateAvailability();
                 upgradeAutoButton.updateAvailability();
@@ -7124,9 +7123,9 @@
                 if (autoClickInterval) clearInterval(autoClickInterval);
                 if (autoClickRate > 0) {
                     autoClickInterval = setInterval(() => {
-                        score += autoClickRate / 10; 
+                        score += autoClickRate / 10;
                         updateDisplay();
-                    }, 100); 
+                    }, 100);
                 }
             }
             function showClickFeedback(button) {
@@ -7156,14 +7155,14 @@
                 setTimeout(() => {
                     feedback.style.opacity = "0";
                     feedback.style.transform = "translateY(-3vh)";
-                    setTimeout(() => container.removeChild(feedback), 500); 
+                    setTimeout(() => container.removeChild(feedback), 500);
                 }, 100);
             }
             updateDisplay();
             return {
                 cleanup: () => {
                     if (autoClickInterval) clearInterval(autoClickInterval);
-                    container.innerHTML = ""; 
+                    container.innerHTML = "";
                 },
             };
         }
@@ -7174,12 +7173,12 @@
             let animationFrameId;
             const cols = 20;
             const rows = 20;
-            const cellSize = canvas.width / cols; 
-            let grid = []; 
-            let player = { x: 0, y: 0 }; 
-            const goal = { x: cols - 1, y: rows - 1 }; 
-            let visited = []; 
-            let stack = []; 
+            const cellSize = canvas.width / cols;
+            let grid = [];
+            let player = { x: 0, y: 0 };
+            const goal = { x: cols - 1, y: rows - 1 };
+            let visited = [];
+            let stack = [];
             function createGrid() {
                 grid = Array(rows)
                     .fill(null)
@@ -7245,7 +7244,7 @@
                 }
             }
             function drawMaze() {
-                ctx.strokeStyle = "#ccc"; 
+                ctx.strokeStyle = "#ccc";
                 ctx.lineWidth = 2;
                 for (let r = 0; r < rows; r++) {
                     for (let c = 0; c < cols; c++) {
@@ -7279,7 +7278,7 @@
                 }
             }
             function drawPlayer() {
-                ctx.fillStyle = "#3498db"; 
+                ctx.fillStyle = "#3498db";
                 ctx.fillRect(
                     player.x * cellSize + cellSize * 0.15,
                     player.y * cellSize + cellSize * 0.15,
@@ -7288,7 +7287,7 @@
                 );
             }
             function drawGoal() {
-                ctx.fillStyle = "#2ecc71"; 
+                ctx.fillStyle = "#2ecc71";
                 ctx.fillRect(
                     goal.x * cellSize + cellSize * 0.1,
                     goal.y * cellSize + cellSize * 0.1,
@@ -7302,7 +7301,7 @@
                 if (dx === 1 && !currentCell.right) canMove = true;
                 else if (dx === -1 && !currentCell.left) canMove = true;
                 else if (dy === 1 && !currentCell.bottom) canMove = true;
-                else if (dy === -1 && !currentCell.top) canMove = true; 
+                else if (dy === -1 && !currentCell.top) canMove = true;
                 if (canMove) {
                     player.x += dx;
                     player.y += dy;
@@ -7336,7 +7335,7 @@
                 animationFrameId = requestAnimationFrame(gameLoop);
             }
             const handleKeyDown = (e) => {
-                if (animationFrameId === null) return; 
+                if (animationFrameId === null) return;
                 switch (e.key) {
                     case "ArrowUp":
                     case "w":
@@ -7360,7 +7359,7 @@
                 gameId: "maze",
             });
             createGrid();
-            generateMaze(0, 0); 
+            generateMaze(0, 0);
             animationFrameId = requestAnimationFrame(gameLoop);
             return {
                 cleanup: () => {
@@ -7374,7 +7373,7 @@
         initTypingGame(container) {
             if (!container) return null;
             const self = this;
-            container.innerHTML = ""; 
+            container.innerHTML = "";
             container.style.display = "flex";
             container.style.flexDirection = "column";
             container.style.alignItems = "center";
@@ -7424,7 +7423,7 @@
                 "experience",
                 "innovation",
             ];
-            const gameTime = 60; 
+            const gameTime = 60;
             let currentWords = [];
             let wordIndex = 0;
             let startTime;
@@ -7443,7 +7442,7 @@
             wordDisplay.style.minHeight = "10vh";
             wordDisplay.style.width = "80%";
             wordDisplay.style.maxWidth = "60vh";
-            wordDisplay.style.textAlign = "left"; 
+            wordDisplay.style.textAlign = "left";
             container.appendChild(wordDisplay);
             const inputArea = document.createElement("input");
             inputArea.type = "text";
@@ -7454,7 +7453,7 @@
             inputArea.style.maxWidth = "60vh";
             inputArea.style.borderRadius = ".5vh";
             inputArea.style.border = ".2vh solid #aaa";
-            inputArea.disabled = true; 
+            inputArea.disabled = true;
             inputArea.addEventListener("input", handleInput);
             container.appendChild(inputArea);
             const statsDisplay = document.createElement("div");
@@ -7487,14 +7486,14 @@
                 wordDisplay.innerHTML = "";
                 currentWords.forEach((word, index) => {
                     const wordSpan = document.createElement("span");
-                    wordSpan.textContent = word + " "; 
+                    wordSpan.textContent = word + " ";
                     wordSpan.dataset.index = index;
                     if (index === wordIndex) {
                         wordSpan.style.backgroundColor =
-                            "rgba(255, 255, 255, 0.2)"; 
+                            "rgba(255, 255, 255, 0.2)";
                         wordSpan.style.borderRadius = ".3vh";
                     } else if (index < wordIndex) {
-                        wordSpan.style.opacity = "0.6"; 
+                        wordSpan.style.opacity = "0.6";
                     }
                     wordDisplay.appendChild(wordSpan);
                 });
@@ -7539,21 +7538,21 @@
                 );
                 if (typedValue.endsWith(" ")) {
                     const typedWord = typedValue.trim();
-                    totalChars += currentWord.length + 1; 
+                    totalChars += currentWord.length + 1;
                     if (typedWord === currentWord) {
                         correctChars += currentWord.length + 1;
-                        currentWordSpan.style.color = "lime"; 
+                        currentWordSpan.style.color = "lime";
                         self.playSound("click");
                     } else {
-                        currentWordSpan.style.color = "red"; 
+                        currentWordSpan.style.color = "red";
                         self.playSound("hit");
                     }
                     wordIndex++;
-                    inputArea.value = ""; 
+                    inputArea.value = "";
                     if (wordIndex >= currentWords.length) {
-                        setupWords(); 
+                        setupWords();
                     } else {
-                        displayWords(); 
+                        displayWords();
                     }
                 } else {
                     let correct = true;
@@ -7567,12 +7566,12 @@
                                 correct = false;
                             }
                         } else {
-                            displayHtml += `<span>${currentWord[i]}</span>`; 
+                            displayHtml += `<span>${currentWord[i]}</span>`;
                         }
                     }
-                    currentWordSpan.innerHTML = displayHtml + " "; 
+                    currentWordSpan.innerHTML = displayHtml + " ";
                     currentWordSpan.style.backgroundColor =
-                        "rgba(255, 255, 255, 0.2)"; 
+                        "rgba(255, 255, 255, 0.2)";
                 }
                 updateStats();
             }
@@ -7594,9 +7593,9 @@
                 inputArea.disabled = true;
                 startButton.textContent = "Start Again";
                 self.playSound("gameOver");
-                updateStats(); 
+                updateStats();
             }
-            setupWords(); 
+            setupWords();
             return {
                 cleanup: () => {
                     if (timerInterval) clearInterval(timerInterval);
@@ -7607,7 +7606,7 @@
         initWordSearchGame(container) {
             if (!container) return null;
             const self = this;
-            container.innerHTML = ""; 
+            container.innerHTML = "";
             container.style.display = "flex";
             container.style.gap = "2vh";
             container.style.padding = "1.5vh";
@@ -7625,14 +7624,14 @@
                 "SVELTE",
                 "JAVA",
                 "SCRIPT",
-            ]; 
-            let grid = []; 
-            let placedWords = []; 
+            ];
+            let grid = [];
+            let placedWords = [];
             let foundWords = new Set();
             let isSelecting = false;
-            let selectionStart = null; 
-            let selectionCurrent = null; 
-            let selectedCells = []; 
+            let selectionStart = null;
+            let selectionCurrent = null;
+            let selectedCells = [];
             const gridContainer = document.createElement("div");
             gridContainer.style.flexGrow = "1";
             const gridElement = document.createElement("div");
@@ -7642,7 +7641,7 @@
             gridElement.style.gap = ".1vh";
             gridElement.style.backgroundColor = "#555";
             gridElement.style.border = ".2vh solid #888";
-            gridElement.style.userSelect = "none"; 
+            gridElement.style.userSelect = "none";
             gridContainer.appendChild(gridElement);
             const wordListContainer = document.createElement("div");
             wordListContainer.style.width = "15vh";
@@ -7661,11 +7660,11 @@
             container.appendChild(gridContainer);
             container.appendChild(wordListContainer);
             function createGridCells() {
-                gridElement.innerHTML = ""; 
+                gridElement.innerHTML = "";
                 for (let r = 0; r < gridSize; r++) {
                     grid[r] = [];
                     for (let c = 0; c < gridSize; c++) {
-                        grid[r][c] = ""; 
+                        grid[r][c] = "";
                         const cell = document.createElement("div");
                         cell.dataset.row = r;
                         cell.dataset.col = c;
@@ -7683,21 +7682,21 @@
                     }
                 }
                 gridElement.addEventListener("mouseup", handleMouseUp);
-                gridElement.addEventListener("mouseleave", handleMouseLeave); 
+                gridElement.addEventListener("mouseleave", handleMouseLeave);
             }
             function placeWords() {
                 placedWords = [];
                 const directions = [
                     { dr: 0, dc: 1 },
                     { dr: 1, dc: 0 },
-                    { dr: 1, dc: 1 }, 
+                    { dr: 1, dc: 1 },
                     { dr: 0, dc: -1 },
                     { dr: -1, dc: 0 },
-                    { dr: -1, dc: -1 }, 
+                    { dr: -1, dc: -1 },
                     { dr: 1, dc: -1 },
-                    { dr: -1, dc: 1 }, 
+                    { dr: -1, dc: 1 },
                 ];
-                wordsToFind.sort((a, b) => b.length - a.length); 
+                wordsToFind.sort((a, b) => b.length - a.length);
                 wordsToFind.forEach((word) => {
                     let placed = false;
                     let attempts = 0;
@@ -7828,14 +7827,14 @@
                         c += dc;
                     }
                 } else {
-                    selectedCells = [selectionStart]; 
+                    selectedCells = [selectionStart];
                 }
             }
             function highlightSelection() {
-                clearHighlight(false); 
+                clearHighlight(false);
                 selectedCells.forEach(({ element }) => {
                     if (!element.classList.contains("found")) {
-                        element.style.backgroundColor = "#f1c40f"; 
+                        element.style.backgroundColor = "#f1c40f";
                         element.classList.add("selected");
                     }
                 });
@@ -7844,13 +7843,13 @@
                 const cellsToClear = gridElement.querySelectorAll(".selected");
                 cellsToClear.forEach((cell) => {
                     if (!cell.classList.contains("found") || clearFound) {
-                        cell.style.backgroundColor = "#bbb"; 
+                        cell.style.backgroundColor = "#bbb";
                         cell.classList.remove("selected");
                     }
                 });
             }
             function checkSelectedWord() {
-                if (selectedCells.length < 2) return; 
+                if (selectedCells.length < 2) return;
                 let selectedWord = selectedCells
                     .map(({ r, c }) => grid[r][c])
                     .join("");
@@ -7875,9 +7874,9 @@
                 if (wordFound) {
                     foundWords.add(wordFound);
                     selectedCells.forEach(({ element }) => {
-                        element.style.backgroundColor = "#2ecc71"; 
-                        element.classList.add("found"); 
-                        element.classList.remove("selected"); 
+                        element.style.backgroundColor = "#2ecc71";
+                        element.classList.add("found");
+                        element.classList.remove("selected");
                     });
                     updateWordList();
                     self.playSound("point");
@@ -7885,7 +7884,7 @@
                         self.playSound("win");
                     }
                 } else {
-                    self.playSound("hit"); 
+                    self.playSound("hit");
                 }
             }
             createGridCells();
@@ -7910,7 +7909,7 @@
         initHangmanGame(container) {
             if (!container) return null;
             const self = this;
-            container.innerHTML = ""; 
+            container.innerHTML = "";
             container.style.display = "flex";
             container.style.flexDirection = "column";
             container.style.alignItems = "center";
@@ -7933,7 +7932,7 @@
             let wordToGuess = "";
             let guessedLetters = new Set();
             let wrongGuesses = 0;
-            const maxWrongGuesses = 6; 
+            const maxWrongGuesses = 6;
             let gameOver = false;
             const hangmanCanvas = document.createElement("canvas");
             hangmanCanvas.width = 200;
@@ -7969,14 +7968,14 @@
                 hctx.beginPath();
                 hctx.moveTo(10, 240);
                 hctx.lineTo(190, 240);
-                hctx.stroke(); 
+                hctx.stroke();
                 hctx.moveTo(50, 240);
                 hctx.lineTo(50, 10);
-                hctx.stroke(); 
+                hctx.stroke();
                 hctx.lineTo(150, 10);
-                hctx.stroke(); 
+                hctx.stroke();
                 hctx.lineTo(150, 40);
-                hctx.stroke(); 
+                hctx.stroke();
                 if (wrongGuesses > 0) {
                     hctx.beginPath();
                     hctx.arc(150, 60, 20, 0, Math.PI * 2);
@@ -8023,7 +8022,7 @@
                         display += "_";
                         allGuessed = false;
                     }
-                    display += " "; 
+                    display += " ";
                 }
                 wordDisplay.textContent = display.trim();
                 return allGuessed;
@@ -8034,7 +8033,7 @@
                     .join(", ")}`;
             }
             function createKeyboard() {
-                keyboard.innerHTML = ""; 
+                keyboard.innerHTML = "";
                 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
                 for (const letter of alphabet) {
                     const button = document.createElement("button");
@@ -8056,7 +8055,7 @@
                 const guessedLetter = event.target.dataset.letter;
                 if (!guessedLetter || guessedLetters.has(guessedLetter)) return;
                 guessedLetters.add(guessedLetter);
-                event.target.disabled = true; 
+                event.target.disabled = true;
                 event.target.style.opacity = "0.5";
                 event.target.style.cursor = "default";
                 if (wordToGuess.includes(guessedLetter)) {
@@ -8101,7 +8100,7 @@
                 drawHangman();
                 updateWordDisplay();
                 updateGuessedDisplay();
-                createKeyboard(); 
+                createKeyboard();
             }
             startGame();
             return {
@@ -8116,7 +8115,7 @@
         initSimonSaysGame(container) {
             if (!container) return null;
             const self = this;
-            container.innerHTML = ""; 
+            container.innerHTML = "";
             container.style.display = "flex";
             container.style.flexDirection = "column";
             container.style.alignItems = "center";
@@ -8124,8 +8123,8 @@
             container.style.padding = "2vh";
             container.style.fontFamily = "var(--font-main)";
             container.style.color = "#fff";
-            const colors = ["#2ecc71", "#e74c3c", "#f1c40f", "#3498db"]; 
-            const sounds = [261.63, 329.63, 392.0, 523.25]; 
+            const colors = ["#2ecc71", "#e74c3c", "#f1c40f", "#3498db"];
+            const sounds = [261.63, 329.63, 392.0, 523.25];
             let sequence = [];
             let playerSequence = [];
             let level = 0;
@@ -8165,22 +8164,22 @@
                     }
                     flashButton(sequence[i]);
                     i++;
-                }, 800); 
+                }, 800);
             }
             function flashButton(index) {
                 const button = simonContainer.children[index];
                 if (!button) return;
-                button.style.opacity = "0.5"; 
-                playSoundNote(sounds[index], 0.3); 
-                if (flashTimeout) clearTimeout(flashTimeout); 
+                button.style.opacity = "0.5";
+                playSoundNote(sounds[index], 0.3);
+                if (flashTimeout) clearTimeout(flashTimeout);
                 flashTimeout = setTimeout(() => {
                     button.style.opacity = "1";
-                }, 400); 
+                }, 400);
             }
             function handleButtonClick(event) {
                 if (!canPlayerGuess) return;
                 const index = parseInt(event.target.dataset.index);
-                flashButton(index); 
+                flashButton(index);
                 playerSequence.push(index);
                 if (
                     playerSequence[playerSequence.length - 1] !==
@@ -8190,15 +8189,15 @@
                     return;
                 }
                 if (playerSequence.length === sequence.length) {
-                    canPlayerGuess = false; 
+                    canPlayerGuess = false;
                     level++;
-                    self.updateScore(level); 
+                    self.updateScore(level);
                     self.playSound("point");
-                    setTimeout(nextLevel, 1000); 
+                    setTimeout(nextLevel, 1000);
                 }
             }
             function nextLevel() {
-                sequence.push(Math.floor(Math.random() * 4)); 
+                sequence.push(Math.floor(Math.random() * 4));
                 playSequence();
             }
             function gameOver() {
@@ -8231,7 +8230,7 @@
                     console.error("Error playing Simon sound:", error);
                 }
             }
-            setTimeout(nextLevel, 500); 
+            setTimeout(nextLevel, 500);
             return {
                 cleanup: () => {
                     if (flashTimeout) clearTimeout(flashTimeout);
@@ -8245,7 +8244,7 @@
         initTicTacToeGame(container) {
             if (!container) return null;
             const self = this;
-            container.innerHTML = ""; 
+            container.innerHTML = "";
             container.style.display = "flex";
             container.style.flexDirection = "column";
             container.style.alignItems = "center";
@@ -8253,15 +8252,15 @@
             container.style.padding = "2vh";
             container.style.fontFamily = "var(--font-main)";
             container.style.color = "#fff";
-            const board = [0, 0, 0, 0, 0, 0, 0, 0, 0]; 
+            const board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
             const playerMark = "X";
             const aiMark = "O";
-            let currentPlayer = 1; 
+            let currentPlayer = 1;
             let gameOver = false;
             let winningLine = null;
             let winAnimation = 0;
             let scores = { player: 0, ai: 0, draw: 0 };
-            let difficulty = "medium"; 
+            let difficulty = "medium";
             let lastWinner = null;
             const gameHeader = document.createElement("div");
             gameHeader.style.fontSize = "1.5em";
@@ -8341,10 +8340,10 @@
             statusDisplay.style.minHeight = "2.5vh";
             container.appendChild(statusDisplay);
             const gameCanvas = document.createElement("canvas");
-            gameCanvas.width = 255; 
+            gameCanvas.width = 255;
             gameCanvas.height = 255;
             gameCanvas.style.position = "absolute";
-            gameCanvas.style.pointerEvents = "none"; 
+            gameCanvas.style.pointerEvents = "none";
             gameCanvas.style.zIndex = "5";
             const canvasCtx = gameCanvas.getContext("2d");
             const gameContainer = document.createElement("div");
@@ -8450,16 +8449,16 @@
                 if (gameOver || currentPlayer !== 1) return;
                 const index = parseInt(event.target.dataset.index);
                 if (board[index] === 0) {
-                    makeMove(index, 1); 
+                    makeMove(index, 1);
                     if (!gameOver) {
                         currentPlayer = 2;
                         updateStatus("AI's Turn...");
-                        setTimeout(aiMove, 800); 
+                        setTimeout(aiMove, 800);
                     }
                 }
             }
             function makeMove(index, player) {
-                if (board[index] !== 0 || gameOver) return false; 
+                if (board[index] !== 0 || gameOver) return false;
                 board[index] = player;
                 const cellElement = gridElement.children[index];
                 cellElement.style.transform = "scale(0.1)";
@@ -8480,7 +8479,7 @@
                     winningLine = result.pattern;
                     endGame(player);
                 } else if (board.every((cell) => cell !== 0)) {
-                    endGame(0); 
+                    endGame(0);
                 }
                 return true;
             }
@@ -8488,12 +8487,12 @@
                 const winPatterns = [
                     [0, 1, 2],
                     [3, 4, 5],
-                    [6, 7, 8], 
+                    [6, 7, 8],
                     [0, 3, 6],
                     [1, 4, 7],
-                    [2, 5, 8], 
+                    [2, 5, 8],
                     [0, 4, 8],
-                    [2, 4, 6], 
+                    [2, 4, 6],
                 ];
                 for (const pattern of winPatterns) {
                     if (pattern.every((index) => board[index] === player)) {
@@ -8525,25 +8524,25 @@
                     case "medium":
                         for (let i = 0; i < 9; i++) {
                             if (board[i] === 0) {
-                                board[i] = 2; 
+                                board[i] = 2;
                                 if (checkWinWithPattern(2).win) {
                                     bestMove = i;
-                                    board[i] = 0; 
+                                    board[i] = 0;
                                     break;
                                 }
-                                board[i] = 0; 
+                                board[i] = 0;
                             }
                         }
                         if (bestMove === -1) {
                             for (let i = 0; i < 9; i++) {
                                 if (board[i] === 0) {
-                                    board[i] = 1; 
+                                    board[i] = 1;
                                     if (checkWinWithPattern(1).win) {
-                                        bestMove = i; 
-                                        board[i] = 0; 
+                                        bestMove = i;
+                                        board[i] = 0;
                                         break;
                                     }
-                                    board[i] = 0; 
+                                    board[i] = 0;
                                 }
                             }
                         }
@@ -8606,14 +8605,14 @@
                 alpha = -Infinity,
                 beta = Infinity
             ) {
-                if (checkWinWithPattern(2).win) return 10 - depth; 
-                if (checkWinWithPattern(1).win) return depth - 10; 
-                if (board.every((cell) => cell !== 0)) return 0; 
+                if (checkWinWithPattern(2).win) return 10 - depth;
+                if (checkWinWithPattern(1).win) return depth - 10;
+                if (board.every((cell) => cell !== 0)) return 0;
                 if (isMaximizing) {
                     let maxEval = -Infinity;
                     for (let i = 0; i < 9; i++) {
                         if (board[i] === 0) {
-                            board[i] = 2; 
+                            board[i] = 2;
                             const evalScore = minimax(
                                 board,
                                 depth + 1,
@@ -8621,10 +8620,10 @@
                                 alpha,
                                 beta
                             );
-                            board[i] = 0; 
+                            board[i] = 0;
                             maxEval = Math.max(maxEval, evalScore);
                             alpha = Math.max(alpha, evalScore);
-                            if (beta <= alpha) break; 
+                            if (beta <= alpha) break;
                         }
                     }
                     return maxEval;
@@ -8632,7 +8631,7 @@
                     let minEval = Infinity;
                     for (let i = 0; i < 9; i++) {
                         if (board[i] === 0) {
-                            board[i] = 1; 
+                            board[i] = 1;
                             const evalScore = minimax(
                                 board,
                                 depth + 1,
@@ -8640,10 +8639,10 @@
                                 alpha,
                                 beta
                             );
-                            board[i] = 0; 
+                            board[i] = 0;
                             minEval = Math.min(minEval, evalScore);
                             beta = Math.min(beta, evalScore);
-                            if (beta <= alpha) break; 
+                            if (beta <= alpha) break;
                         }
                     }
                     return minEval;
@@ -8654,9 +8653,9 @@
                 let bestMove = -1;
                 for (let i = 0; i < 9; i++) {
                     if (board[i] === 0) {
-                        board[i] = 2; 
+                        board[i] = 2;
                         const score = minimax(board, 0, false);
-                        board[i] = 0; 
+                        board[i] = 0;
                         if (score > bestScore) {
                             bestScore = score;
                             bestMove = i;
@@ -8669,7 +8668,7 @@
                 if (!winningLine) return;
                 const cellSize = 80;
                 const cellGap = 5;
-                const cellOffset = 5; 
+                const cellOffset = 5;
                 function getCellCenter(index) {
                     const row = Math.floor(index / 3);
                     const col = index % 3;
@@ -8799,7 +8798,7 @@
         }
         initArkanoidGame(canvas) {
             console.warn("Arkanoid Lite using Breakout logic for now.");
-            return this.initBreakoutGame(canvas); 
+            return this.initBreakoutGame(canvas);
         }
         initPlatformerGame(canvas) {
             if (!canvas) return null;
@@ -8826,7 +8825,7 @@
                     width: canvas.width,
                     height: 20,
                     color: "#555",
-                }, 
+                },
                 {
                     x: 150,
                     y: canvas.height - 80,
@@ -8855,7 +8854,7 @@
                     height: 40,
                     color: "lime",
                     isGoal: true,
-                }, 
+                },
             ];
             let keys = {};
             let gameOver = false;
@@ -8880,7 +8879,7 @@
                     player.dy += gravity;
                 }
                 player.y += player.dy;
-                player.onGround = false; 
+                player.onGround = false;
                 platforms.forEach((p) => {
                     if (
                         player.x < p.x + p.width &&
@@ -8916,14 +8915,14 @@
                             ) {
                                 player.x = p.x + p.width;
                             }
-                            player.dx = 0; 
+                            player.dx = 0;
                         }
                     }
                 });
                 if (player.y > canvas.height) {
                     player.x = 50;
                     player.y = canvas.height - 50;
-                    player.dy = 0; 
+                    player.dy = 0;
                     self.playSound("hit");
                 }
             }
@@ -8954,7 +8953,7 @@
             function gameLoop() {
                 if (gameOver || gameWon) return;
                 updatePlayer();
-                ctx.fillStyle = "#1a1a2e"; 
+                ctx.fillStyle = "#1a1a2e";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 drawPlatforms();
                 drawPlayer();
@@ -9020,9 +9019,9 @@
                 ctx.rotate(player.angle);
                 ctx.fillStyle = player.color;
                 ctx.beginPath();
-                ctx.moveTo(0, -player.radius); 
-                ctx.lineTo(-player.radius * 0.7, player.radius * 0.7); 
-                ctx.lineTo(player.radius * 0.7, player.radius * 0.7); 
+                ctx.moveTo(0, -player.radius);
+                ctx.lineTo(-player.radius * 0.7, player.radius * 0.7);
+                ctx.lineTo(player.radius * 0.7, player.radius * 0.7);
                 ctx.closePath();
                 ctx.fill();
                 ctx.restore();
@@ -9077,7 +9076,7 @@
                 );
                 player.angle =
                     Math.atan2(mousePos.y - player.y, mousePos.x - player.x) +
-                    Math.PI / 2; 
+                    Math.PI / 2;
             }
             function updateBullets() {
                 for (let i = bullets.length - 1; i >= 0; i--) {
@@ -9099,13 +9098,13 @@
                             Math.pow(b.x - t.x, 2) + Math.pow(b.y - t.y, 2)
                         );
                         if (dist < t.radius) {
-                            targets.splice(j, 1); 
-                            bullets.splice(i, 1); 
+                            targets.splice(j, 1);
+                            bullets.splice(i, 1);
                             score += 10;
                             self.updateScore(score);
                             self.playSound("explosion");
-                            createTarget(); 
-                            break; 
+                            createTarget();
+                            break;
                         }
                     }
                 }
@@ -9164,7 +9163,7 @@
             self.addManagedListener(canvas, "mousedown", handleMouseDown, {
                 gameId: "shooter",
             });
-            for (let i = 0; i < 5; i++) createTarget(); 
+            for (let i = 0; i < 5; i++) createTarget();
             animationFrameId = requestAnimationFrame(gameLoop);
             return {
                 cleanup: () => {
@@ -9188,9 +9187,9 @@
                 "#3498db",
                 "#9b59b6",
                 "#e67e22",
-            ]; 
-            let board = []; 
-            let selectedGem = null; 
+            ];
+            let board = [];
+            let selectedGem = null;
             let isSwapping = false;
             let score = 0;
             function createBoard() {
@@ -9214,7 +9213,7 @@
                                 r * gemSize + 2,
                                 gemSize - 4,
                                 gemSize - 4
-                            ); 
+                            );
                             if (
                                 selectedGem &&
                                 selectedGem.r === r &&
@@ -9240,7 +9239,7 @@
                 ctx.fillText(`Score: ${score}`, 10, 25);
             }
             function handleBoardClick(event) {
-                if (isSwapping) return; 
+                if (isSwapping) return;
                 const rect = canvas.getBoundingClientRect();
                 const scaleX = canvas.width / rect.width;
                 const scaleY = canvas.height / rect.height;
@@ -9248,7 +9247,7 @@
                 const clickY = (event.clientY - rect.top) * scaleY;
                 const c = Math.floor(clickX / gemSize);
                 const r = Math.floor(clickY / gemSize);
-                if (r < 0 || r >= gridSize || c < 0 || c >= gridSize) return; 
+                if (r < 0 || r >= gridSize || c < 0 || c >= gridSize) return;
                 if (!selectedGem) {
                     selectedGem = { r, c };
                     self.playSound("click");
@@ -9267,7 +9266,7 @@
                 isSwapping = true;
                 self.playSound("ui");
                 [board[r1][c1], board[r2][c2]] = [board[r2][c2], board[r1][c1]];
-                selectedGem = null; 
+                selectedGem = null;
                 setTimeout(() => {
                     const matches1 = findMatchesAt(r1, c1);
                     const matches2 = findMatchesAt(r2, c2);
@@ -9281,7 +9280,7 @@
                         self.playSound("hit");
                         isSwapping = false;
                     }
-                }, 200); 
+                }, 200);
             }
             function findMatches() {
                 let matches = [];
@@ -9343,7 +9342,7 @@
                 return uniqueMatches;
             }
             function findMatchesAt(r, c) {
-                return findMatches(); 
+                return findMatches();
             }
             function processMatches(matches) {
                 if (matches.length === 0) {
@@ -9351,12 +9350,12 @@
                     return;
                 }
                 self.playSound("point");
-                score += matches.length * 10; 
+                score += matches.length * 10;
                 self.updateScore(score);
                 matches.forEach(({ r, c }) => {
                     board[r][c] = -1;
                 });
-                setTimeout(dropGems, 200); 
+                setTimeout(dropGems, 200);
             }
             function dropGems() {
                 for (let c = 0; c < gridSize; c++) {
@@ -9365,13 +9364,13 @@
                         if (board[r][c] !== -1) {
                             if (r !== emptyRow) {
                                 board[emptyRow][c] = board[r][c];
-                                board[r][c] = -1; 
+                                board[r][c] = -1;
                             }
-                            emptyRow--; 
+                            emptyRow--;
                         }
                     }
                 }
-                setTimeout(refillBoard, 200); 
+                setTimeout(refillBoard, 200);
             }
             function refillBoard() {
                 for (let r = 0; r < gridSize; r++) {
@@ -9386,9 +9385,9 @@
                 setTimeout(() => {
                     const newMatches = findMatches();
                     if (newMatches.length > 0) {
-                        processMatches(newMatches); 
+                        processMatches(newMatches);
                     } else {
-                        isSwapping = false; 
+                        isSwapping = false;
                     }
                 }, 200);
             }
@@ -9408,7 +9407,7 @@
                 if (initialMatches.length > 0) {
                     processMatches(initialMatches);
                 } else {
-                    isSwapping = false; 
+                    isSwapping = false;
                 }
             }, 100);
             animationFrameId = requestAnimationFrame(gameLoop);
@@ -9439,21 +9438,21 @@
                 startTime: Date.now(),
                 elapsedTime: 0,
                 lastFrameTime: 0,
-                beatSpeed: 2.5, 
-                difficulty: 1, 
-                difficultyIncreaseInterval: 15000, 
+                beatSpeed: 2.5,
+                difficulty: 1,
+                difficultyIncreaseInterval: 15000,
                 lastDifficultyIncrease: 0,
-                perfectHitWindow: 30, 
-                goodHitWindow: 60, 
-                okayHitWindow: 100, 
-                missDistance: 150, 
-                laneWidth: 100, 
-                trackHeight: 400, 
-                targetY: 350, 
-                notes: [], 
-                effects: [], 
-                particles: [], 
-                hits: [], 
+                perfectHitWindow: 30,
+                goodHitWindow: 60,
+                okayHitWindow: 100,
+                missDistance: 150,
+                laneWidth: 100,
+                trackHeight: 400,
+                targetY: 350,
+                notes: [],
+                effects: [],
+                particles: [],
+                hits: [],
                 lanes: [
                     {
                         key: "D",
@@ -9484,7 +9483,7 @@
                         keyCode: 75,
                     },
                 ],
-                activeKeys: new Set(), 
+                activeKeys: new Set(),
                 sounds: {
                     perfect: null,
                     good: null,
@@ -9494,8 +9493,8 @@
                 },
                 backgroundMusic: null,
                 lastSpawnTime: 0,
-                spawnInterval: 1000, 
-                minSpawnInterval: 400, 
+                spawnInterval: 1000,
+                minSpawnInterval: 400,
                 currentSong: {
                     bpm: 120,
                     beatsPerMeasure: 4,
@@ -9641,7 +9640,7 @@
                 const lane = state.lanes[laneIndex];
                 state.notes.push({
                     x: lane.x,
-                    y: 0, 
+                    y: 0,
                     laneIndex,
                     width: 70,
                     height: 20,
@@ -9708,7 +9707,7 @@
                             x,
                             y,
                             vx: (Math.random() - 0.5) * 5,
-                            vy: (Math.random() - 0.5) * 5 - 2, 
+                            vy: (Math.random() - 0.5) * 5 - 2,
                             size: Math.random() * 5 + 3,
                             color,
                             alpha: 1,
@@ -9717,7 +9716,7 @@
                 }
                 if (points > 0) {
                     state.score +=
-                        points * (1 + Math.floor(state.combo / 10) * 0.1); 
+                        points * (1 + Math.floor(state.combo / 10) * 0.1);
                     state.combo++;
                     state.maxCombo = Math.max(state.maxCombo, state.combo);
                     if (
@@ -9729,7 +9728,7 @@
                     }
                 } else {
                     state.combo = 0;
-                    state.health -= 5; 
+                    state.health -= 5;
                 }
                 this.updateScore(Math.floor(state.score));
                 if (state.sounds[rating]) {
@@ -9958,9 +9957,9 @@
                         );
                     }
                     ctx.restore();
-                    hit.y -= 1; 
-                    hit.alpha -= 0.02; 
-                    hit.scale -= 0.02; 
+                    hit.y -= 1;
+                    hit.alpha -= 0.02;
+                    hit.scale -= 0.02;
                 });
                 state.hits = state.hits.filter((hit) => hit.alpha > 0);
             };
@@ -9981,8 +9980,8 @@
                     ctx.restore();
                     particle.x += particle.vx;
                     particle.y += particle.vy;
-                    particle.vy += 0.1; 
-                    particle.alpha -= 0.02; 
+                    particle.vy += 0.1;
+                    particle.alpha -= 0.02;
                 });
                 state.particles = state.particles.filter(
                     (particle) => particle.alpha > 0
@@ -10145,7 +10144,7 @@
                         state.difficultyIncreaseInterval
                     ) {
                         state.difficulty++;
-                        state.beatSpeed += 0.3; 
+                        state.beatSpeed += 0.3;
                         state.lastDifficultyIncrease = state.elapsedTime;
                         const levelUpText = `Level ${state.difficulty}!`;
                         state.hits.push({
@@ -10280,7 +10279,7 @@
             const resumeGame = () => {
                 if (!state.gameOver) {
                     state.paused = false;
-                    state.startTime = Date.now() - state.elapsedTime; 
+                    state.startTime = Date.now() - state.elapsedTime;
                     if (this.soundEnabled && state.backgroundMusic) {
                         state.backgroundMusic();
                     }
@@ -10374,7 +10373,7 @@
                 },
                 { gameId: "drawing", passive: false }
             );
-            return { cleanup: () => {} }; 
+            return { cleanup: () => {} };
         }
         initPhysicsGame(canvas) {
             if (!canvas) {
@@ -10405,7 +10404,7 @@
                 dragOffsetX: 0,
                 dragOffsetY: 0,
                 specialEffectCountdown: 0,
-                specialEffects: [], 
+                specialEffects: [],
                 paused: false,
                 gameOver: false,
                 ballCount: 0,
@@ -10414,17 +10413,17 @@
                 ballsToNextLevel: 10,
                 highScore: this.getHighScore(),
                 showHelp: true,
-                helpCountdown: 5000, 
+                helpCountdown: 5000,
                 lastFrameTime: 0,
-                fpsInterval: 1000 / 60, 
+                fpsInterval: 1000 / 60,
                 showFPS: false,
                 frameCount: 0,
                 lastFpsUpdate: 0,
                 currentFps: 0,
-                powerUps: [], 
-                powerUpChance: 0.05, 
+                powerUps: [],
+                powerUpChance: 0.05,
                 activePowerUps: {
-                    antiGravity: 0, 
+                    antiGravity: 0,
                     slowMotion: 0,
                     multiball: 0,
                     bigBalls: 0,
@@ -10435,7 +10434,7 @@
                     pop: null,
                     bounce: null,
                     levelUp: null,
-                    powerUp: null, 
+                    powerUp: null,
                 },
                 colorPalettes: [
                     [
@@ -10489,11 +10488,11 @@
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
                     osc.type = "sine";
-                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(
                         783.99,
                         audioCtx.currentTime + 0.1
-                    ); 
+                    );
                     gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(
                         0.01,
@@ -10508,7 +10507,7 @@
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
                     osc.type = "sine";
-                    osc.frequency.setValueAtTime(261.63, audioCtx.currentTime); 
+                    osc.frequency.setValueAtTime(261.63, audioCtx.currentTime);
                     gain.gain.setValueAtTime(volume, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(
                         0.01,
@@ -10523,15 +10522,15 @@
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
                     osc.type = "square";
-                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(
                         783.99,
                         audioCtx.currentTime + 0.1
-                    ); 
+                    );
                     osc.frequency.exponentialRampToValueAtTime(
                         1046.5,
                         audioCtx.currentTime + 0.2
-                    ); 
+                    );
                     gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(
                         0.01,
@@ -10546,19 +10545,19 @@
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
                     osc.type = "sine";
-                    osc.frequency.setValueAtTime(392.0, audioCtx.currentTime); 
+                    osc.frequency.setValueAtTime(392.0, audioCtx.currentTime);
                     osc.frequency.setValueAtTime(
                         493.88,
                         audioCtx.currentTime + 0.08
-                    ); 
+                    );
                     osc.frequency.setValueAtTime(
                         587.33,
                         audioCtx.currentTime + 0.16
-                    ); 
+                    );
                     osc.frequency.setValueAtTime(
                         783.99,
                         audioCtx.currentTime + 0.24
-                    ); 
+                    );
                     gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(
                         0.01,
@@ -10576,7 +10575,7 @@
                         radius || Math.random() * 20 + this.getMinRadius();
                     this.vx = vx;
                     this.vy = vy;
-                    this.mass = Math.PI * this.radius * this.radius; 
+                    this.mass = Math.PI * this.radius * this.radius;
                     this.colorIndex =
                         state.nextBallColor++ %
                         state.colorPalettes[state.colorPalette].length;
@@ -10584,12 +10583,12 @@
                         state.colorPalettes[state.colorPalette][
                             this.colorIndex
                         ];
-                    this.elasticity = 0.8 + Math.random() * 0.2; 
-                    this.lifespan = 0; 
-                    this.glowing = 0; 
-                    this.trail = []; 
+                    this.elasticity = 0.8 + Math.random() * 0.2;
+                    this.lifespan = 0;
+                    this.glowing = 0;
+                    this.trail = [];
                     this.trailOpacity = 0.5;
-                    this.trailLength = Math.floor(this.radius * 1.5); 
+                    this.trailLength = Math.floor(this.radius * 1.5);
                     this.isGrabbed = false;
                     this.isHovered = false;
                 }
@@ -10777,10 +10776,10 @@
                     this.y = y;
                     this.width = width;
                     this.height = height;
-                    this.type = type; 
+                    this.type = type;
                     this.color = "#455a64";
                     this.elasticity = 0.5;
-                    this.angle = 0; 
+                    this.angle = 0;
                     this.isDraggable = true;
                     this.isHovered = false;
                 }
@@ -10969,14 +10968,14 @@
                     this.x = x;
                     this.y = y;
                     this.radius = 15;
-                    this.vy = -1; 
-                    this.vx = (Math.random() - 0.5) * 0.5; 
+                    this.vy = -1;
+                    this.vx = (Math.random() - 0.5) * 0.5;
                     this.rotation = 0;
                     this.rotationSpeed = (Math.random() - 0.5) * 0.1;
                     this.pulseSize = 0;
                     this.pulseDirection = 1;
                     this.age = 0;
-                    this.maxAge = 500; 
+                    this.maxAge = 500;
                     const types = [
                         "antiGravity",
                         "slowMotion",
@@ -10988,32 +10987,32 @@
                     this.type = types[Math.floor(Math.random() * types.length)];
                     switch (this.type) {
                         case "antiGravity":
-                            this.color = "#9c27b0"; 
+                            this.color = "#9c27b0";
                             this.icon = "↑";
-                            this.duration = 300; 
+                            this.duration = 300;
                             break;
                         case "slowMotion":
-                            this.color = "#2196f3"; 
+                            this.color = "#2196f3";
                             this.icon = "⏱";
                             this.duration = 240;
                             break;
                         case "multiball":
-                            this.color = "#f44336"; 
+                            this.color = "#f44336";
                             this.icon = "⊕";
-                            this.duration = 1; 
+                            this.duration = 1;
                             break;
                         case "bigBalls":
-                            this.color = "#ff9800"; 
+                            this.color = "#ff9800";
                             this.icon = "⊙";
                             this.duration = 180;
                             break;
                         case "extraBounce":
-                            this.color = "#4caf50"; 
+                            this.color = "#4caf50";
                             this.icon = "⇅";
                             this.duration = 200;
                             break;
                         case "colorful":
-                            this.color = "#e91e63"; 
+                            this.color = "#e91e63";
                             this.icon = "⚡";
                             this.duration = 150;
                             break;
@@ -11266,13 +11265,13 @@
                     20,
                     "rectangle"
                 );
-                rightPlatform.angle = Math.PI / 6; 
+                rightPlatform.angle = Math.PI / 6;
                 state.obstacles.push(rightPlatform);
             }
             function levelUp() {
                 state.level++;
-                state.ballsToNextLevel += 5; 
-                state.gravity += 0.05; 
+                state.ballsToNextLevel += 5;
+                state.gravity += 0.05;
                 const effect = new SpecialEffect(
                     canvas.width / 2,
                     canvas.height / 2,
@@ -11636,7 +11635,7 @@
                                 const distance = Math.sqrt(dx * dx + dy * dy);
                                 if (distance < ball.radius + powerUp.radius) {
                                     powerUp.activate();
-                                    return false; 
+                                    return false;
                                 }
                             }
                             return active;
@@ -11752,7 +11751,7 @@
                         createBall(
                             state.mouseX,
                             state.mouseY,
-                            null, 
+                            null,
                             nx * power,
                             ny * power
                         );
@@ -11831,7 +11830,7 @@
             }
             function resumeGame() {
                 state.paused = false;
-                state.lastFrameTime = 0; 
+                state.lastFrameTime = 0;
             }
             init();
             addInitialBalls();
@@ -11911,7 +11910,7 @@
             nextCardContainer.style.perspective = "100vh";
             const nextCard = document.createElement("div");
             nextCard.className = "card next-card";
-            styleCard(nextCard, true); 
+            styleCard(nextCard, true);
             nextCardContainer.appendChild(nextCard);
             cardArea.appendChild(nextCardContainer);
             const controlsArea = document.createElement("div");
@@ -11954,7 +11953,7 @@
             newGameBtn.textContent = "NEW GAME";
             newGameBtn.className = "new-game-btn";
             styleActionButton(newGameBtn, "#3498db", true);
-            newGameBtn.style.display = "none"; 
+            newGameBtn.style.display = "none";
             controlsArea.appendChild(newGameBtn);
             const statsDisplay = document.createElement("div");
             statsDisplay.className = "stats-display";
@@ -12016,7 +12015,7 @@
                         deck.push({
                             suit: suit,
                             value: values[i],
-                            numericValue: i + 2, 
+                            numericValue: i + 2,
                             color:
                                 suit === "hearts" || suit === "diamonds"
                                     ? "red"
@@ -12175,7 +12174,7 @@
                         streak = 0;
                     } else if (correct) {
                         streak++;
-                        score += 10 * streak; 
+                        score += 10 * streak;
                         self.updateScore(score);
                         resultDisplay.textContent = `Correct! +${
                             10 * streak
@@ -12324,25 +12323,25 @@
                 for (let i = 0; i < numCards; i++) {
                     const card = document.createElement("div");
                     card.className = "floating-card";
-                    styleCard(card, true, 40, 60); 
+                    styleCard(card, true, 40, 60);
                     card.style.position = "absolute";
                     card.style.zIndex = "1";
                     card.style.opacity = "0.2";
                     const corner = i % 4;
                     switch (corner) {
-                        case 0: 
+                        case 0:
                             card.style.top = "5%";
                             card.style.left = "5%";
                             break;
-                        case 1: 
+                        case 1:
                             card.style.top = "10%";
                             card.style.right = "5%";
                             break;
-                        case 2: 
+                        case 2:
                             card.style.bottom = "10%";
                             card.style.right = "5%";
                             break;
-                        case 3: 
+                        case 3:
                             card.style.bottom = "5%";
                             card.style.left = "10%";
                             break;
@@ -12607,7 +12606,7 @@
                     e.key === "0"
                 ) {
                     self.playSound("click");
-                    fillSelectedCell(0); 
+                    fillSelectedCell(0);
                 } else if (
                     e.key === "ArrowUp" ||
                     e.key === "ArrowDown" ||
@@ -12615,7 +12614,7 @@
                     e.key === "ArrowRight"
                 ) {
                     moveSelection(e.key);
-                    e.preventDefault(); 
+                    e.preventDefault();
                 }
             };
             document.addEventListener("keydown", keyDownHandler);
@@ -12745,7 +12744,7 @@
                         removals = 55;
                         break;
                     default:
-                        removals = 40; 
+                        removals = 40;
                 }
                 board = JSON.parse(JSON.stringify(solution));
                 initialBoard = JSON.parse(JSON.stringify(solution));
@@ -12769,7 +12768,7 @@
                     if (initialBoard[row][col] !== 0) {
                         cell.textContent = initialBoard[row][col];
                         cell.style.fontWeight = "bold";
-                        cell.style.color = "#888"; 
+                        cell.style.color = "#888";
                     } else {
                         cell.textContent =
                             board[row][col] === 0 ? "" : board[row][col];
@@ -12803,11 +12802,11 @@
                                     grid[row][col] = 0;
                                 }
                             }
-                            return false; 
+                            return false;
                         }
                     }
                 }
-                return true; 
+                return true;
             }
             function isSafe(grid, row, col, num) {
                 for (let x = 0; x < 9; x++) {
@@ -12823,7 +12822,7 @@
                         if (grid[boxRow + i][boxCol + j] === num) return false;
                     }
                 }
-                return true; 
+                return true;
             }
             function shuffleArray(array) {
                 for (let i = array.length - 1; i > 0; i--) {
@@ -12872,13 +12871,13 @@
                 }
                 board[row][col] = solution[row][col];
                 selectedCell.textContent = solution[row][col];
-                selectedCell.style.color = "#f39c12"; 
+                selectedCell.style.color = "#f39c12";
                 self.playSound("point");
                 updateStatus("Hint used");
                 if (isBoardComplete()) {
                     gameActive = false;
                     self.playSound("win");
-                    self.updateScore(500); 
+                    self.updateScore(500);
                     updateStatus("Puzzle solved with hints!", "success");
                     addCelebration();
                 }
@@ -12992,7 +12991,7 @@
                 },
             };
         }
-    } 
+    }
     class AchievementSystem {
         constructor(showcase) {
             this.showcase = showcase;
@@ -13268,7 +13267,7 @@
                         notification.classList.remove("show");
                         setTimeout(() => notification.remove(), 500);
                     }, 5000);
-                }, index * 2000); 
+                }, index * 2000);
             });
         }
         getProgress() {
@@ -13365,6 +13364,6 @@
         document.head.appendChild(faPreload);
         const showcase = new ProjectShowcase();
         showcase.init();
-        window.projectShowcase = showcase; 
+        window.projectShowcase = showcase;
     });
 })();

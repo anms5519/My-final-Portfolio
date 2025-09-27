@@ -1,11 +1,16 @@
-// header.js - Contains HTML content and functionality for the header section
 window.HeaderContent = {
-    getHTML: function() {
+    getHTML: function () {
         return `
             <button id="nav-toggle" class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
                 <div class="toggler-icon"></div>
             </button>
-            <div class="legendary-search-system" id="legendarySearchSystem">
+            <div class="header-tools">
+                <button id="theme-toggle" class="theme-toggle header-tool-btn" aria-label="Toggle theme">
+                    <i class="fas fa-sun theme-icon-sun"></i>
+                    <i class="fas fa-moon theme-icon-moon"></i>
+                    <span class="header-tool-tooltip">Toggle Theme</span>
+                </button>
+                            <div class="legendary-search-system" id="legendarySearchSystem">
                 <div class="lsearch-bar-wrapper">
                     <div class="lsearch-bar">
                         <i class="fas fa-search lsearch-bar-icon"></i>
@@ -13,7 +18,7 @@ window.HeaderContent = {
                             type="text"
                             id="legendarySearchInput"
                             class="lsearch-input"
-                            placeholder="Explore my journey (e.g., React, AI, Leadership)..."
+                            placeholder="Explore my journey"
                             aria-label="Search portfolio content"
                         />
                         <div
@@ -52,12 +57,6 @@ window.HeaderContent = {
                     </ul>
                 </div>
             </div>     
-            <div class="header-tools">
-                <button id="theme-toggle" class="theme-toggle header-tool-btn" aria-label="Toggle theme">
-                    <i class="fas fa-sun theme-icon-sun"></i>
-                    <i class="fas fa-moon theme-icon-moon"></i>
-                    <span class="header-tool-tooltip">Toggle Theme</span>
-                </button>
             </div>
         <nav id="slide-menu" class="nav-links">
             <ul>
@@ -79,18 +78,11 @@ window.HeaderContent = {
         </nav>
         `;
     },
-    
-    init: function() {
-        // --- Theme System Initialization ---
-        // Theme functionality is now handled by the ThemeManager module
-        // The ThemeManager will automatically detect and apply time-based themes 
-        // and handle the toggle button functionality
-        
-        // Update the theme toggle button to show the current theme and handle click events
-        const themeToggle = document.getElementById('theme-toggle');
+    init: function () {
+        const themeToggle = document.getElementById("theme-toggle");
         if (themeToggle) {
-            const themeInfoPopup = document.createElement('div');
-            themeInfoPopup.className = 'theme-info-popup';
+            const themeInfoPopup = document.createElement("div");
+            themeInfoPopup.className = "theme-info-popup";
             themeInfoPopup.innerHTML = `
                 <div class="theme-info-header">
                     <span class="current-theme-label">Current Theme: <strong id="current-theme-name">Loading...</strong></span>
@@ -105,194 +97,181 @@ window.HeaderContent = {
                 </div>
             `;
             document.body.appendChild(themeInfoPopup);
-            
-            // Update theme toggle appearance
             themeToggle.innerHTML = `
                 <i class="fas fa-palette"></i>
                 <span class="header-tool-tooltip">Theme Options</span>
             `;
-            
-            // Open theme info popup on toggle click
-            themeToggle.addEventListener('click', (e) => {
+            themeToggle.addEventListener("click", (e) => {
                 e.stopPropagation();
-                
-                // Toggle popup visibility
-                themeInfoPopup.classList.toggle('active');
-                
-                if (themeInfoPopup.classList.contains('active')) {
-                    // Populate theme selector if popup is active
-                    const themeSelector = document.getElementById('themeSelector');
+                themeInfoPopup.classList.toggle("active");
+                if (themeInfoPopup.classList.contains("active")) {
+                    const themeSelector = document.getElementById(
+                        "themeSelector"
+                    );
                     if (themeSelector) {
-                        // Clear existing themes
-                        themeSelector.innerHTML = '';
-                        
-                        // Get theme list from manager
+                        themeSelector.innerHTML = "";
                         const themes = window.ThemeManager.getThemeList();
-                        
-                        // Create theme options
-                        themes.forEach(theme => {
-                            const themeOption = document.createElement('div');
-                            themeOption.className = 'theme-option';
+                        themes.forEach((theme) => {
+                            const themeOption = document.createElement("div");
+                            themeOption.className = "theme-option";
                             themeOption.dataset.themeKey = theme.key;
-                            
-                            // Highlight active theme
-                            if (theme.key === window.ThemeManager.currentTheme) {
-                                themeOption.classList.add('active');
+                            if (
+                                theme.key === window.ThemeManager.currentTheme
+                            ) {
+                                themeOption.classList.add("active");
                             }
-                            
                             themeOption.innerHTML = `
                                 <div class="theme-preview" style="background: linear-gradient(135deg, var(--${theme.key}-primary), var(--${theme.key}-secondary))"></div>
                                 <span class="theme-name">${theme.name}</span>
                             `;
-                            
-                            themeOption.addEventListener('click', () => {
-                                // Apply this theme
+                            themeOption.addEventListener("click", () => {
                                 window.ThemeManager.setTheme(theme.key);
-                                
-                                // Update active state
-                                document.querySelectorAll('.theme-option').forEach(opt => {
-                                    opt.classList.remove('active');
-                                });
-                                themeOption.classList.add('active');
-                                
-                                // Update theme name in header
-                                document.getElementById('current-theme-name').textContent = theme.name;
+                                document
+                                    .querySelectorAll(".theme-option")
+                                    .forEach((opt) => {
+                                        opt.classList.remove("active");
+                                    });
+                                themeOption.classList.add("active");
+                                document.getElementById(
+                                    "current-theme-name"
+                                ).textContent = theme.name;
                             });
-                            
                             themeSelector.appendChild(themeOption);
                         });
                     }
-                    
-                    // Update current theme name
-                    const currentThemeName = window.ThemeManager.themes[window.ThemeManager.currentTheme].name;
-                    document.getElementById('current-theme-name').textContent = currentThemeName;
+                    const currentThemeName =
+                        window.ThemeManager.themes[
+                            window.ThemeManager.currentTheme
+                        ].name;
+                    document.getElementById(
+                        "current-theme-name"
+                    ).textContent = currentThemeName;
                 }
             });
-            
-            // Close popup when clicking elsewhere
-            document.addEventListener('click', (e) => {
-                if (themeInfoPopup.classList.contains('active') && 
-                    !themeInfoPopup.contains(e.target) && 
-                    e.target !== themeToggle) {
-                    themeInfoPopup.classList.remove('active');
+            document.addEventListener("click", (e) => {
+                if (
+                    themeInfoPopup.classList.contains("active") &&
+                    !themeInfoPopup.contains(e.target) &&
+                    e.target !== themeToggle
+                ) {
+                    themeInfoPopup.classList.remove("active");
                 }
             });
-            
-            // Setup close button
-            const closeBtn = themeInfoPopup.querySelector('.theme-info-close');
+            const closeBtn = themeInfoPopup.querySelector(".theme-info-close");
             if (closeBtn) {
-                closeBtn.addEventListener('click', () => {
-                    themeInfoPopup.classList.remove('active');
+                closeBtn.addEventListener("click", () => {
+                    themeInfoPopup.classList.remove("active");
                 });
             }
-            
-            // Setup reset button
-            const resetBtn = document.getElementById('resetToAutoTheme');
+            const resetBtn = document.getElementById("resetToAutoTheme");
             if (resetBtn) {
-                resetBtn.addEventListener('click', () => {
+                resetBtn.addEventListener("click", () => {
                     window.ThemeManager.resetToAutoTheme();
-                    
-                    // Update UI
-                    const currentThemeName = window.ThemeManager.themes[window.ThemeManager.currentTheme].name;
-                    document.getElementById('current-theme-name').textContent = currentThemeName;
-                    
-                    // Update active state
-                    document.querySelectorAll('.theme-option').forEach(opt => {
-                        opt.classList.toggle('active', opt.dataset.themeKey === window.ThemeManager.currentTheme);
-                    });
+                    const currentThemeName =
+                        window.ThemeManager.themes[
+                            window.ThemeManager.currentTheme
+                        ].name;
+                    document.getElementById(
+                        "current-theme-name"
+                    ).textContent = currentThemeName;
+                    document
+                        .querySelectorAll(".theme-option")
+                        .forEach((opt) => {
+                            opt.classList.toggle(
+                                "active",
+                                opt.dataset.themeKey ===
+                                    window.ThemeManager.currentTheme
+                            );
+                        });
                 });
             }
         }
-        
-        // Listen for theme change events
-        document.addEventListener('themechange', (e) => {
+        document.addEventListener("themechange", (e) => {
             if (themeToggle) {
-                themeToggle.setAttribute('aria-label', `Current theme: ${e.detail.themeName}`);
-                themeToggle.setAttribute('title', `Current theme: ${e.detail.themeName}. Click to change.`);
+                themeToggle.setAttribute(
+                    "aria-label",
+                    `Current theme: ${e.detail.themeName}`
+                );
+                themeToggle.setAttribute(
+                    "title",
+                    `Current theme: ${e.detail.themeName}. Click to change.`
+                );
             }
-            
-            // Update theme name in popup if it's open
-            const currentThemeNameEl = document.getElementById('current-theme-name');
+            const currentThemeNameEl = document.getElementById(
+                "current-theme-name"
+            );
             if (currentThemeNameEl) {
                 currentThemeNameEl.textContent = e.detail.themeName;
             }
         });
-
-
-        // --- Nav Toggle (Slide Menu) Functionality ---
-        const navToggle = document.getElementById('nav-toggle');
-        const slideMenu = document.getElementById('slide-menu');
- // Optional: for body scroll lock or overlay
-
+        const navToggle = document.getElementById("nav-toggle");
+        const slideMenu = document.getElementById("slide-menu");
         if (navToggle && slideMenu) {
-            navToggle.addEventListener('click', () => {
-                const isMenuOpen = navToggle.classList.contains('menu-open');
-
+            navToggle.addEventListener("click", () => {
+                const isMenuOpen = navToggle.classList.contains("menu-open");
                 if (isMenuOpen) {
-                    // Close menu
-                    navToggle.classList.remove('menu-open');
-                    slideMenu.classList.remove('open');
-                    navToggle.setAttribute('aria-expanded', 'false');
-                    navToggle.setAttribute('aria-label', 'Open menu');
-                    // Optional: Unlock body scroll
-                    // document.body.style.overflow = '';
+                    navToggle.classList.remove("menu-open");
+                    slideMenu.classList.remove("open");
+                    navToggle.setAttribute("aria-expanded", "false");
+                    navToggle.setAttribute("aria-label", "Open menu");
                 } else {
-                    // Open menu
-                    navToggle.classList.add('menu-open');
-                    slideMenu.classList.add('open');
-                    navToggle.setAttribute('aria-expanded', 'true');
-                    navToggle.setAttribute('aria-label', 'Close menu');
-                    // Optional: Lock body scroll
-                    // document.body.style.overflow = 'hidden';
+                    navToggle.classList.add("menu-open");
+                    slideMenu.classList.add("open");
+                    navToggle.setAttribute("aria-expanded", "true");
+                    navToggle.setAttribute("aria-label", "Close menu");
                 }
             });
-
-            // Optional: Close menu when clicking outside of it (if desired)
-            document.addEventListener('click', (event) => {
+            document.addEventListener("click", (event) => {
                 const isClickInsideMenu = slideMenu.contains(event.target);
                 const isClickOnToggle = navToggle.contains(event.target);
-
-                if (slideMenu.classList.contains('open') && !isClickInsideMenu && !isClickOnToggle) {
-                    navToggle.classList.remove('menu-open');
-                    slideMenu.classList.remove('open');
-                    navToggle.setAttribute('aria-expanded', 'false');
-                    navToggle.setAttribute('aria-label', 'Open menu');
-                    // document.body.style.overflow = '';
+                if (
+                    slideMenu.classList.contains("open") &&
+                    !isClickInsideMenu &&
+                    !isClickOnToggle
+                ) {
+                    navToggle.classList.remove("menu-open");
+                    slideMenu.classList.remove("open");
+                    navToggle.setAttribute("aria-expanded", "false");
+                    navToggle.setAttribute("aria-label", "Open menu");
                 }
             });
-
-            // Optional: Close menu on 'Escape' key press
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape' && slideMenu.classList.contains('open')) {
-                    navToggle.classList.remove('menu-open');
-                    slideMenu.classList.remove('open');
-                    navToggle.setAttribute('aria-expanded', 'false');
-                    navToggle.setAttribute('aria-label', 'Open menu');
-                    navToggle.focus(); // Return focus to the toggle button
-                    // document.body.style.overflow = '';
+            document.addEventListener("keydown", (event) => {
+                if (
+                    event.key === "Escape" &&
+                    slideMenu.classList.contains("open")
+                ) {
+                    navToggle.classList.remove("menu-open");
+                    slideMenu.classList.remove("open");
+                    navToggle.setAttribute("aria-expanded", "false");
+                    navToggle.setAttribute("aria-label", "Open menu");
+                    navToggle.focus(); 
                 }
             });
         }
-        const header = document.getElementById('header');
-        // --- Header Visibility on Scroll ---
-        // (This part was already in your HTML script block, moved here for consolidation)
+        const header = document.getElementById("header");
         let lastScrollTop = 0;
-        const siteHeader = document.getElementById('header'); // Renamed to avoid conflict with 'header' var above
-
+        const siteHeader = document.getElementById("header"); 
         if (siteHeader) {
-            window.addEventListener("scroll", function() {
-                let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-                if (currentScroll > lastScrollTop && currentScroll > siteHeader.offsetHeight) {
-                    // Scroll Down
-                    siteHeader.classList.remove('header-visible');
-                    siteHeader.classList.add('header-hidden');
-                } else {
-                    // Scroll Up
-                    siteHeader.classList.remove('header-hidden');
-                    siteHeader.classList.add('header-visible');
-                }
-                lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
-            }, false);
+            window.addEventListener(
+                "scroll",
+                function () {
+                    let currentScroll =
+                        window.pageYOffset ||
+                        document.documentElement.scrollTop;
+                    if (
+                        currentScroll > lastScrollTop &&
+                        currentScroll > siteHeader.offsetHeight
+                    ) {
+                        siteHeader.classList.remove("header-visible");
+                        siteHeader.classList.add("header-hidden");
+                    } else {
+                        siteHeader.classList.remove("header-hidden");
+                        siteHeader.classList.add("header-visible");
+                    }
+                    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+                },
+                false
+            );
         }
-    }
+    },
 };

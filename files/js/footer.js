@@ -1,5 +1,5 @@
 window.FooterContent = {
-    getHTML: function() {
+    getHTML: function () {
         return `
             <div class="footer-particles"></div>
             <div class="footer-wave-container">
@@ -605,29 +605,22 @@ window.FooterContent = {
             </div>
                 `;
     },
-    init: function() {
-        // Initialize footer-specific functionality
-        
-        // Update current year
-        const currentYearElement = document.getElementById('current-year');
+    init: function () {
+        const currentYearElement = document.getElementById("current-year");
         if (currentYearElement) {
             currentYearElement.textContent = new Date().getFullYear();
         }
-        
-        // Scroll to top button functionality
-        const scrollTopButton = document.getElementById('footer-scroll-top');
+        const scrollTopButton = document.getElementById("footer-scroll-top");
         if (scrollTopButton) {
-            scrollTopButton.addEventListener('click', function() {
+            scrollTopButton.addEventListener("click", function () {
                 window.scrollTo({
                     top: 0,
-                    behavior: 'smooth'
+                    behavior: "smooth",
                 });
             });
         }
-        
-        // Initialize AOS animations if they're not automatically initialized elsewhere
-        if (typeof AOS !== 'undefined') {
+        if (typeof AOS !== "undefined") {
             AOS.refresh();
         }
-    }
+    },
 };

@@ -1,5 +1,5 @@
 window.LanguagesContent = {
-    getHTML: function() {
+    getHTML: function () {
         return `
             <div class="section-background-elements">
                 <div class="starfield starfield-1"></div>
@@ -566,8 +566,10 @@ window.LanguagesContent = {
             </div>
                 `;
     },
-    init: function() {
-        const languageArtifacts = document.querySelectorAll(".language-artifact");
+    init: function () {
+        const languageArtifacts = document.querySelectorAll(
+            ".language-artifact"
+        );
         languageArtifacts.forEach((artifact) => {
             const frontHint = artifact.querySelector(
                 ".artifact-front .artifact-hint"
@@ -580,13 +582,13 @@ window.LanguagesContent = {
             };
             if (frontHint) {
                 frontHint.addEventListener("click", (e) => {
-                    e.stopPropagation(); 
+                    e.stopPropagation();
                     flipCard();
                 });
             }
             if (backHint) {
                 backHint.addEventListener("click", (e) => {
-                    e.stopPropagation(); 
+                    e.stopPropagation();
                     flipCard();
                 });
             }
@@ -601,5 +603,5 @@ window.LanguagesContent = {
                 }
             });
         });
-    }
+    },
 };

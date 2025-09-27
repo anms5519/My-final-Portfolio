@@ -137,7 +137,7 @@
         <footer id="footer" class="footer"></footer>
         <audio id="smallBGM" src="files/intro.mp3"></audio>
         <audio id="bigBGM" src="files/bgm.mp3" loop></audio>
-                <div id="gate">
+        <div id="gate">
             <div class="door left-door"></div>
             <div class="door right-door"></div>
             <div class="content">
@@ -593,11 +593,11 @@
         <script>
             window.isSystemLockedDown = false;
             let devToolsCheckIntervalId = null;
-            const originalConsoleLogToString = console.log ? console.log.toString() : ""; 
+            const originalConsoleLogToString = console.log ? console.log.toString() : "";
             const devToolsDetectionConfig = {
-                interval: 300, 
+                interval: 300,
                 sizeThresholdWidth: 10,
-                sizeThresholdHeight: 170, 
+                sizeThresholdHeight: 170,
             };
             function triggerLockdown(reason, details = "") {
                 if (window.isSystemLockedDown) return;
@@ -630,11 +630,11 @@
                             background: radial-gradient(ellipse at center, rgba(0,100,100,0.25) 0%, rgba(0,0,0,0) 70%), #030303;
                             padding: 20px; box-sizing: border-box; z-index: 999999;
                           }
-                          .lockdown-container::before { 
+                          .lockdown-container::before {
                             content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
                             background-image: repeating-linear-gradient(transparent, transparent 1px, rgba(0, 70, 70, 0.15) 2px, rgba(0, 70, 70, 0.15) 3px);
                             background-size: 100% 3px;
-                            animation: scanlinesAnim 0.08s linear infinite; 
+                            animation: scanlinesAnim 0.08s linear infinite;
                             pointer-events: none; opacity: 0.7;
                           }
                           @keyframes scanlinesAnim {
@@ -643,9 +643,9 @@
                           }
                           .lockdown-header {
                             font-family: 'Orbitron', Impact, sans-serif;
-                            font-size: clamp(1.8rem, 6vw, 3.8rem); 
+                            font-size: clamp(1.8rem, 6vw, 3.8rem);
                             font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em;
-                            color: #ff003c; 
+                            color: #ff003c;
                             text-shadow: 0 0 5px #ff003c, 0 0 10px #ff003c, 0 0 20px #ff003c, 0 0 30px #ff4d6e, 0 0 40px #ff4d6e;
                             margin-bottom: 25px;
                             animation: textGlitchEffect 1.8s infinite cubic-bezier(.25,.46,.45,.94), pulseRedEffect 2.2s infinite alternate;
@@ -713,7 +713,7 @@
                     </head>
                     <body class="locked-down-body">
                         <div class="lockdown-container">
-                          <div class="lockdown-icon">☣️</div> 
+                          <div class="lockdown-icon">☣️</div>
                           <h1 class="lockdown-header">${title}</h1>
                           <p class="lockdown-message">${mainMessage}</p>
                           <p class="lockdown-reason">${reasonText}</p>
@@ -729,7 +729,7 @@
                     document.close();
                 } catch (e) {
                     document.documentElement.innerHTML = lockdownPageHTML;
-                    if (document.body) { 
+                    if (document.body) {
                          document.body.className = 'locked-down-body';
                     }
                 }
@@ -748,7 +748,7 @@
                 if (window.isSystemLockedDown) { e.preventDefault(); return; }
                 const forbiddenCtrlKeys = ["u", "s", "c", "p", "x", "a", "v", "i", "j", "shift+i", "shift+j", "shift+c", "shift+u"];
                 const key = e.key.toLowerCase();
-                const ctrl = e.ctrlKey || e.metaKey; 
+                const ctrl = e.ctrlKey || e.metaKey;
                 const shift = e.shiftKey;
                 if (ctrl) {
                     let combo = "";
@@ -766,7 +766,7 @@
                     return;
                 }
             });
-            ["copy", "cut", "paste", "dragstart"].forEach((evt) => { 
+            ["copy", "cut", "paste", "dragstart"].forEach((evt) => {
                 document.addEventListener(evt, (e) => {
                     if (window.isSystemLockedDown) { e.preventDefault(); return; }
                     e.preventDefault();

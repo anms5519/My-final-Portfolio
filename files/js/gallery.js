@@ -1,5 +1,5 @@
 window.GalleryContent = {
-    getHTML: function() {
+    getHTML: function () {
         return `
             <div class="container">
                 <h2 class="gallery-title" data-aos="fade-up">
@@ -181,49 +181,251 @@ window.GalleryContent = {
             </div>
                 `;
     },
-    init: function() {
+    init: function () {
         initUltraGallery();
-        if (document.readyState === 'interactive' || document.readyState === 'complete') {
+        if (
+            document.readyState === "interactive" ||
+            document.readyState === "complete"
+        ) {
             initUltraGallery();
         }
-    
         function initUltraGallery() {
             const gallerySection = document.getElementById("gallery");
             if (!gallerySection) return;
-    
-            // Full gallery data
             const galleryData = [
-                { id: 1, title: "School Memories", description: "Early education journey", image: "images/gallery/school (3).jpg", category: "education", date: "2020-05-15" },
-                { id: 2, title: "College Days", description: "Learning and growing", image: "images/gallery/jh.jpg", category: "education", date: "2021-03-20" },
-                { id: 3, title: "University Life", description: "Higher education", image: "images/gallery/university (1).jpeg", category: "education", date: "2022-02-10" },
-                { id: 4, title: "Public Speaking", description: "Presenting with confidence", image: "images/gallery/publicspeaking (1).jpg", category: "presentations", date: "2021-11-05" },
-                { id: 5, title: "Sports Achievement", description: "Athletic excellence", image: "images/gallery/awards (5).jpg", category: "sports", date: "2020-08-18" },
-                { id: 6, title: "Extracurricular Club", description: "Beyond the classroom", image: "images/gallery/extracurricular (5).jpg", category: "education", date: "2021-04-12" },
-                { id: 7, title: "Tour Adventures", description: "Exploring new places", image: "images/gallery/lol (4).jpg", category: "travel", date: "2022-07-22" },
-                { id: 8, title: "School Friends", description: "Childhood companions", image: "images/gallery/lol (5).jpg", category: "friends", date: "2019-09-10" },
-                { id: 9, title: "Coding Competition", description: "Academic excellence", image: "images/gallery/mp.jpg", category: "education", date: "2021-12-01" },
-                { id: 10, title: "University Presentation", description: "Research showcase", image: "images/gallery/IMG-20241105-WA0001.jpg", category: "presentations", date: "2023-03-15" },
-                { id: 11, title: "Sports Tournament", description: "Team championship", image: "images/gallery/sport (2).jpg", category: "sports", date: "2022-06-10" },
-                { id: 12, title: "Educational Tour", description: "Learning excursion", image: "images/gallery/college (2).jpg", category: "education", date: "2020-10-05" },
-                { id: 13, title: "Debate Competition", description: "Public speaking skills", image: "images/gallery/publicspeaking (3).jpg", category: "presentations", date: "2021-05-20" },
-                { id: 14, title: "Science Fair", description: "Innovation display", image: "images/gallery/training (3).jpg", category: "education", date: "2022-01-25" },
-                { id: 15, title: "Cultural Program", description: "Celebrating diversity", image: "images/gallery/extracurricular (1).jpg", category: "events", date: "2021-09-30" },
-                { id: 16, title: "College Graduation", description: "Achievement milestone", image: "images/gallery/fdf.jpg", category: "education", date: "2023-02-28" },
-                { id: 17, title: "Sports Day", description: "Athletic competitions", image: "images/gallery/aportday.jpg", category: "sports", date: "2020-12-12" },
-                { id: 18, title: "Field Trip", description: "Outdoor learning", image: "images/gallery/145.jpg", category: "education", date: "2021-08-14" },
-                { id: 19, title: "University Friends", description: "Academic companions", image: "images/gallery/555.jpg", category: "friends", date: "2022-03-18" },
-                { id: 20, title: "Speech Competition", description: "Oratorical excellence", image: "images/gallery/sp.jpg", category: "presentations", date: "2021-10-22" },
-                { id: 21, title: "Academic Workshop", description: "Specialized training", image: "images/gallery/lol (2).jpg", category: "education", date: "2022-05-11" },
-                { id: 22, title: "Adventure Tour", description: "Exploring nature", image: "images/gallery/place (8).jpg", category: "travel", date: "2023-01-19" },
-                { id: 23, title: "Public speaking", description: "Stage talent", image: "images/gallery/lok.jpg", category: "presentations", date: "2021-07-07" },
-                { id: 24, title: "College Festival", description: "Campus celebration", image: "images/gallery/IMG-20240623-WA0001.jpg", category: "events", date: "2022-11-03" },
-                { id: 25, title: "University Conference", description: "Academic discourse", image: "images/gallery/conp.jpg", category: "events", date: "2023-04-09" },
-                { id: 26, title: "Team Sports", description: "Collaborative athletics", image: "images/gallery/sport (2).jpg", category: "sports", date: "2021-06-16" },
-                { id: 27, title: "Class Project", description: "Collaborative learning", image: "images/gallery/lol (8).jpg", category: "education", date: "2022-09-21" },
-                { id: 28, title: "Historic Tour", description: "Cultural exploration", image: "images/gallery/place (7).jpg", category: "travel", date: "2021-03-29" },
-                { id: 29, title: "Leadership Camp", description: "Developing potential", image: "images/gallery/df.jpg", category: "events", date: "2022-08-17" }
+                {
+                    id: 1,
+                    title: "School Memories",
+                    description: "Early education journey",
+                    image: "images/gallery/school (3).jpg",
+                    category: "education",
+                    date: "2020-05-15",
+                },
+                {
+                    id: 2,
+                    title: "College Days",
+                    description: "Learning and growing",
+                    image: "images/gallery/jh.jpg",
+                    category: "education",
+                    date: "2021-03-20",
+                },
+                {
+                    id: 3,
+                    title: "University Life",
+                    description: "Higher education",
+                    image: "images/gallery/university (1).jpeg",
+                    category: "education",
+                    date: "2022-02-10",
+                },
+                {
+                    id: 4,
+                    title: "Public Speaking",
+                    description: "Presenting with confidence",
+                    image: "images/gallery/publicspeaking (1).jpg",
+                    category: "presentations",
+                    date: "2021-11-05",
+                },
+                {
+                    id: 5,
+                    title: "Sports Achievement",
+                    description: "Athletic excellence",
+                    image: "images/gallery/awards (5).jpg",
+                    category: "sports",
+                    date: "2020-08-18",
+                },
+                {
+                    id: 6,
+                    title: "Extracurricular Club",
+                    description: "Beyond the classroom",
+                    image: "images/gallery/extracurricular (5).jpg",
+                    category: "education",
+                    date: "2021-04-12",
+                },
+                {
+                    id: 7,
+                    title: "Tour Adventures",
+                    description: "Exploring new places",
+                    image: "images/gallery/lol (4).jpg",
+                    category: "travel",
+                    date: "2022-07-22",
+                },
+                {
+                    id: 8,
+                    title: "School Friends",
+                    description: "Childhood companions",
+                    image: "images/gallery/lol (5).jpg",
+                    category: "friends",
+                    date: "2019-09-10",
+                },
+                {
+                    id: 9,
+                    title: "Coding Competition",
+                    description: "Academic excellence",
+                    image: "images/gallery/mp.jpg",
+                    category: "education",
+                    date: "2021-12-01",
+                },
+                {
+                    id: 10,
+                    title: "University Presentation",
+                    description: "Research showcase",
+                    image: "images/gallery/IMG-20241105-WA0001.jpg",
+                    category: "presentations",
+                    date: "2023-03-15",
+                },
+                {
+                    id: 11,
+                    title: "Sports Tournament",
+                    description: "Team championship",
+                    image: "images/gallery/sport (2).jpg",
+                    category: "sports",
+                    date: "2022-06-10",
+                },
+                {
+                    id: 12,
+                    title: "Educational Tour",
+                    description: "Learning excursion",
+                    image: "images/gallery/college (2).jpg",
+                    category: "education",
+                    date: "2020-10-05",
+                },
+                {
+                    id: 13,
+                    title: "Debate Competition",
+                    description: "Public speaking skills",
+                    image: "images/gallery/publicspeaking (3).jpg",
+                    category: "presentations",
+                    date: "2021-05-20",
+                },
+                {
+                    id: 14,
+                    title: "Science Fair",
+                    description: "Innovation display",
+                    image: "images/gallery/training (3).jpg",
+                    category: "education",
+                    date: "2022-01-25",
+                },
+                {
+                    id: 15,
+                    title: "Cultural Program",
+                    description: "Celebrating diversity",
+                    image: "images/gallery/extracurricular (1).jpg",
+                    category: "events",
+                    date: "2021-09-30",
+                },
+                {
+                    id: 16,
+                    title: "College Graduation",
+                    description: "Achievement milestone",
+                    image: "images/gallery/fdf.jpg",
+                    category: "education",
+                    date: "2023-02-28",
+                },
+                {
+                    id: 17,
+                    title: "Sports Day",
+                    description: "Athletic competitions",
+                    image: "images/gallery/aportday.jpg",
+                    category: "sports",
+                    date: "2020-12-12",
+                },
+                {
+                    id: 18,
+                    title: "Field Trip",
+                    description: "Outdoor learning",
+                    image: "images/gallery/145.jpg",
+                    category: "education",
+                    date: "2021-08-14",
+                },
+                {
+                    id: 19,
+                    title: "University Friends",
+                    description: "Academic companions",
+                    image: "images/gallery/555.jpg",
+                    category: "friends",
+                    date: "2022-03-18",
+                },
+                {
+                    id: 20,
+                    title: "Speech Competition",
+                    description: "Oratorical excellence",
+                    image: "images/gallery/sp.jpg",
+                    category: "presentations",
+                    date: "2021-10-22",
+                },
+                {
+                    id: 21,
+                    title: "Academic Workshop",
+                    description: "Specialized training",
+                    image: "images/gallery/lol (2).jpg",
+                    category: "education",
+                    date: "2022-05-11",
+                },
+                {
+                    id: 22,
+                    title: "Adventure Tour",
+                    description: "Exploring nature",
+                    image: "images/gallery/place (8).jpg",
+                    category: "travel",
+                    date: "2023-01-19",
+                },
+                {
+                    id: 23,
+                    title: "Public speaking",
+                    description: "Stage talent",
+                    image: "images/gallery/lok.jpg",
+                    category: "presentations",
+                    date: "2021-07-07",
+                },
+                {
+                    id: 24,
+                    title: "College Festival",
+                    description: "Campus celebration",
+                    image: "images/gallery/IMG-20240623-WA0001.jpg",
+                    category: "events",
+                    date: "2022-11-03",
+                },
+                {
+                    id: 25,
+                    title: "University Conference",
+                    description: "Academic discourse",
+                    image: "images/gallery/conp.jpg",
+                    category: "events",
+                    date: "2023-04-09",
+                },
+                {
+                    id: 26,
+                    title: "Team Sports",
+                    description: "Collaborative athletics",
+                    image: "images/gallery/sport (2).jpg",
+                    category: "sports",
+                    date: "2021-06-16",
+                },
+                {
+                    id: 27,
+                    title: "Class Project",
+                    description: "Collaborative learning",
+                    image: "images/gallery/lol (8).jpg",
+                    category: "education",
+                    date: "2022-09-21",
+                },
+                {
+                    id: 28,
+                    title: "Historic Tour",
+                    description: "Cultural exploration",
+                    image: "images/gallery/place (7).jpg",
+                    category: "travel",
+                    date: "2021-03-29",
+                },
+                {
+                    id: 29,
+                    title: "Leadership Camp",
+                    description: "Developing potential",
+                    image: "images/gallery/df.jpg",
+                    category: "events",
+                    date: "2022-08-17",
+                },
             ];
-    
             initializeGallery(galleryData);
             setupGalleryControls();
             setupSearchFunctionality();
@@ -234,67 +436,65 @@ window.GalleryContent = {
             setupLightbox(galleryData);
             setupFavoritesSystem();
         }
-    
         function initializeGallery(data) {
             const galleryGrid = document.querySelector(".gallery-grid");
             if (!galleryGrid) return;
-    
-            // Add sort and favorite options to gallery controls
             addSortControls();
-            
-            // Render items with animation delay
-            galleryGrid.innerHTML = '';
-            
+            galleryGrid.innerHTML = "";
             data.forEach((item, index) => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'gallery-item';
+                const itemElement = document.createElement("div");
+                itemElement.className = "gallery-item";
                 itemElement.dataset.category = item.category;
                 itemElement.dataset.id = item.id;
                 itemElement.style.animationDelay = `${index * 0.05}s`;
-                
-                // Check if item is favorited
                 const favorites = getFavorites();
                 if (favorites.includes(item.id)) {
-                    itemElement.classList.add('favorited');
+                    itemElement.classList.add("favorited");
                 }
-                
                 itemElement.innerHTML = `
-                    <img src="${item.image}" alt="${item.title}" class="gallery-img" loading="lazy">
+                    <img src="${item.image}" alt="${
+                    item.title
+                }" class="gallery-img" loading="lazy">
                     <div class="gallery-info">
                         <h3 class="gallery-title">${item.title}</h3>
                         <p class="gallery-description">${item.description}</p>
                         <div class="gallery-meta">
-                            <span class="gallery-date">${formatDate(item.date)}</span>
+                            <span class="gallery-date">${formatDate(
+                                item.date
+                            )}</span>
                             <div class="gallery-actions">
-                                <button class="gallery-action-btn like-btn ${favorites.includes(item.id) ? 'liked' : ''}" data-id="${item.id}">
-                                    <i class="${favorites.includes(item.id) ? 'fas' : 'far'} fa-heart"></i>
+                                <button class="gallery-action-btn like-btn ${
+                                    favorites.includes(item.id) ? "liked" : ""
+                                }" data-id="${item.id}">
+                                    <i class="${
+                                        favorites.includes(item.id)
+                                            ? "fas"
+                                            : "far"
+                                    } fa-heart"></i>
                                 </button>
-                                <button class="gallery-action-btn share-btn" data-id="${item.id}">
+                                <button class="gallery-action-btn share-btn" data-id="${
+                                    item.id
+                                }">
                                     <i class="fas fa-share-alt"></i>
                                 </button>
-                                <button class="gallery-action-btn download-btn" data-id="${item.id}">
+                                <button class="gallery-action-btn download-btn" data-id="${
+                                    item.id
+                                }">
                                     <i class="fas fa-download"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
                 `;
-                
                 galleryGrid.appendChild(itemElement);
-                
-                // Fade in animation
                 setTimeout(() => {
-                    itemElement.classList.add('visible');
+                    itemElement.classList.add("visible");
                 }, 10);
             });
-            
-            // Update filter counts
             updateFilterCounts(data);
         }
-    
         function setupGalleryControls() {
-            // Like button functionality
-            document.addEventListener("click", function(e) {
+            document.addEventListener("click", function (e) {
                 if (e.target.closest(".like-btn")) {
                     const btn = e.target.closest(".like-btn");
                     btn.classList.toggle("liked");
@@ -303,9 +503,7 @@ window.GalleryContent = {
                     icon.classList.toggle("fas");
                 }
             });
-    
-            // Share button functionality
-            document.addEventListener("click", function(e) {
+            document.addEventListener("click", function (e) {
                 if (e.target.closest(".share-btn")) {
                     const btn = e.target.closest(".share-btn");
                     const itemId = btn.dataset.id;
@@ -313,74 +511,64 @@ window.GalleryContent = {
                 }
             });
         }
-    
         function setupSearchFunctionality() {
             const searchInput = document.querySelector(".gallery-search input");
             if (!searchInput) return;
-    
-            searchInput.addEventListener("input", debounce(function(e) {
-                const searchTerm = e.target.value.toLowerCase();
-                filterGalleryItems(searchTerm);
-            }, 300));
+            searchInput.addEventListener(
+                "input",
+                debounce(function (e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    filterGalleryItems(searchTerm);
+                }, 300)
+            );
         }
-    
         function setupFilterSystem() {
             const filterTags = document.querySelectorAll(".filter-tag");
-            filterTags.forEach(tag => {
-                tag.addEventListener("click", function() {
+            filterTags.forEach((tag) => {
+                tag.addEventListener("click", function () {
                     const category = this.dataset.filter;
                     filterGalleryItems("", category);
-                    
-                    // Update active state
-                    filterTags.forEach(t => t.classList.remove("active"));
+                    filterTags.forEach((t) => t.classList.remove("active"));
                     this.classList.add("active");
                 });
             });
         }
-    
         function setupViewModes() {
             const viewButtons = document.querySelectorAll(".view-option-btn");
             const galleryGrid = document.querySelector(".gallery-grid");
-            
             if (!galleryGrid || !viewButtons.length) return;
-            
-            // Set initial view mode (grid by default)
             galleryGrid.classList.add("view-grid");
-            
-            viewButtons.forEach(btn => {
-                btn.addEventListener("click", function() {
+            viewButtons.forEach((btn) => {
+                btn.addEventListener("click", function () {
                     const viewMode = this.dataset.view;
-                    
-                    // Update active state
-                    viewButtons.forEach(b => b.classList.remove("active"));
+                    viewButtons.forEach((b) => b.classList.remove("active"));
                     this.classList.add("active");
-                    
-                    // Apply view mode
                     galleryGrid.className = "gallery-grid";
                     galleryGrid.classList.add(`view-${viewMode}`);
                 });
             });
         }
-    
         function filterGalleryItems(searchTerm = "", category = "all") {
             const items = document.querySelectorAll(".gallery-item");
             let visibleCount = 0;
-            
-            items.forEach(item => {
-                const itemTitle = item.querySelector(".gallery-title").textContent.toLowerCase();
-                const itemDescription = item.querySelector(".gallery-description").textContent.toLowerCase();
+            items.forEach((item) => {
+                const itemTitle = item
+                    .querySelector(".gallery-title")
+                    .textContent.toLowerCase();
+                const itemDescription = item
+                    .querySelector(".gallery-description")
+                    .textContent.toLowerCase();
                 const itemCategory = item.dataset.category;
-                
-                const matchesSearch = searchTerm === "" || 
-                    itemTitle.includes(searchTerm) || 
+                const matchesSearch =
+                    searchTerm === "" ||
+                    itemTitle.includes(searchTerm) ||
                     itemDescription.includes(searchTerm);
-                
-                const matchesCategory = category === "all" || itemCategory === category;
-                
-                // For favorites filter
-                const matchesFavorites = category === "favorites" ? 
-                    item.classList.contains("favorited") : true;
-                
+                const matchesCategory =
+                    category === "all" || itemCategory === category;
+                const matchesFavorites =
+                    category === "favorites"
+                        ? item.classList.contains("favorited")
+                        : true;
                 if (matchesSearch && matchesCategory && matchesFavorites) {
                     item.style.display = "";
                     visibleCount++;
@@ -388,8 +576,6 @@ window.GalleryContent = {
                     item.style.display = "none";
                 }
             });
-            
-            // Show empty state if no items match
             const emptyState = document.querySelector(".gallery-empty-state");
             if (emptyState) {
                 if (visibleCount === 0) {
@@ -399,34 +585,37 @@ window.GalleryContent = {
                 }
             }
         }
-    
         function shareGalleryItem(itemId) {
-            const item = document.querySelector(`.gallery-item[data-id="${itemId}"]`);
+            const item = document.querySelector(
+                `.gallery-item[data-id="${itemId}"]`
+            );
             if (!item) return;
-    
             const title = item.querySelector(".gallery-title").textContent;
-            const description = item.querySelector(".gallery-description").textContent;
+            const description = item.querySelector(".gallery-description")
+                .textContent;
             const imageUrl = item.querySelector(".gallery-img").src;
-    
             if (navigator.share) {
-                navigator.share({
-                    title: title,
-                    text: description,
-                    url: imageUrl
-                }).catch(console.error);
+                navigator
+                    .share({
+                        title: title,
+                        text: description,
+                        url: imageUrl,
+                    })
+                    .catch(console.error);
             } else {
-                // Fallback for browsers that don't support Web Share API
                 const shareUrl = encodeURIComponent(imageUrl);
-                const shareText = encodeURIComponent(`${title} - ${description}`);
-                window.open(`https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareText}`);
+                const shareText = encodeURIComponent(
+                    `${title} - ${description}`
+                );
+                window.open(
+                    `https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareText}`
+                );
             }
         }
-    
         function formatDate(dateString) {
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const options = { year: "numeric", month: "long", day: "numeric" };
             return new Date(dateString).toLocaleDateString(undefined, options);
         }
-    
         function debounce(func, wait) {
             let timeout;
             return function executedFunction(...args) {
@@ -438,7 +627,6 @@ window.GalleryContent = {
                 timeout = setTimeout(later, wait);
             };
         }
-    
         function enhanceGalleryUI() {
             const galleryContainer = document.querySelector(
                 ".gallery-section .container"
@@ -503,7 +691,6 @@ window.GalleryContent = {
             );
             setupControlListeners(controlPanel);
         }
-    
         function setupControlListeners(panel) {
             const viewButtons = panel.querySelectorAll(".view-mode-btn");
             viewButtons.forEach((btn) => {
@@ -511,7 +698,9 @@ window.GalleryContent = {
                     viewButtons.forEach((b) => b.classList.remove("active"));
                     this.classList.add("active");
                     const mode = this.getAttribute("data-mode");
-                    const galleryElement = document.querySelector(".lifestyle-collage");
+                    const galleryElement = document.querySelector(
+                        ".lifestyle-collage"
+                    );
                     galleryElement.classList.remove(
                         "mode-grid",
                         "mode-masonry",
@@ -527,7 +716,9 @@ window.GalleryContent = {
             const effectSliders = panel.querySelectorAll(".effect-slider");
             effectSliders.forEach((slider) => {
                 slider.addEventListener("input", function () {
-                    const valueDisplay = this.parentElement.querySelector("span");
+                    const valueDisplay = this.parentElement.querySelector(
+                        "span"
+                    );
                     valueDisplay.textContent = `${this.value}%`;
                     const effect = this.getAttribute("data-effect");
                     const value = this.value;
@@ -543,7 +734,6 @@ window.GalleryContent = {
                 });
             });
         }
-    
         function applyGalleryEffect(effect, value) {
             const galleryItems = document.querySelectorAll(".collage-item");
             galleryItems.forEach((item) => {
@@ -561,14 +751,18 @@ window.GalleryContent = {
                         );
                         break;
                     case "motion":
-                        item.style.setProperty("--item-motion", `${(value / 100) * 2}`);
+                        item.style.setProperty(
+                            "--item-motion",
+                            `${(value / 100) * 2}`
+                        );
                         break;
                 }
             });
         }
-    
         function toggleAIFeature(feature, enabled) {
-            console.log(`AI feature ${feature} ${enabled ? "enabled" : "disabled"}`);
+            console.log(
+                `AI feature ${feature} ${enabled ? "enabled" : "disabled"}`
+            );
             const gallery = document.querySelector(".lifestyle-collage");
             switch (feature) {
                 case "smart-sort":
@@ -597,7 +791,6 @@ window.GalleryContent = {
                     break;
             }
         }
-    
         function setupAIImageEnhancements() {
             const galleryItems = document.querySelectorAll(".collage-item");
             galleryItems.forEach((item) => {
@@ -626,12 +819,12 @@ window.GalleryContent = {
                 }
             });
         }
-    
         function simulateAISort() {
             const gallery = document.querySelector(".lifestyle-collage");
             const items = Array.from(gallery.querySelectorAll(".collage-item"));
             items.forEach((item) => {
-                item.style.transition = "all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)";
+                item.style.transition =
+                    "all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)";
             });
             setTimeout(() => {
                 items
@@ -657,7 +850,6 @@ window.GalleryContent = {
                 }, 100);
             }, 1000);
         }
-    
         function simulateImageEnhancement() {
             const galleryItems = document.querySelectorAll(".collage-item");
             galleryItems.forEach((item, index) => {
@@ -693,7 +885,6 @@ window.GalleryContent = {
                 }, index * 300);
             });
         }
-    
         function simulateContentAnalysis() {
             const galleryItems = document.querySelectorAll(".collage-item");
             const possibleTags = [
@@ -710,7 +901,15 @@ window.GalleryContent = {
                 "Formal",
                 "Casual",
             ];
-            const possibleScores = ["93%", "87%", "95%", "82%", "91%", "89%", "97%"];
+            const possibleScores = [
+                "93%",
+                "87%",
+                "95%",
+                "82%",
+                "91%",
+                "89%",
+                "97%",
+            ];
             galleryItems.forEach((item, index) => {
                 setTimeout(() => {
                     const aiPanel = item.querySelector(".ai-analysis-panel");
@@ -721,7 +920,9 @@ window.GalleryContent = {
                     }
                     const metrics = aiPanel.querySelectorAll(".ai-metric");
                     metrics.forEach((metric) => {
-                        const valueElement = metric.querySelector(".metric-value");
+                        const valueElement = metric.querySelector(
+                            ".metric-value"
+                        );
                         if (valueElement) {
                             valueElement.style.opacity = "0";
                             setTimeout(() => {
@@ -733,7 +934,8 @@ window.GalleryContent = {
                                     valueElement.textContent =
                                         possibleTags[
                                             Math.floor(
-                                                Math.random() * possibleTags.length
+                                                Math.random() *
+                                                    possibleTags.length
                                             )
                                         ];
                                 } else if (
@@ -766,7 +968,9 @@ window.GalleryContent = {
               <span class="score-label">AI Confidence</span>
               <div class="score-bar">
                 <div class="score-fill" style="width: ${
-                    possibleScores[Math.floor(Math.random() * possibleScores.length)]
+                    possibleScores[
+                        Math.floor(Math.random() * possibleScores.length)
+                    ]
                 }"></div>
               </div>
             `;
@@ -785,7 +989,6 @@ window.GalleryContent = {
                 }, index * 200);
             });
         }
-    
         function setupMicroInteractions() {
             const galleryItems = document.querySelectorAll(".collage-item");
             galleryItems.forEach((item) => {
@@ -813,7 +1016,6 @@ window.GalleryContent = {
                 });
             });
         }
-    
         function generateParticles(container, count) {
             container.innerHTML = "";
             for (let i = 0; i < count; i++) {
@@ -841,7 +1043,6 @@ window.GalleryContent = {
                 }, duration * 1000);
             }
         }
-    
         function createRippleEffect(element, x, y) {
             const ripple = document.createElement("div");
             ripple.className = "ripple-effect";
@@ -852,13 +1053,15 @@ window.GalleryContent = {
                 ripple.remove();
             }, 600);
         }
-    
         function initializeImmersiveView() {
             const gallerySection = document.getElementById("gallery");
             const immersiveBtn = document.createElement("button");
             immersiveBtn.className = "immersive-view-btn";
-            immersiveBtn.innerHTML = '<i class="fas fa-expand"></i> Immersive View';
-            gallerySection.querySelector(".container").appendChild(immersiveBtn);
+            immersiveBtn.innerHTML =
+                '<i class="fas fa-expand"></i> Immersive View';
+            gallerySection
+                .querySelector(".container")
+                .appendChild(immersiveBtn);
             const immersiveContainer = document.getElementById(
                 "gallery-lightbox-modal"
             );
@@ -933,10 +1136,18 @@ window.GalleryContent = {
                     changeImmersiveImage("next");
                 }
             });
-            const prevButton = immersiveContainer.querySelector("#gallery-prev");
-            const nextButton = immersiveContainer.querySelector("#gallery-next");
-            prevButton.addEventListener("click", () => changeImmersiveImage("prev"));
-            nextButton.addEventListener("click", () => changeImmersiveImage("next"));
+            const prevButton = immersiveContainer.querySelector(
+                "#gallery-prev"
+            );
+            const nextButton = immersiveContainer.querySelector(
+                "#gallery-next"
+            );
+            prevButton.addEventListener("click", () =>
+                changeImmersiveImage("prev")
+            );
+            nextButton.addEventListener("click", () =>
+                changeImmersiveImage("next")
+            );
             const collageItems = document.querySelectorAll(".collage-item");
             collageItems.forEach((item, index) => {
                 item.addEventListener("click", function () {
@@ -945,10 +1156,8 @@ window.GalleryContent = {
                 });
             });
         }
-    
         let currentImmersiveIndex = 0;
         let galleryImages = [];
-    
         function openImmersiveView() {
             const immersiveContainer = document.getElementById(
                 "gallery-lightbox-modal"
@@ -958,7 +1167,8 @@ window.GalleryContent = {
             galleryImages = Array.from(galleryItems).map((item) => {
                 const img = item.querySelector("img");
                 const title =
-                    item.querySelector(".collage-info h3")?.textContent || "Image";
+                    item.querySelector(".collage-info h3")?.textContent ||
+                    "Image";
                 const description =
                     item.querySelector(".collage-info p")?.textContent ||
                     "No description available";
@@ -1007,7 +1217,6 @@ window.GalleryContent = {
                 }
             }, 10);
         }
-    
         function closeImmersiveView() {
             const immersiveContainer = document.getElementById(
                 "gallery-lightbox-modal"
@@ -1028,7 +1237,6 @@ window.GalleryContent = {
                 }
             }, 300);
         }
-    
         function loadImmersiveImage(index) {
             if (index < 0 || index >= galleryImages.length) return;
             const immersiveContainer = document.getElementById(
@@ -1066,8 +1274,11 @@ window.GalleryContent = {
                     "#gallery-caption-description"
                 );
                 if (titleElement) titleElement.textContent = imageData.title;
-                if (descElement) descElement.textContent = imageData.description;
-                const dateElement = immersiveContainer.querySelector("#image-date");
+                if (descElement)
+                    descElement.textContent = imageData.description;
+                const dateElement = immersiveContainer.querySelector(
+                    "#image-date"
+                );
                 const categoryElement = immersiveContainer.querySelector(
                     "#image-category"
                 );
@@ -1075,8 +1286,10 @@ window.GalleryContent = {
                     "#gallery-current"
                 );
                 if (dateElement) dateElement.textContent = imageData.date;
-                if (categoryElement) categoryElement.textContent = imageData.category;
-                if (currentCounter) currentCounter.textContent = (index + 1).toString();
+                if (categoryElement)
+                    categoryElement.textContent = imageData.category;
+                if (currentCounter)
+                    currentCounter.textContent = (index + 1).toString();
                 simulateImmersiveAIAnalysis(imageData);
                 const thumbnails = immersiveContainer.querySelectorAll(
                     ".immersive-thumbnail"
@@ -1101,9 +1314,10 @@ window.GalleryContent = {
             };
             preloadImg.src = imageData.src;
         }
-    
         function createImmersiveThumbnails() {
-            const thumbnailContainer = document.querySelector(".immersive-thumbnails");
+            const thumbnailContainer = document.querySelector(
+                ".immersive-thumbnails"
+            );
             if (!thumbnailContainer) return;
             thumbnailContainer.innerHTML = "";
             galleryImages.forEach((image, index) => {
@@ -1143,7 +1357,6 @@ window.GalleryContent = {
                 }
             }, 100);
         }
-    
         function changeImmersiveImage(direction) {
             const modal = document.getElementById("gallery-lightbox-modal");
             const img = modal?.querySelector("#gallery-modal-img");
@@ -1169,7 +1382,9 @@ window.GalleryContent = {
                 const thumbnailContainer = document.querySelector(
                     ".immersive-thumbnails"
                 );
-                const activeThumb = thumbnailContainer?.querySelector(".active");
+                const activeThumb = thumbnailContainer?.querySelector(
+                    ".active"
+                );
                 if (thumbnailContainer && activeThumb) {
                     thumbnailContainer.scrollLeft =
                         activeThumb.offsetLeft -
@@ -1178,10 +1393,11 @@ window.GalleryContent = {
                 }
             }, 200);
         }
-    
         function simulateImmersiveAIAnalysis(imageData) {
             const tagsContainer = document.querySelector(".analysis-tags");
-            const insightsContainer = document.querySelector(".analysis-insights");
+            const insightsContainer = document.querySelector(
+                ".analysis-insights"
+            );
             if (!tagsContainer || !insightsContainer) return;
             tagsContainer.style.opacity = "0";
             insightsContainer.style.opacity = "0";
@@ -1243,7 +1459,13 @@ window.GalleryContent = {
                         "Ceremony",
                         "Occasion",
                     ],
-                    Sports: ["Athletic", "Competition", "Team", "Physical", "Activity"],
+                    Sports: [
+                        "Athletic",
+                        "Competition",
+                        "Team",
+                        "Physical",
+                        "Activity",
+                    ],
                     Presentations: [
                         "Speech",
                         "Conference",
@@ -1274,11 +1496,16 @@ window.GalleryContent = {
                 }
                 const selectedTags = [...new Set(relevantTags)].slice(
                     0,
-                    Math.min(relevantTags.length, 5 + Math.floor(Math.random() * 3))
+                    Math.min(
+                        relevantTags.length,
+                        5 + Math.floor(Math.random() * 3)
+                    )
                 );
                 while (selectedTags.length < 5) {
                     const randomTag =
-                        possibleTags[Math.floor(Math.random() * possibleTags.length)];
+                        possibleTags[
+                            Math.floor(Math.random() * possibleTags.length)
+                        ];
                     if (!selectedTags.includes(randomTag)) {
                         selectedTags.push(randomTag);
                     }
@@ -1378,7 +1605,9 @@ window.GalleryContent = {
                     insightElement.style.opacity = "0";
                     insightElement.style.transform = "translateY(10px)";
                     insightElement.style.transition = "all 0.4s ease";
-                    insightElement.style.transitionDelay = `${index * 0.15 + 0.3}s`;
+                    insightElement.style.transitionDelay = `${
+                        index * 0.15 + 0.3
+                    }s`;
                     insightsContainer.appendChild(insightElement);
                     setTimeout(() => {
                         insightElement.style.opacity = "1";
@@ -1389,173 +1618,221 @@ window.GalleryContent = {
                 insightsContainer.style.opacity = "1";
             }, 300);
         }
-    
-        // Add immersive view/lightbox connection for new gallery
         function setupLightbox(galleryData) {
             const modal = document.getElementById("gallery-lightbox-modal");
             let currentIndex = 0;
-            
-            // Preload images for smoother experience
             function preloadImages() {
-                galleryData.forEach(item => {
+                galleryData.forEach((item) => {
                     const img = new Image();
                     img.src = item.image;
                 });
             }
-            
-            // Initialize thumbnails for navigation
             function initializeThumbnails() {
-                const thumbnailContainer = modal.querySelector(".immersive-thumbnails");
+                const thumbnailContainer = modal.querySelector(
+                    ".immersive-thumbnails"
+                );
                 if (!thumbnailContainer) return;
-                
-                thumbnailContainer.innerHTML = galleryData.map((item, index) => `
-                    <div class="thumbnail-item ${index === currentIndex ? 'active' : ''}" data-index="${index}">
-                        <img src="${item.image}" alt="${item.title}" loading="lazy">
+                thumbnailContainer.innerHTML = galleryData
+                    .map(
+                        (item, index) => `
+                    <div class="thumbnail-item ${
+                        index === currentIndex ? "active" : ""
+                    }" data-index="${index}">
+                        <img src="${item.image}" alt="${
+                            item.title
+                        }" loading="lazy">
                     </div>
-                `).join("");
-                
-                // Scroll active thumbnail into view
-                const activeThumb = thumbnailContainer.querySelector('.thumbnail-item.active');
+                `
+                    )
+                    .join("");
+                const activeThumb = thumbnailContainer.querySelector(
+                    ".thumbnail-item.active"
+                );
                 if (activeThumb) {
-                    activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                }
-                
-                // Add click events to thumbnails
-                thumbnailContainer.querySelectorAll('.thumbnail-item').forEach(thumb => {
-                    thumb.addEventListener('click', () => {
-                        const index = parseInt(thumb.dataset.index, 10);
-                        openModal(index);
+                    activeThumb.scrollIntoView({
+                        behavior: "smooth",
+                        block: "nearest",
+                        inline: "center",
                     });
-                });
+                }
+                thumbnailContainer
+                    .querySelectorAll(".thumbnail-item")
+                    .forEach((thumb) => {
+                        thumb.addEventListener("click", () => {
+                            const index = parseInt(thumb.dataset.index, 10);
+                            openModal(index);
+                        });
+                    });
             }
-            
-            // Simulate AI analysis for the current image
             function generateAIAnalysis(item) {
                 const tagsContainer = modal.querySelector(".analysis-tags");
-                const insightsContainer = modal.querySelector(".analysis-insights");
-                
+                const insightsContainer = modal.querySelector(
+                    ".analysis-insights"
+                );
                 if (!tagsContainer || !insightsContainer) return;
-                
-                // Clear previous content
-                tagsContainer.innerHTML = '';
-                insightsContainer.innerHTML = '';
-                
-                // Show loading state
-                tagsContainer.innerHTML = '<div class="loading-analysis">Analyzing image...</div>';
-                
-                // Simulate AI processing delay
+                tagsContainer.innerHTML = "";
+                insightsContainer.innerHTML = "";
+                tagsContainer.innerHTML =
+                    '<div class="loading-analysis">Analyzing image...</div>';
                 setTimeout(() => {
-                    // Generate tags based on image category and title
                     const category = item.category;
                     let tags = [];
-                    
-                    // Generate tags based on category
-                    switch(category) {
-                        case 'education':
-                            tags = ['learning', 'academic', 'knowledge', 'school', 'education'];
+                    switch (category) {
+                        case "education":
+                            tags = [
+                                "learning",
+                                "academic",
+                                "knowledge",
+                                "school",
+                                "education",
+                            ];
                             break;
-                        case 'sports':
-                            tags = ['athletic', 'competition', 'physical', 'team', 'achievement'];
+                        case "sports":
+                            tags = [
+                                "athletic",
+                                "competition",
+                                "physical",
+                                "team",
+                                "achievement",
+                            ];
                             break;
-                        case 'events':
-                            tags = ['celebration', 'gathering', 'social', 'community', 'occasion'];
+                        case "events":
+                            tags = [
+                                "celebration",
+                                "gathering",
+                                "social",
+                                "community",
+                                "occasion",
+                            ];
                             break;
-                        case 'presentations':
-                            tags = ['public speaking', 'audience', 'communication', 'professional', 'confidence'];
+                        case "presentations":
+                            tags = [
+                                "public speaking",
+                                "audience",
+                                "communication",
+                                "professional",
+                                "confidence",
+                            ];
                             break;
-                        case 'travel':
-                            tags = ['exploration', 'journey', 'adventure', 'destination', 'discovery'];
+                        case "travel":
+                            tags = [
+                                "exploration",
+                                "journey",
+                                "adventure",
+                                "destination",
+                                "discovery",
+                            ];
                             break;
-                        case 'friends':
-                            tags = ['friendship', 'social', 'peers', 'connection', 'relationship'];
+                        case "friends":
+                            tags = [
+                                "friendship",
+                                "social",
+                                "peers",
+                                "connection",
+                                "relationship",
+                            ];
                             break;
                         default:
-                            tags = ['memory', 'moment', 'experience', 'life', 'personal'];
+                            tags = [
+                                "memory",
+                                "moment",
+                                "experience",
+                                "life",
+                                "personal",
+                            ];
                     }
-                    
-                    // Add some randomness to tags
-                    const additionalTags = ['people', 'indoor', 'outdoor', 'group', 'building', 'natural light', 
-                                           'vibrant', 'formal', 'casual', 'professional', 'creative'];
-                    
-                    // Select 3 random tags to add some uniqueness
+                    const additionalTags = [
+                        "people",
+                        "indoor",
+                        "outdoor",
+                        "group",
+                        "building",
+                        "natural light",
+                        "vibrant",
+                        "formal",
+                        "casual",
+                        "professional",
+                        "creative",
+                    ];
                     for (let i = 0; i < 3; i++) {
-                        const randomTag = additionalTags[Math.floor(Math.random() * additionalTags.length)];
+                        const randomTag =
+                            additionalTags[
+                                Math.floor(
+                                    Math.random() * additionalTags.length
+                                )
+                            ];
                         if (!tags.includes(randomTag)) {
                             tags.push(randomTag);
                         }
                     }
-                    
-                    // Add confidence scores (80-99%)
-                    tags = tags.map(tag => {
+                    tags = tags.map((tag) => {
                         const confidence = Math.floor(Math.random() * 20) + 80;
                         return { tag, confidence };
                     });
-                    
-                    // Sort by confidence
                     tags.sort((a, b) => b.confidence - a.confidence);
-                    
-                    // Display tags with confidence scores
-                    tagsContainer.innerHTML = tags.map(t => 
-                        `<div class="ai-tag"><span>${t.tag}</span><span class="confidence">${t.confidence}%</span></div>`
-                    ).join('');
-                    
-                    // Generate insight text based on category
-                    let insight = '';
-                    switch(category) {
-                        case 'education':
-                            insight = 'This appears to be an educational setting with a focus on learning and academic achievement.';
+                    tagsContainer.innerHTML = tags
+                        .map(
+                            (t) =>
+                                `<div class="ai-tag"><span>${t.tag}</span><span class="confidence">${t.confidence}%</span></div>`
+                        )
+                        .join("");
+                    let insight = "";
+                    switch (category) {
+                        case "education":
+                            insight =
+                                "This appears to be an educational setting with a focus on learning and academic achievement.";
                             break;
-                        case 'sports':
-                            insight = 'This image showcases athletic activity and competitive sport engagement.';
+                        case "sports":
+                            insight =
+                                "This image showcases athletic activity and competitive sport engagement.";
                             break;
-                        case 'events':
-                            insight = 'This is a social gathering or event with multiple participants engaged in a shared experience.';
+                        case "events":
+                            insight =
+                                "This is a social gathering or event with multiple participants engaged in a shared experience.";
                             break;
-                        case 'presentations':
-                            insight = 'This shows a presentation or public speaking scenario with an audience present.';
+                        case "presentations":
+                            insight =
+                                "This shows a presentation or public speaking scenario with an audience present.";
                             break;
-                        case 'travel':
-                            insight = 'This image captures exploration of a location, likely during travel or an excursion.';
+                        case "travel":
+                            insight =
+                                "This image captures exploration of a location, likely during travel or an excursion.";
                             break;
-                        case 'friends':
-                            insight = 'This depicts social connections and friendship dynamics in a group setting.';
+                        case "friends":
+                            insight =
+                                "This depicts social connections and friendship dynamics in a group setting.";
                             break;
                         default:
-                            insight = 'This image contains personal memories and meaningful moments.';
+                            insight =
+                                "This image contains personal memories and meaningful moments.";
                     }
-                    
                     insightsContainer.innerHTML = `
                         <p class="ai-insight">${insight}</p>
-                        <p class="ai-detail">Image appears to be from a ${item.category} category taken around ${formatDate(item.date)}.</p>
+                        <p class="ai-detail">Image appears to be from a ${
+                            item.category
+                        } category taken around ${formatDate(item.date)}.</p>
                         <div class="ai-notice">AI analysis is simulated.</div>
                     `;
-                    
-                }, 1000); // Simulate 1 second processing time
+                }, 1000);
             }
-    
             function openModal(index) {
                 if (!modal) return;
-                
-                // Apply opening animation
                 modal.classList.add("animating");
-                
                 currentIndex = index;
                 const item = galleryData[index];
                 if (!item) return;
-                
-                // Set modal image and info
                 const img = modal.querySelector("#gallery-modal-img");
                 const title = modal.querySelector("#gallery-caption-title");
-                const desc = modal.querySelector("#gallery-caption-description");
+                const desc = modal.querySelector(
+                    "#gallery-caption-description"
+                );
                 const date = modal.querySelector("#image-date");
                 const category = modal.querySelector("#image-category");
                 const current = modal.querySelector("#gallery-current");
                 const total = modal.querySelector("#gallery-total");
-                
                 if (img) {
-                    // Create preloader for smooth image transition
                     const preloader = new Image();
-                    preloader.onload = function() {
+                    preloader.onload = function () {
                         img.src = item.image;
                         // Fade in the image
                         img.style.opacity = 0;
@@ -1565,219 +1842,188 @@ window.GalleryContent = {
                     };
                     preloader.src = item.image;
                 }
-                
                 if (title) title.textContent = item.title;
                 if (desc) desc.textContent = item.description;
                 if (date) date.textContent = formatDate(item.date);
-                if (category) category.textContent = item.category.charAt(0).toUpperCase() + item.category.slice(1);
+                if (category)
+                    category.textContent =
+                        item.category.charAt(0).toUpperCase() +
+                        item.category.slice(1);
                 if (current) current.textContent = (index + 1).toString();
                 if (total) total.textContent = galleryData.length.toString();
-                
                 modal.classList.add("active");
                 document.body.classList.add("immersive-mode");
-                
-                // Initialize thumbnails with current index
                 initializeThumbnails();
-                
-                // Generate AI analysis for current image
                 generateAIAnalysis(item);
-                
-                // Remove animation class after animation completes
                 setTimeout(() => {
                     modal.classList.remove("animating");
                 }, 500);
             }
-            
             function closeModal() {
-                // Add closing animation
                 modal.classList.add("animating-out");
-                
-                // Actually close after animation completes
                 setTimeout(() => {
                     modal.classList.remove("active");
                     modal.classList.remove("animating-out");
                     document.body.classList.remove("immersive-mode");
                 }, 300);
             }
-            
             function next() {
-                // Add slide animation
-                const imgContainer = modal.querySelector(".immersive-image-container");
+                const imgContainer = modal.querySelector(
+                    ".immersive-image-container"
+                );
                 if (imgContainer) {
                     imgContainer.classList.add("sliding-next");
                     setTimeout(() => {
                         imgContainer.classList.remove("sliding-next");
                     }, 500);
                 }
-                
                 openModal((currentIndex + 1) % galleryData.length);
             }
-            
             function prev() {
-                // Add slide animation
-                const imgContainer = modal.querySelector(".immersive-image-container");
+                const imgContainer = modal.querySelector(
+                    ".immersive-image-container"
+                );
                 if (imgContainer) {
                     imgContainer.classList.add("sliding-prev");
                     setTimeout(() => {
                         imgContainer.classList.remove("sliding-prev");
                     }, 500);
                 }
-                
-                openModal((currentIndex - 1 + galleryData.length) % galleryData.length);
+                openModal(
+                    (currentIndex - 1 + galleryData.length) % galleryData.length
+                );
             }
-            
-            // Add download functionality
             function setupDownloadButton() {
                 const downloadBtn = document.createElement("button");
                 downloadBtn.className = "image-action-btn download-btn";
                 downloadBtn.innerHTML = '<i class="fas fa-download"></i>';
                 downloadBtn.title = "Download image";
-                
                 const actionContainer = modal.querySelector(".image-controls");
                 if (actionContainer) {
                     actionContainer.appendChild(downloadBtn);
-                    
                     downloadBtn.addEventListener("click", () => {
                         const item = galleryData[currentIndex];
                         if (!item) return;
-                        
-                        // Create a temporary link to download the image
                         const link = document.createElement("a");
                         link.href = item.image;
-                        link.download = `${item.title.replace(/\s+/g, '-').toLowerCase()}.jpg`;
+                        link.download = `${item.title
+                            .replace(/\s+/g, "-")
+                            .toLowerCase()}.jpg`;
                         document.body.appendChild(link);
                         link.click();
                         document.body.removeChild(link);
                     });
                 }
             }
-            
-            // Click handlers for modal controls
             if (modal) {
-                modal.querySelector("#gallery-next")?.addEventListener("click", next);
-                modal.querySelector("#gallery-prev")?.addEventListener("click", prev);
-                modal.querySelector(".gallery-close")?.addEventListener("click", closeModal);
-                
-                // Add download button
+                modal
+                    .querySelector("#gallery-next")
+                    ?.addEventListener("click", next);
+                modal
+                    .querySelector("#gallery-prev")
+                    ?.addEventListener("click", prev);
+                modal
+                    .querySelector(".gallery-close")
+                    ?.addEventListener("click", closeModal);
                 setupDownloadButton();
             }
-            
-            // Keyboard navigation
-            document.addEventListener("keydown", function(e) {
+            document.addEventListener("keydown", function (e) {
                 if (!modal.classList.contains("active")) return;
                 if (e.key === "Escape") closeModal();
                 if (e.key === "ArrowLeft") prev();
                 if (e.key === "ArrowRight") next();
             });
-            
-            // Click handler for gallery items
-            document.querySelector(".gallery-grid")?.addEventListener("click", function(e) {
-                const item = e.target.closest(".gallery-item");
-                if (!item) return;
-                const id = parseInt(item.dataset.id, 10);
-                const index = galleryData.findIndex(g => g.id === id);
-                if (index !== -1) openModal(index);
-            });
-            
-            // Preload images for better user experience
+            document
+                .querySelector(".gallery-grid")
+                ?.addEventListener("click", function (e) {
+                    const item = e.target.closest(".gallery-item");
+                    if (!item) return;
+                    const id = parseInt(item.dataset.id, 10);
+                    const index = galleryData.findIndex((g) => g.id === id);
+                    if (index !== -1) openModal(index);
+                });
             preloadImages();
         }
-    
         function setupSortingOptions() {
-            // Create sort control if it doesn't exist
             addSortControls();
-            
-            const sortToggle = document.querySelector('.sort-toggle');
+            const sortToggle = document.querySelector(".sort-toggle");
             if (sortToggle) {
-                sortToggle.addEventListener('click', function() {
-                    const sortMenu = document.querySelector('.sort-menu');
+                sortToggle.addEventListener("click", function () {
+                    const sortMenu = document.querySelector(".sort-menu");
                     if (sortMenu) {
-                        sortMenu.classList.toggle('active');
+                        sortMenu.classList.toggle("active");
                     }
                 });
             }
-            
-            document.addEventListener('click', function(e) {
-                const sortOption = e.target.closest('.sort-option');
+            document.addEventListener("click", function (e) {
+                const sortOption = e.target.closest(".sort-option");
                 if (!sortOption) {
-                    // If clicking outside sort options, close the menu
-                    if (!e.target.closest('.sort-dropdown')) {
-                        const sortMenu = document.querySelector('.sort-menu');
+                    if (!e.target.closest(".sort-dropdown")) {
+                        const sortMenu = document.querySelector(".sort-menu");
                         if (sortMenu) {
-                            sortMenu.classList.remove('active');
+                            sortMenu.classList.remove("active");
                         }
                     }
                     return;
                 }
-                
-                document.querySelectorAll('.sort-option').forEach(option => {
-                    option.classList.remove('active');
+                document.querySelectorAll(".sort-option").forEach((option) => {
+                    option.classList.remove("active");
                 });
-                sortOption.classList.add('active');
-                
+                sortOption.classList.add("active");
                 const sortBy = sortOption.dataset.sort;
                 sortGalleryItems(sortBy);
-                
-                // Close menu after selection
-                const sortMenu = document.querySelector('.sort-menu');
+                const sortMenu = document.querySelector(".sort-menu");
                 if (sortMenu) {
-                    sortMenu.classList.remove('active');
+                    sortMenu.classList.remove("active");
                 }
             });
         }
-    
         function sortGalleryItems(sortBy) {
-            const galleryGrid = document.querySelector('.gallery-grid');
+            const galleryGrid = document.querySelector(".gallery-grid");
             if (!galleryGrid) return;
-            
-            const items = Array.from(galleryGrid.querySelectorAll('.gallery-item'));
-            
+            const items = Array.from(
+                galleryGrid.querySelectorAll(".gallery-item")
+            );
             items.sort((a, b) => {
                 const aData = getItemData(a);
                 const bData = getItemData(b);
-                
-                switch(sortBy) {
-                    case 'date-asc':
+                switch (sortBy) {
+                    case "date-asc":
                         return new Date(aData.date) - new Date(bData.date);
-                    case 'date-desc':
+                    case "date-desc":
                         return new Date(bData.date) - new Date(aData.date);
-                    case 'title-asc':
+                    case "title-asc":
                         return aData.title.localeCompare(bData.title);
-                    case 'title-desc':
+                    case "title-desc":
                         return bData.title.localeCompare(aData.title);
-                    case 'category':
+                    case "category":
                         return aData.category.localeCompare(bData.category);
                     default:
                         return 0;
                 }
             });
-            
-            // Remove all items and re-append in sorted order
-            items.forEach(item => item.remove());
+            items.forEach((item) => item.remove());
             items.forEach((item, index) => {
                 item.style.animationDelay = `${index * 0.05}s`;
                 galleryGrid.appendChild(item);
             });
         }
-    
         function getItemData(itemElement) {
             return {
                 id: parseInt(itemElement.dataset.id),
-                title: itemElement.querySelector('.gallery-title').textContent,
-                date: itemElement.querySelector('.gallery-date').textContent,
-                category: itemElement.dataset.category
+                title: itemElement.querySelector(".gallery-title").textContent,
+                date: itemElement.querySelector(".gallery-date").textContent,
+                category: itemElement.dataset.category,
             };
         }
-    
         function addSortControls() {
-            const controlsContainer = document.querySelector('.gallery-controls');
+            const controlsContainer = document.querySelector(
+                ".gallery-controls"
+            );
             if (!controlsContainer) return;
-            
-            // Check if sort controls already exist
-            if (controlsContainer.querySelector('.gallery-sort')) return;
-            
-            const sortOptions = document.createElement('div');
-            sortOptions.className = 'gallery-sort';
+            if (controlsContainer.querySelector(".gallery-sort")) return;
+            const sortOptions = document.createElement("div");
+            sortOptions.className = "gallery-sort";
             sortOptions.innerHTML = `
                 <div class="sort-dropdown">
                     <button class="sort-toggle">
@@ -1802,251 +2048,426 @@ window.GalleryContent = {
                     </div>
                 </div>
             `;
-            
             controlsContainer.appendChild(sortOptions);
         }
-    
         function updateFilterCounts(data) {
-            const filterTags = document.querySelectorAll('.filter-tag');
-            
-            filterTags.forEach(tag => {
+            const filterTags = document.querySelectorAll(".filter-tag");
+            filterTags.forEach((tag) => {
                 const category = tag.dataset.filter;
                 let count = 0;
-                
-                if (category === 'all') {
+                if (category === "all") {
                     count = data.length;
                 } else {
-                    count = data.filter(item => item.category === category).length;
+                    count = data.filter((item) => item.category === category)
+                        .length;
                 }
-                
-                // Update count in tag
-                const countSpan = tag.querySelector('.count') || document.createElement('span');
-                countSpan.className = 'count';
+                const countSpan =
+                    tag.querySelector(".count") ||
+                    document.createElement("span");
+                countSpan.className = "count";
                 countSpan.textContent = count;
-                
-                if (!tag.querySelector('.count')) {
+                if (!tag.querySelector(".count")) {
                     tag.appendChild(countSpan);
                 }
             });
         }
-    
         function setupFavoritesSystem() {
-            // Handle like button clicks
-            document.addEventListener('click', function(e) {
-                const likeBtn = e.target.closest('.like-btn');
+            document.addEventListener("click", function (e) {
+                const likeBtn = e.target.closest(".like-btn");
                 if (!likeBtn) return;
-                
                 const id = parseInt(likeBtn.dataset.id, 10);
                 const favorites = getFavorites();
-                
                 if (favorites.includes(id)) {
-                    // Remove from favorites
                     const index = favorites.indexOf(id);
                     favorites.splice(index, 1);
-                    likeBtn.classList.remove('liked');
-                    likeBtn.closest('.gallery-item')?.classList.remove('favorited');
-                    const icon = likeBtn.querySelector('i');
+                    likeBtn.classList.remove("liked");
+                    likeBtn
+                        .closest(".gallery-item")
+                        ?.classList.remove("favorited");
+                    const icon = likeBtn.querySelector("i");
                     if (icon) {
-                        icon.classList.remove('fas');
-                        icon.classList.add('far');
+                        icon.classList.remove("fas");
+                        icon.classList.add("far");
                     }
                 } else {
-                    // Add to favorites
                     favorites.push(id);
-                    likeBtn.classList.add('liked');
-                    likeBtn.closest('.gallery-item')?.classList.add('favorited');
-                    const icon = likeBtn.querySelector('i');
+                    likeBtn.classList.add("liked");
+                    likeBtn
+                        .closest(".gallery-item")
+                        ?.classList.add("favorited");
+                    const icon = likeBtn.querySelector("i");
                     if (icon) {
-                        icon.classList.remove('far');
-                        icon.classList.add('fas');
+                        icon.classList.remove("far");
+                        icon.classList.add("fas");
                     }
-                    
-                    // Show favorite animation
                     showFavoriteAnimation(likeBtn);
                 }
-                
-                // Save favorites to localStorage
-                localStorage.setItem('gallery_favorites', JSON.stringify(favorites));
-                
-                // Update filter counts if favorites filter exists
-                const favoritesFilter = document.querySelector('.filter-tag[data-filter="favorites"]');
+                localStorage.setItem(
+                    "gallery_favorites",
+                    JSON.stringify(favorites)
+                );
+                const favoritesFilter = document.querySelector(
+                    '.filter-tag[data-filter="favorites"]'
+                );
                 if (favoritesFilter) {
-                    const count = favoritesFilter.querySelector('.count');
+                    const count = favoritesFilter.querySelector(".count");
                     if (count) count.textContent = favorites.length;
                 }
             });
-            
-            // Add favorites filter if it doesn't exist
             addFavoritesFilter();
-            
-            // Handle download button clicks
-            document.addEventListener('click', function(e) {
-                const downloadBtn = e.target.closest('.download-btn');
+            document.addEventListener("click", function (e) {
+                const downloadBtn = e.target.closest(".download-btn");
                 if (!downloadBtn) return;
-                
                 const id = parseInt(downloadBtn.dataset.id, 10);
                 const galleryData = getGalleryData();
-                const item = galleryData.find(item => item.id === id);
-                
+                const item = galleryData.find((item) => item.id === id);
                 if (item) {
-                    // Create a temporary link to download the image
                     const link = document.createElement("a");
                     link.href = item.image;
-                    link.download = `${item.title.replace(/\s+/g, '-').toLowerCase()}.jpg`;
+                    link.download = `${item.title
+                        .replace(/\s+/g, "-")
+                        .toLowerCase()}.jpg`;
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
                 }
             });
         }
-    
         function showFavoriteAnimation(likeBtn) {
-            const heart = document.createElement('div');
-            heart.className = 'floating-heart';
+            const heart = document.createElement("div");
+            heart.className = "floating-heart";
             heart.innerHTML = '<i class="fas fa-heart"></i>';
-            
-            // Position the heart at the like button position
             const rect = likeBtn.getBoundingClientRect();
-            heart.style.left = `${rect.left + rect.width/2}px`;
-            heart.style.top = `${rect.top + rect.height/2}px`;
-            
+            heart.style.left = `${rect.left + rect.width / 2}px`;
+            heart.style.top = `${rect.top + rect.height / 2}px`;
             document.body.appendChild(heart);
-            
-            // Remove after animation completes
             setTimeout(() => {
                 heart.remove();
             }, 1000);
         }
-    
         function addFavoritesFilter() {
-            const filterContainer = document.querySelector('.gallery-filter');
+            const filterContainer = document.querySelector(".gallery-filter");
             if (!filterContainer) return;
-            
-            // Check if favorites filter already exists
-            if (filterContainer.querySelector('[data-filter="favorites"]')) return;
-            
+            if (filterContainer.querySelector('[data-filter="favorites"]'))
+                return;
             const favorites = getFavorites();
-            
-            const favoritesTag = document.createElement('div');
-            favoritesTag.className = 'filter-tag';
-            favoritesTag.dataset.filter = 'favorites';
+            const favoritesTag = document.createElement("div");
+            favoritesTag.className = "filter-tag";
+            favoritesTag.dataset.filter = "favorites";
             favoritesTag.innerHTML = `
                 <i class="fas fa-heart"></i> Favorites
                 <span class="count">${favorites.length}</span>
             `;
-            
             filterContainer.appendChild(favoritesTag);
-            
-            // Update filter functionality to handle favorites
-            favoritesTag.addEventListener('click', function() {
+            favoritesTag.addEventListener("click", function () {
                 const favorites = getFavorites();
-                const items = document.querySelectorAll('.gallery-item');
-                
-                // Update active state
-                document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Show only favorited items
-                items.forEach(item => {
+                const items = document.querySelectorAll(".gallery-item");
+                document
+                    .querySelectorAll(".filter-tag")
+                    .forEach((t) => t.classList.remove("active"));
+                this.classList.add("active");
+                items.forEach((item) => {
                     const id = parseInt(item.dataset.id, 10);
                     if (favorites.includes(id)) {
-                        item.style.display = '';
+                        item.style.display = "";
                     } else {
-                        item.style.display = 'none';
+                        item.style.display = "none";
                     }
                 });
             });
-            
-            // Setup empty state "Show All" button
-            const emptyStateButton = document.querySelector('.gallery-empty-state button');
+            const emptyStateButton = document.querySelector(
+                ".gallery-empty-state button"
+            );
             if (emptyStateButton) {
-                emptyStateButton.addEventListener('click', function() {
-                    // Reset all filters
-                    document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
-                    document.querySelector('.filter-tag[data-filter="all"]').classList.add('active');
-                    
-                    // Reset search
-                    const searchInput = document.querySelector('.gallery-search input');
-                    if (searchInput) searchInput.value = '';
-                    
-                    // Show all items
+                emptyStateButton.addEventListener("click", function () {
+                    document
+                        .querySelectorAll(".filter-tag")
+                        .forEach((t) => t.classList.remove("active"));
+                    document
+                        .querySelector('.filter-tag[data-filter="all"]')
+                        .classList.add("active");
+                    const searchInput = document.querySelector(
+                        ".gallery-search input"
+                    );
+                    if (searchInput) searchInput.value = "";
                     filterGalleryItems();
-                    
-                    // Hide empty state
-                    document.querySelector('.gallery-empty-state').style.display = 'none';
+                    document.querySelector(
+                        ".gallery-empty-state"
+                    ).style.display = "none";
                 });
             }
         }
-    
         function getFavorites() {
-            const favoritesStr = localStorage.getItem('gallery_favorites');
+            const favoritesStr = localStorage.getItem("gallery_favorites");
             return favoritesStr ? JSON.parse(favoritesStr) : [];
         }
-    
         function getGalleryData() {
-            // This is a simplified approach; in a real app, you might store this in a more accessible way
-            return [
-                { id: 1, title: "School Memories", description: "Early education journey", image: "images/gallery/school (3).jpg", category: "education", date: "2020-05-15" },
-                { id: 2, title: "College Days", description: "Learning and growing", image: "images/gallery/jh.jpg", category: "education", date: "2021-03-20" },
-                { id: 3, title: "University Life", description: "Higher education", image: "images/gallery/university (1).jpeg", category: "education", date: "2022-02-10" },
-                { id: 4, title: "Public Speaking", description: "Presenting with confidence", image: "images/gallery/publicspeaking (1).jpg", category: "presentations", date: "2021-11-05" },
-                { id: 5, title: "Sports Achievement", description: "Athletic excellence", image: "images/gallery/awards (5).jpg", category: "sports", date: "2020-08-18" },
-                { id: 6, title: "Extracurricular Club", description: "Beyond the classroom", image: "images/gallery/extracurricular (5).jpg", category: "education", date: "2021-04-12" },
-                { id: 7, title: "Tour Adventures", description: "Exploring new places", image: "images/gallery/lol (4).jpg", category: "travel", date: "2022-07-22" },
-                { id: 8, title: "School Friends", description: "Childhood companions", image: "images/gallery/lol (5).jpg", category: "friends", date: "2019-09-10" },
-                { id: 9, title: "Coding Competition", description: "Academic excellence", image: "images/gallery/mp.jpg", category: "education", date: "2021-12-01" },
-                { id: 10, title: "University Presentation", description: "Research showcase", image: "images/gallery/IMG-20241105-WA0001.jpg", category: "presentations", date: "2023-03-15" },
-                { id: 11, title: "Sports Tournament", description: "Team championship", image: "images/gallery/sport (2).jpg", category: "sports", date: "2022-06-10" },
-                { id: 12, title: "Educational Tour", description: "Learning excursion", image: "images/gallery/college (2).jpg", category: "education", date: "2020-10-05" },
-                { id: 13, title: "Debate Competition", description: "Public speaking skills", image: "images/gallery/publicspeaking (3).jpg", category: "presentations", date: "2021-05-20" },
-                { id: 14, title: "Science Fair", description: "Innovation display", image: "images/gallery/training (3).jpg", category: "education", date: "2022-01-25" },
-                { id: 15, title: "Cultural Program", description: "Celebrating diversity", image: "images/gallery/extracurricular (1).jpg", category: "events", date: "2021-09-30" },
-                { id: 16, title: "College Graduation", description: "Achievement milestone", image: "images/gallery/fdf.jpg", category: "education", date: "2023-02-28" },
-                { id: 17, title: "Sports Day", description: "Athletic competitions", image: "images/gallery/aportday.jpg", category: "sports", date: "2020-12-12" },
-                { id: 18, title: "Field Trip", description: "Outdoor learning", image: "images/gallery/145.jpg", category: "education", date: "2021-08-14" },
-                { id: 19, title: "University Friends", description: "Academic companions", image: "images/gallery/555.jpg", category: "friends", date: "2022-03-18" },
-                { id: 20, title: "Speech Competition", description: "Oratorical excellence", image: "images/gallery/sp.jpg", category: "presentations", date: "2021-10-22" },
-                { id: 21, title: "Academic Workshop", description: "Specialized training", image: "images/gallery/lol (2).jpg", category: "education", date: "2022-05-11" },
-                { id: 22, title: "Adventure Tour", description: "Exploring nature", image: "images/gallery/place (8).jpg", category: "travel", date: "2023-01-19" },
-                { id: 23, title: "Public speaking", description: "Stage talent", image: "images/gallery/lok.jpg", category: "presentations", date: "2021-07-07" },
-                { id: 24, title: "College Festival", description: "Campus celebration", image: "images/gallery/IMG-20240623-WA0001.jpg", category: "events", date: "2022-11-03" },
-                { id: 25, title: "University Conference", description: "Academic discourse", image: "images/gallery/conp.jpg", category: "events", date: "2023-04-09" },
-                { id: 26, title: "Team Sports", description: "Collaborative athletics", image: "images/gallery/sport (2).jpg", category: "sports", date: "2021-06-16" },
-                { id: 27, title: "Class Project", description: "Collaborative learning", image: "images/gallery/lol (8).jpg", category: "education", date: "2022-09-21" },
-                { id: 28, title: "Historic Tour", description: "Cultural exploration", image: "images/gallery/place (7).jpg", category: "travel", date: "2021-03-29" },
-                { id: 29, title: "Leadership Camp", description: "Developing potential", image: "images/gallery/df.jpg", category: "events", date: "2022-08-17" }
+             return [
+                {
+                    id: 1,
+                    title: "School Memories",
+                    description: "Early education journey",
+                    image: "images/gallery/school (3).jpg",
+                    category: "education",
+                    date: "2020-05-15",
+                },
+                {
+                    id: 2,
+                    title: "College Days",
+                    description: "Learning and growing",
+                    image: "images/gallery/jh.jpg",
+                    category: "education",
+                    date: "2021-03-20",
+                },
+                {
+                    id: 3,
+                    title: "University Life",
+                    description: "Higher education",
+                    image: "images/gallery/university (1).jpeg",
+                    category: "education",
+                    date: "2022-02-10",
+                },
+                {
+                    id: 4,
+                    title: "Public Speaking",
+                    description: "Presenting with confidence",
+                    image: "images/gallery/publicspeaking (1).jpg",
+                    category: "presentations",
+                    date: "2021-11-05",
+                },
+                {
+                    id: 5,
+                    title: "Sports Achievement",
+                    description: "Athletic excellence",
+                    image: "images/gallery/awards (5).jpg",
+                    category: "sports",
+                    date: "2020-08-18",
+                },
+                {
+                    id: 6,
+                    title: "Extracurricular Club",
+                    description: "Beyond the classroom",
+                    image: "images/gallery/extracurricular (5).jpg",
+                    category: "education",
+                    date: "2021-04-12",
+                },
+                {
+                    id: 7,
+                    title: "Tour Adventures",
+                    description: "Exploring new places",
+                    image: "images/gallery/lol (4).jpg",
+                    category: "travel",
+                    date: "2022-07-22",
+                },
+                {
+                    id: 8,
+                    title: "School Friends",
+                    description: "Childhood companions",
+                    image: "images/gallery/lol (5).jpg",
+                    category: "friends",
+                    date: "2019-09-10",
+                },
+                {
+                    id: 9,
+                    title: "Coding Competition",
+                    description: "Academic excellence",
+                    image: "images/gallery/mp.jpg",
+                    category: "education",
+                    date: "2021-12-01",
+                },
+                {
+                    id: 10,
+                    title: "University Presentation",
+                    description: "Research showcase",
+                    image: "images/gallery/IMG-20241105-WA0001.jpg",
+                    category: "presentations",
+                    date: "2023-03-15",
+                },
+                {
+                    id: 11,
+                    title: "Sports Tournament",
+                    description: "Team championship",
+                    image: "images/gallery/sport (2).jpg",
+                    category: "sports",
+                    date: "2022-06-10",
+                },
+                {
+                    id: 12,
+                    title: "Educational Tour",
+                    description: "Learning excursion",
+                    image: "images/gallery/college (2).jpg",
+                    category: "education",
+                    date: "2020-10-05",
+                },
+                {
+                    id: 13,
+                    title: "Debate Competition",
+                    description: "Public speaking skills",
+                    image: "images/gallery/publicspeaking (3).jpg",
+                    category: "presentations",
+                    date: "2021-05-20",
+                },
+                {
+                    id: 14,
+                    title: "Science Fair",
+                    description: "Innovation display",
+                    image: "images/gallery/training (3).jpg",
+                    category: "education",
+                    date: "2022-01-25",
+                },
+                {
+                    id: 15,
+                    title: "Cultural Program",
+                    description: "Celebrating diversity",
+                    image: "images/gallery/extracurricular (1).jpg",
+                    category: "events",
+                    date: "2021-09-30",
+                },
+                {
+                    id: 16,
+                    title: "College Graduation",
+                    description: "Achievement milestone",
+                    image: "images/gallery/fdf.jpg",
+                    category: "education",
+                    date: "2023-02-28",
+                },
+                {
+                    id: 17,
+                    title: "Sports Day",
+                    description: "Athletic competitions",
+                    image: "images/gallery/aportday.jpg",
+                    category: "sports",
+                    date: "2020-12-12",
+                },
+                {
+                    id: 18,
+                    title: "Field Trip",
+                    description: "Outdoor learning",
+                    image: "images/gallery/145.jpg",
+                    category: "education",
+                    date: "2021-08-14",
+                },
+                {
+                    id: 19,
+                    title: "University Friends",
+                    description: "Academic companions",
+                    image: "images/gallery/555.jpg",
+                    category: "friends",
+                    date: "2022-03-18",
+                },
+                {
+                    id: 20,
+                    title: "Speech Competition",
+                    description: "Oratorical excellence",
+                    image: "images/gallery/sp.jpg",
+                    category: "presentations",
+                    date: "2021-10-22",
+                },
+                {
+                    id: 21,
+                    title: "Academic Workshop",
+                    description: "Specialized training",
+                    image: "images/gallery/lol (2).jpg",
+                    category: "education",
+                    date: "2022-05-11",
+                },
+                {
+                    id: 22,
+                    title: "Adventure Tour",
+                    description: "Exploring nature",
+                    image: "images/gallery/place (8).jpg",
+                    category: "travel",
+                    date: "2023-01-19",
+                },
+                {
+                    id: 23,
+                    title: "Public speaking",
+                    description: "Stage talent",
+                    image: "images/gallery/lok.jpg",
+                    category: "presentations",
+                    date: "2021-07-07",
+                },
+                {
+                    id: 24,
+                    title: "College Festival",
+                    description: "Campus celebration",
+                    image: "images/gallery/IMG-20240623-WA0001.jpg",
+                    category: "events",
+                    date: "2022-11-03",
+                },
+                {
+                    id: 25,
+                    title: "University Conference",
+                    description: "Academic discourse",
+                    image: "images/gallery/conp.jpg",
+                    category: "events",
+                    date: "2023-04-09",
+                },
+                {
+                    id: 26,
+                    title: "Team Sports",
+                    description: "Collaborative athletics",
+                    image: "images/gallery/sport (2).jpg",
+                    category: "sports",
+                    date: "2021-06-16",
+                },
+                {
+                    id: 27,
+                    title: "Class Project",
+                    description: "Collaborative learning",
+                    image: "images/gallery/lol (8).jpg",
+                    category: "education",
+                    date: "2022-09-21",
+                },
+                {
+                    id: 28,
+                    title: "Historic Tour",
+                    description: "Cultural exploration",
+                    image: "images/gallery/place (7).jpg",
+                    category: "travel",
+                    date: "2021-03-29",
+                },
+                {
+                    id: 29,
+                    title: "Leadership Camp",
+                    description: "Developing potential",
+                    image: "images/gallery/df.jpg",
+                    category: "events",
+                    date: "2022-08-17",
+                },
             ];
         }
-    
         function setupLazyLoading() {
-            // Use Intersection Observer to load images as they come into view
-            if ('IntersectionObserver' in window) {
-                const imageObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            const src = img.getAttribute('data-src');
-                            if (src) {
-                                img.src = src;
-                                img.removeAttribute('data-src');
-                                img.classList.add('loaded');
+            if ("IntersectionObserver" in window) {
+                const imageObserver = new IntersectionObserver(
+                    (entries, observer) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                const img = entry.target;
+                                const src = img.getAttribute("data-src");
+                                if (src) {
+                                    img.src = src;
+                                    img.removeAttribute("data-src");
+                                    img.classList.add("loaded");
+                                }
+                                observer.unobserve(img);
                             }
-                            observer.unobserve(img);
-                        }
+                        });
+                    }
+                );
+                document
+                    .querySelectorAll(".gallery-img[data-src]")
+                    .forEach((img) => {
+                        imageObserver.observe(img);
                     });
-                });
-                
-                // Observe all gallery images with data-src
-                document.querySelectorAll('.gallery-img[data-src]').forEach(img => {
-                    imageObserver.observe(img);
-                });
             } else {
-                // Fallback for browsers that don't support Intersection Observer
-                document.querySelectorAll('.gallery-img[data-src]').forEach(img => {
-                    img.src = img.getAttribute('data-src');
-                    img.removeAttribute('data-src');
-                });
+                document
+                    .querySelectorAll(".gallery-img[data-src]")
+                    .forEach((img) => {
+                        img.src = img.getAttribute("data-src");
+                        img.removeAttribute("data-src");
+                    });
             }
-        }        
-    }
+        }
+    },
 };

@@ -1,5 +1,5 @@
 window.InterestsContent = {
-    getHTML: function() {
+    getHTML: function () {
         return `
             <div class="container">
                 <div class="section-title-container" data-aos="fade-up">
@@ -717,7 +717,7 @@ window.InterestsContent = {
             </div>
                 `;
     },
-    init: function() {
+    init: function () {
         initializeInterestsSection();
         function initializeInterestsSection() {
             const interestTabs = document.querySelectorAll(".interest-tab");
@@ -725,7 +725,9 @@ window.InterestsContent = {
             if (interestTabs.length > 0) {
                 interestTabs.forEach((tab) => {
                     tab.addEventListener("click", function () {
-                        interestTabs.forEach((t) => t.classList.remove("active"));
+                        interestTabs.forEach((t) =>
+                            t.classList.remove("active")
+                        );
                         this.classList.add("active");
                         const tabId = this.getAttribute("data-tab");
                         tabContents.forEach((content) => {
@@ -766,7 +768,9 @@ window.InterestsContent = {
                     }
                     shine.style.backgroundImage = `
               radial-gradient(
-                circle at ${(x / rect.width) * 100}% ${(y / rect.height) * 100}%, 
+                circle at ${(x / rect.width) * 100}% ${
+                        (y / rect.height) * 100
+                    }%, 
                 rgba(255, 255, 255, 0.4), 
                 transparent
               )
@@ -791,6 +795,6 @@ window.InterestsContent = {
                     });
                 }
             });
-        }        
-    }
+        }
+    },
 };

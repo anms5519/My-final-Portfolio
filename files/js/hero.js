@@ -1,6 +1,5 @@
-// hero.js - Contains HTML content and functionality for the hero section
 window.HeroContent = {
-    getHTML: function() {
+    getHTML: function () {
         return `
             <div class="hero-content">
                 <img
@@ -120,29 +119,21 @@ window.HeroContent = {
             </div>
         `;
     },
-    
-    init: function() {
-        // Initialize hero-specific functionality here if needed
-        // This function will be called after the HTML has been inserted
-        
-        // Example: Add animation or interactive effects to the hero section
-        const heroLogo = document.getElementById('hero-logo');
+    init: function () {
+        const heroLogo = document.getElementById("hero-logo");
         if (heroLogo) {
-            heroLogo.addEventListener('click', function() {
-                this.classList.add('pulse');
+            heroLogo.addEventListener("click", function () {
+                this.classList.add("pulse");
                 setTimeout(() => {
-                    this.classList.remove('pulse');
+                    this.classList.remove("pulse");
                 }, 1000);
             });
         }
-        
-        // Add hover effects to cosmic bubbles
-        const cosmicBubbles = document.querySelectorAll('.cosmic-bubble');
-        cosmicBubbles.forEach(bubble => {
-            bubble.addEventListener('mouseenter', function() {
-                const section = this.getAttribute('data-section');
-                // You could display a tooltip or highlight effect here
+        const cosmicBubbles = document.querySelectorAll(".cosmic-bubble");
+        cosmicBubbles.forEach((bubble) => {
+            bubble.addEventListener("mouseenter", function () {
+                const section = this.getAttribute("data-section");
             });
         });
-    }
+    },
 };

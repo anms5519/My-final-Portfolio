@@ -18,7 +18,7 @@
         let messageSearchIndex = {};
         let voiceEnabled = false;
         let cachedResponses = {};
-        let continuousListeningMode = false; 
+        let continuousListeningMode = false;
         let analyticsData = {
             questionTopics: {},
             sessionsCount: 0,
@@ -28,10 +28,9 @@
                 interactions: 0,
                 topics: [],
                 duration: 0,
-                lastInteraction: null
+                lastInteraction: null,
             },
-        }; 
-        // Try to load analytics data from localStorage on initialization
+        };
         try {
             const savedAnalytics = localStorage.getItem("chatbotAnalytics");
             if (savedAnalytics) {
@@ -43,8 +42,8 @@
                         interactions: 0,
                         topics: [],
                         duration: 0,
-                        lastInteraction: null
-                    }
+                        lastInteraction: null,
+                    },
                 };
                 console.log("Analytics data loaded from storage");
             }
@@ -798,24 +797,20 @@
             const overlay = document.createElement("div");
             overlay.className = "chatbot-overlay";
             const modal = document.createElement("div");
-            modal.className = "chatbot-modal" + (customClass ? ` ${customClass}` : '');
+            modal.className =
+                "chatbot-modal" + (customClass ? ` ${customClass}` : "");
             const titleElement = document.createElement("h3");
             titleElement.className = "chatbot-modal-title";
             titleElement.textContent = title;
             modal.appendChild(titleElement);
             const contentElement = document.createElement("div");
             contentElement.className = "chatbot-modal-content";
-            
-            // Support for HTML content
-            if (content.includes('<')) {
+            if (content.includes("<")) {
                 contentElement.innerHTML = content;
             } else {
                 contentElement.textContent = content;
             }
-            
             modal.appendChild(contentElement);
-            
-            // Only add buttons container if buttons are provided
             if (buttons && buttons.length > 0) {
                 const buttonsContainer = document.createElement("div");
                 buttonsContainer.className = "chatbot-modal-buttons";
@@ -828,7 +823,6 @@
                 });
                 modal.appendChild(buttonsContainer);
             }
-            
             chatbotContainer.appendChild(overlay);
             chatbotContainer.appendChild(modal);
         };
@@ -1264,7 +1258,6 @@
             chatbotMessages.appendChild(messageContainer);
             chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
             if (!isUser) {
-              
             }
             return { messageContainer, contentContainer: content };
         };
@@ -1370,8 +1363,6 @@
             const normalizedInput = input.toLowerCase();
             let detectedKeywords = [];
             let multiResponses = [];
-
-            // Check for social media profiles in the input
             for (const [platform, url] of Object.entries(socialMediaProfiles)) {
                 const platformVariations = [
                     platform,
@@ -1427,12 +1418,14 @@
                     });
                 }
             }
-            
-            // Check for personal information fields
-            const flattenObject = (obj, prefix = '') => {
+            const flattenObject = (obj, prefix = "") => {
                 return Object.keys(obj).reduce((acc, key) => {
-                    const pre = prefix.length ? prefix + '.' : '';
-                    if (typeof obj[key] === 'object' && obj[key] !== null && !(obj[key] instanceof Date)) {
+                    const pre = prefix.length ? prefix + "." : "";
+                    if (
+                        typeof obj[key] === "object" &&
+                        obj[key] !== null &&
+                        !(obj[key] instanceof Date)
+                    ) {
                         Object.assign(acc, flattenObject(obj[key], pre + key));
                     } else {
                         acc[pre + key] = obj[key];
@@ -1440,163 +1433,182 @@
                     return acc;
                 }, {});
             };
-            
             const flattenedPersonalInfo = flattenObject(personalInfo);
-            
-            // Direct field matching for personal information
             for (const [key, value] of Object.entries(personalInfo)) {
-                if (typeof value !== 'object' || value instanceof Date) {
-                    // For direct properties like fullName, gender, etc.
+                if (typeof value !== "object" || value instanceof Date) {
                     if (normalizedInput.includes(key.toLowerCase())) {
                         detectedKeywords.push(key);
                         let formattedValue = value;
-                        
                         if (value instanceof Date) {
-                            formattedValue = value.toLocaleDateString('en-US', {
-                                year: 'numeric', 
-                                month: 'long', 
-                                day: 'numeric'
+                            formattedValue = value.toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
                             });
                         }
-                        
                         const response = `My ${key} is ${formattedValue}.`;
                         multiResponses.push({
                             category: key,
                             response: response,
-                            priority: 7
+                            priority: 7,
                         });
                     }
                 }
             }
-            
-            // Special case handling for name variations
-
-            
-            // Special case for contact information
-            if (normalizedInput.includes("email") || 
-                normalizedInput.includes("mail") || 
-                normalizedInput.includes("contact email")) {
+            if (
+                normalizedInput.includes("email") ||
+                normalizedInput.includes("mail") ||
+                normalizedInput.includes("contact email")
+            ) {
                 detectedKeywords.push("email");
                 multiResponses.push({
                     category: "email",
                     response: `My email address is ${personalInfo.contact.email}.`,
-                    priority: 7
+                    priority: 7,
                 });
             }
-            
-            if (normalizedInput.includes("mobile") || 
-                normalizedInput.includes("phone") || 
+            if (
+                normalizedInput.includes("mobile") ||
+                normalizedInput.includes("phone") ||
                 normalizedInput.includes("call") ||
-                normalizedInput.includes("number")) {
+                normalizedInput.includes("number")
+            ) {
                 detectedKeywords.push("phone");
                 multiResponses.push({
                     category: "phone",
                     response: `My mobile number is ${personalInfo.contact.mobile}. I also have an alternate number: ${personalInfo.contact.alternateMobile}.`,
-                    priority: 7
+                    priority: 7,
                 });
             }
-            
-            // Address handling
-            if (normalizedInput.includes("address") || 
+            if (
+                normalizedInput.includes("address") ||
                 normalizedInput.includes("where do you live") ||
                 normalizedInput.includes("where you live") ||
-                normalizedInput.includes("home")) {
-                if (normalizedInput.includes("permanent") || normalizedInput.includes("original")) {
+                normalizedInput.includes("home")
+            ) {
+                if (
+                    normalizedInput.includes("permanent") ||
+                    normalizedInput.includes("original")
+                ) {
                     detectedKeywords.push("permanent_address");
                     multiResponses.push({
                         category: "permanent_address",
                         response: `My permanent address is: ${personalInfo.addresses.permanent}`,
-                        priority: 7
+                        priority: 7,
                     });
-                } else if (normalizedInput.includes("present") || normalizedInput.includes("current")) {
+                } else if (
+                    normalizedInput.includes("present") ||
+                    normalizedInput.includes("current")
+                ) {
                     detectedKeywords.push("present_address");
                     multiResponses.push({
                         category: "present_address",
                         response: `My present address is: ${personalInfo.addresses.present}`,
-                        priority: 7
+                        priority: 7,
                     });
                 } else {
                     detectedKeywords.push("addresses");
                     multiResponses.push({
                         category: "addresses",
                         response: `My present address is: ${personalInfo.addresses.present}\nMy permanent address is: ${personalInfo.addresses.permanent}`,
-                        priority: 7
+                        priority: 7,
                     });
                 }
             }
-            
-            // Parents information
-            if (normalizedInput.includes("father") || 
-                normalizedInput.includes("dad") || 
-                normalizedInput.includes("papa")) {
+            if (
+                normalizedInput.includes("father") ||
+                normalizedInput.includes("dad") ||
+                normalizedInput.includes("papa")
+            ) {
                 detectedKeywords.push("father");
                 multiResponses.push({
                     category: "father",
-                    response: `My father's name is ${personalInfo.parents.father.name}. He is a ${personalInfo.parents.father.profession.toLowerCase()} by profession. His national ID number is ${personalInfo.parents.father.nationalID}.`,
-                    priority: 7
+                    response: `My father's name is ${
+                        personalInfo.parents.father.name
+                    }. He is a ${personalInfo.parents.father.profession.toLowerCase()} by profession. His national ID number is ${
+                        personalInfo.parents.father.nationalID
+                    }.`,
+                    priority: 7,
                 });
             }
-            
-            if (normalizedInput.includes("mother") || 
-                normalizedInput.includes("mom") || 
-                normalizedInput.includes("mum")) {
+            if (
+                normalizedInput.includes("mother") ||
+                normalizedInput.includes("mom") ||
+                normalizedInput.includes("mum")
+            ) {
                 detectedKeywords.push("mother");
                 multiResponses.push({
                     category: "mother",
-                    response: `My mother's name is ${personalInfo.parents.mother.name}. She is a ${personalInfo.parents.mother.profession.toLowerCase()} by profession. Her national ID number is ${personalInfo.parents.mother.nationalID}.`,
-                    priority: 7
+                    response: `My mother's name is ${
+                        personalInfo.parents.mother.name
+                    }. She is a ${personalInfo.parents.mother.profession.toLowerCase()} by profession. Her national ID number is ${
+                        personalInfo.parents.mother.nationalID
+                    }.`,
+                    priority: 7,
                 });
             }
-            
-            // Emergency contact
-            if (normalizedInput.includes("emergency") || 
-                normalizedInput.includes("emergency contact") || 
-                normalizedInput.includes("emergency number")) {
+            if (
+                normalizedInput.includes("emergency") ||
+                normalizedInput.includes("emergency contact") ||
+                normalizedInput.includes("emergency number")
+            ) {
                 detectedKeywords.push("emergency");
                 multiResponses.push({
                     category: "emergency",
                     response: `My emergency contact is ${personalInfo.emergency.name} (${personalInfo.emergency.relationship}). Contact number: ${personalInfo.emergency.telephone}. Address: ${personalInfo.emergency.address}`,
-                    priority: 7
+                    priority: 7,
                 });
             }
-            
-            // Passport details
-            if (normalizedInput.includes("passport") || 
-                normalizedInput.includes("travel document") || 
-                normalizedInput.includes("passport number")) {
+            if (
+                normalizedInput.includes("passport") ||
+                normalizedInput.includes("travel document") ||
+                normalizedInput.includes("passport number")
+            ) {
                 if (normalizedInput.includes("number")) {
                     detectedKeywords.push("passport_number");
                     multiResponses.push({
                         category: "passport_number",
                         response: `My passport number is ${personalInfo.passport.number}.`,
-                        priority: 7
+                        priority: 7,
                     });
-                } else if (normalizedInput.includes("expiry") || normalizedInput.includes("expiration")) {
+                } else if (
+                    normalizedInput.includes("expiry") ||
+                    normalizedInput.includes("expiration")
+                ) {
                     detectedKeywords.push("passport_expiry");
                     multiResponses.push({
                         category: "passport_expiry",
-                        response: `My passport expires on ${personalInfo.passport.expiryDate.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})}.`,
-                        priority: 7
+                        response: `My passport expires on ${personalInfo.passport.expiryDate.toLocaleDateString(
+                            "en-US",
+                            { year: "numeric", month: "long", day: "numeric" }
+                        )}.`,
+                        priority: 7,
                     });
                 } else {
                     detectedKeywords.push("passport_details");
-                    const issueDate = personalInfo.passport.issueDate.toLocaleDateString('en-US', {
-                        year: 'numeric', month: 'long', day: 'numeric'
-                    });
-                    const expiryDate = personalInfo.passport.expiryDate.toLocaleDateString('en-US', {
-                        year: 'numeric', month: 'long', day: 'numeric'
-                    });
-                    
+                    const issueDate = personalInfo.passport.issueDate.toLocaleDateString(
+                        "en-US",
+                        {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                        }
+                    );
+                    const expiryDate = personalInfo.passport.expiryDate.toLocaleDateString(
+                        "en-US",
+                        {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                        }
+                    );
                     multiResponses.push({
                         category: "passport_details",
                         response: `My passport details:\n- Number: ${personalInfo.passport.number}\n- Type: ${personalInfo.passport.type}\n- Country Code: ${personalInfo.passport.countryCode}\n- Issue Date: ${issueDate}\n- Expiry Date: ${expiryDate}\n- Issuing Authority: ${personalInfo.passport.issuingAuthority}`,
-                        priority: 7
+                        priority: 7,
                     });
                 }
             }
-            
-            // Add more specific checks for other nested properties in personalInfo as needed
-            
             if (
                 normalizedInput.includes("that") ||
                 normalizedInput.includes("you mentioned") ||
@@ -1753,11 +1765,7 @@
                     priority: 6,
                 },
                 {
-                    keywords: [
-                        "contact",
-                        "reach you",
-                        "get in touch",
-                    ],
+                    keywords: ["contact", "reach you", "get in touch"],
                     category: "contact",
                     priority: 6,
                 },
@@ -1897,10 +1905,7 @@
                     priority: 4,
                 },
                 {
-                    keywords: [
-                        "family",
-                        "parents",
-                    ],
+                    keywords: ["family", "parents"],
                     category: "family",
                     priority: 4,
                 },
@@ -2832,20 +2837,16 @@ I'd love to tell you more about my skills, projects, and experiences . what are 
                 analyticsData.currentSession.startTime = new Date().toISOString();
                 analyticsData.sessionsCount++;
             }
-            
             const now = new Date();
-            
-            // Calculate session duration if there was a previous interaction
             if (analyticsData.currentSession.lastInteraction) {
-                const lastTime = new Date(analyticsData.currentSession.lastInteraction);
-                const timeDiff = now - lastTime; // in milliseconds
+                const lastTime = new Date(
+                    analyticsData.currentSession.lastInteraction
+                );
+                const timeDiff = now - lastTime; 
                 analyticsData.currentSession.duration += timeDiff;
             }
-            
-            // Update last interaction time
             analyticsData.currentSession.lastInteraction = now.toISOString();
             analyticsData.currentSession.interactions++;
-            
             const topicKeywords = [
                 "skill",
                 "project",
@@ -2896,7 +2897,7 @@ I'd love to tell you more about my skills, projects, and experiences . what are 
                         interactions: 0,
                         topics: [],
                         duration: 0,
-                        lastInteraction: null
+                        lastInteraction: null,
                     };
                 }
             } catch (e) {
@@ -2918,7 +2919,7 @@ I'd love to tell you more about my skills, projects, and experiences . what are 
                     interactions: 0,
                     topics: [],
                     duration: 0,
-                    lastInteraction: null
+                    lastInteraction: null,
                 };
                 try {
                     localStorage.setItem(
@@ -2931,82 +2932,81 @@ I'd love to tell you more about my skills, projects, and experiences . what are 
             }
         };
         const showAnalyticsView = () => {
-            // Calculate total duration in a human-readable format
             const formatDuration = (ms) => {
                 const seconds = Math.floor((ms / 1000) % 60);
                 const minutes = Math.floor((ms / (1000 * 60)) % 60);
                 const hours = Math.floor(ms / (1000 * 60 * 60));
-                
-                return hours > 0 
+                return hours > 0
                     ? `${hours}h ${minutes}m ${seconds}s`
-                    : minutes > 0 
-                        ? `${minutes}m ${seconds}s` 
-                        : `${seconds}s`;
+                    : minutes > 0
+                    ? `${minutes}m ${seconds}s`
+                    : `${seconds}s`;
             };
-            
-            // Current session duration
             let currentDuration = analyticsData.currentSession.duration;
             if (analyticsData.currentSession.lastInteraction) {
-                const lastTime = new Date(analyticsData.currentSession.lastInteraction);
+                const lastTime = new Date(
+                    analyticsData.currentSession.lastInteraction
+                );
                 const now = new Date();
-                currentDuration += (now - lastTime);
+                currentDuration += now - lastTime;
             }
-            
-            // Generate top topics
             const topTopics = Object.entries(analyticsData.questionTopics)
                 .sort((a, b) => b[1] - a[1])
                 .slice(0, 5)
                 .map(([topic, count]) => `${topic}: ${count} questions`);
-                
-            const topicsHTML = topTopics.length > 0
-                ? `<ul>${topTopics.map(topic => `<li>${topic}</li>`).join('')}</ul>`
-                : '<p>No topics recorded yet</p>';
-                
-            const avgInteractions = analyticsData.interactionsPerSession.length > 0
-                ? (analyticsData.interactionsPerSession.reduce((sum, val) => sum + val, 0) / 
-                   analyticsData.interactionsPerSession.length).toFixed(1)
-                : 'N/A';
-            
+            const topicsHTML =
+                topTopics.length > 0
+                    ? `<ul>${topTopics
+                          .map((topic) => `<li>${topic}</li>`)
+                          .join("")}</ul>`
+                    : "<p>No topics recorded yet</p>";
+            const avgInteractions =
+                analyticsData.interactionsPerSession.length > 0
+                    ? (
+                          analyticsData.interactionsPerSession.reduce(
+                              (sum, val) => sum + val,
+                              0
+                          ) / analyticsData.interactionsPerSession.length
+                      ).toFixed(1)
+                    : "N/A";
             const analyticsHTML = `
                 <div class="analytics-container">
                     <h3>Conversation Analytics</h3>
-                    
                     <div class="analytics-section">
                         <h4>Current Session</h4>
                         <p>Duration: ${formatDuration(currentDuration)}</p>
-                        <p>Interactions: ${analyticsData.currentSession.interactions}</p>
-                        <p>Topics: ${analyticsData.currentSession.topics.join(', ') || 'None'}</p>
+                        <p>Interactions: ${
+                            analyticsData.currentSession.interactions
+                        }</p>
+                        <p>Topics: ${
+                            analyticsData.currentSession.topics.join(", ") ||
+                            "None"
+                        }</p>
                     </div>
-                    
                     <div class="analytics-section">
                         <h4>Overall Stats</h4>
                         <p>Total Sessions: ${analyticsData.sessionsCount}</p>
                         <p>Average Interactions per Session: ${avgInteractions}</p>
                     </div>
-                    
                     <div class="analytics-section">
                         <h4>Popular Topics</h4>
                         ${topicsHTML}
                     </div>
-                    
                     <div class="analytics-actions">
                         <button id="export-analytics" class="analytics-btn">Export Data</button>
                         <button id="close-analytics" class="analytics-btn">Close</button>
                     </div>
                 </div>
             `;
-            
             showModal({
                 title: "Conversation Analytics",
                 content: analyticsHTML,
                 customClass: "analytics-modal",
-                buttons: []
+                buttons: [],
             });
-            
-            // Add styles for the analytics view
-            if (!document.getElementById('analytics-styles')) {
-                const styles = document.createElement('style');
-                styles.id = 'analytics-styles';
+            if (!document.getElementById("analytics-styles")) {
+                const styles = document.createElement("style");
+                styles.id = "analytics-styles";
                 styles.textContent = `
                     .analytics-modal {
                         width: 90% !important;
@@ -3061,29 +3061,26 @@ I'd love to tell you more about my skills, projects, and experiences . what are 
                 `;
                 document.head.appendChild(styles);
             }
-            
-            // Set up button event listeners
             setTimeout(() => {
-                const exportBtn = document.getElementById('export-analytics');
-                const closeBtn = document.getElementById('close-analytics');
-                
+                const exportBtn = document.getElementById("export-analytics");
+                const closeBtn = document.getElementById("close-analytics");
                 if (exportBtn) {
-                    exportBtn.addEventListener('click', exportAnalytics);
+                    exportBtn.addEventListener("click", exportAnalytics);
                 }
-                
                 if (closeBtn) {
-                    closeBtn.addEventListener('click', closeModal);
+                    closeBtn.addEventListener("click", closeModal);
                 }
             }, 100);
         };
-        
         const exportAnalytics = () => {
             const dataStr = JSON.stringify(analyticsData, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
+            const blob = new Blob([dataStr], { type: "application/json" });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
+            const a = document.createElement("a");
             a.href = url;
-            a.download = `chatbot-analytics-${new Date().toISOString().slice(0, 10)}.json`;
+            a.download = `chatbot-analytics-${new Date()
+                .toISOString()
+                .slice(0, 10)}.json`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -3104,7 +3101,7 @@ I'd love to tell you more about my skills, projects, and experiences . what are 
         }
         if (chatbotClose) {
             chatbotClose.addEventListener("click", () => {
-                chatbotContainer.classList.add("chatbot-closed");  
+                chatbotContainer.classList.add("chatbot-closed");
                 endAnalyticsSession();
             });
         }

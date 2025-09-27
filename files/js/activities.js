@@ -1,5 +1,5 @@
 window.ActivitiesContent = {
-    getHTML: function() {
+    getHTML: function () {
         return `
             <div class="container">
                 <h2 class="section-title" data-aos="fade-right">
@@ -472,7 +472,7 @@ window.ActivitiesContent = {
             </div>
                 `;
     },
-    init: function() {
+    init: function () {
         initializeActivitiesSection();
         enrichActivityCards();
         function initializeActivitiesSection() {
@@ -481,7 +481,9 @@ window.ActivitiesContent = {
             if (activityTabs.length > 0) {
                 activityTabs.forEach((tab) => {
                     tab.addEventListener("click", function () {
-                        activityTabs.forEach((t) => t.classList.remove("active"));
+                        activityTabs.forEach((t) =>
+                            t.classList.remove("active")
+                        );
                         this.classList.add("active");
                         const tabId = this.getAttribute("data-tab");
                         tabContents.forEach((content) => {
@@ -502,7 +504,8 @@ window.ActivitiesContent = {
                     activityCards.forEach((card) => {
                         if (
                             filterValue === "all" ||
-                            card.getAttribute("data-activity-type") === filterValue
+                            card.getAttribute("data-activity-type") ===
+                                filterValue
                         ) {
                             card.style.display = "block";
                         } else {
@@ -551,7 +554,9 @@ window.ActivitiesContent = {
                     }, index * 100);
                 });
             };
-            const activitiesSection = document.querySelector(".activities-section");
+            const activitiesSection = document.querySelector(
+                ".activities-section"
+            );
             if (activitiesSection) {
                 const observer = new IntersectionObserver(
                     (entries) => {
@@ -573,12 +578,13 @@ window.ActivitiesContent = {
             );
             activityCards.forEach((card) => {
                 const title = card.querySelector("h3")?.textContent || "";
-                const role = card.querySelector(".activity-role")?.textContent || "";
+                const role =
+                    card.querySelector(".activity-role")?.textContent || "";
                 const description =
                     card.querySelector(".activity-body p")?.textContent || "";
                 const searchText = `${title} ${role} ${description}`.toLowerCase();
                 card.setAttribute("data-activity-search", searchText);
             });
-        }       
-    }
+        }
+    },
 };

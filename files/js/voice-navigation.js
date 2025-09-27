@@ -615,8 +615,8 @@
         }
         function navigateByVoice(command) {
             const sections = {
-                home: "#hero", 
-                top: "#hero", 
+                home: "#hero",
+                top: "#hero",
                 about: "#about",
                 education: "#education",
                 certifications: "#certifications",
@@ -631,23 +631,23 @@
                 activities: "#activities",
                 gallery: "#gallery",
                 interests: "#interests",
-                languages: "#legendary-languages-section", 
+                languages: "#legendary-languages-section",
                 resume: "#resume-access-vault",
                 contact: "#contact",
-                summary: "#about", 
-                introduction: "#about", 
-                achievements: "#certifications", 
-                expertise: "#skills", 
-                experience: "#work", 
-                research: "#projects", 
-                portfolio: "#projects", 
-                workshops: "#trainings", 
-                extracurricular: "#activities", 
-                hobbies: "#interests", 
-                photos: "#gallery", 
-                cv: "#resume-access-vault", 
-                connect: "#contact", 
-                message: "#contact", 
+                summary: "#about",
+                introduction: "#about",
+                achievements: "#certifications",
+                expertise: "#skills",
+                experience: "#work",
+                research: "#projects",
+                portfolio: "#projects",
+                workshops: "#trainings",
+                extracurricular: "#activities",
+                hobbies: "#interests",
+                photos: "#gallery",
+                cv: "#resume-access-vault",
+                connect: "#contact",
+                message: "#contact",
             };
             for (const [keyword, selector] of Object.entries(sections)) {
                 if (command.includes(keyword)) {
@@ -754,10 +754,10 @@
                 background: transparent;
                 border: none;
                 color: var(--text-color);
-                font-size: 1.2rem;
+                font-size: 2vh;
                 cursor: pointer;
-                width: 4vh;
-                height: 4vh;
+                width: 2vh;
+                height: 2vh;
                 border-radius: 50%;
                 display: flex;
                 align-items: center;
@@ -773,9 +773,6 @@
                 animation: pulse 1.5s infinite;
                 color: var(--primary-color);
                 background: rgba(var(--primary-rgb), 0.2);
-            }
-            .voice-help-btn {
-                font-size: 1rem;
             }
             .voice-nav-toast {
                 position: fixed;

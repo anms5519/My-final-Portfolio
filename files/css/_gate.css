@@ -17,9 +17,7 @@
     height: 100%;
     overflow: hidden;
     z-index: 2147483647;
-    background: radial-gradient(ellipse at center,
-            rgba(12, 12, 25, 0.95) 0%,
-            rgba(5, 5, 15, 0.98) 100%);
+    background: var(--gradient-bg);
     font-family: var(--font-main);
     perspective: 100vh;
 }

@@ -1,6 +1,5 @@
-// resume.js - Contains HTML content and functionality for the resume section
 window.ResumeContent = {
-    getHTML: function() {
+    getHTML: function () {
         return `
             <div class="vault-background-elements">
                 <div class="grid-overlay"></div>
@@ -29,7 +28,6 @@ window.ResumeContent = {
                         </div>
                         <div class="scanline-effect"></div>
                     </div>
-        
                     <div class="vault-content-chamber" id="vaultContentChamber">
                         <div class="chamber-header">
                             <h2 class="chamber-title">Chronos Protocol <span class="highlight">Active</span></h2>
@@ -52,53 +50,55 @@ window.ResumeContent = {
             </div>
         `;
     },
-    
-    init: function() {
-        const vaultLockMechanism = document.getElementById('vaultLockMechanism');
-        const vaultContentChamber = document.getElementById('vaultContentChamber');
-        const coreCrystal = document.getElementById('coreCrystal');
-        const lockStatusDisplay = document.getElementById('lockStatusDisplay');
-        const statusTextElement = lockStatusDisplay.querySelector('.status-text');
-        const progressFill = document.getElementById('progressFill');
+    init: function () {
+        const vaultLockMechanism = document.getElementById(
+            "vaultLockMechanism"
+        );
+        const vaultContentChamber = document.getElementById(
+            "vaultContentChamber"
+        );
+        const coreCrystal = document.getElementById("coreCrystal");
+        const lockStatusDisplay = document.getElementById("lockStatusDisplay");
+        const statusTextElement = lockStatusDisplay.querySelector(
+            ".status-text"
+        );
+        const progressFill = document.getElementById("progressFill");
         let isUnlocking = false;
-    
         if (vaultLockMechanism) {
-            vaultLockMechanism.addEventListener('click', () => {
-                if (isUnlocking || vaultLockMechanism.classList.contains('unlocked')) return;
-    
+            vaultLockMechanism.addEventListener("click", () => {
+                if (
+                    isUnlocking ||
+                    vaultLockMechanism.classList.contains("unlocked")
+                )
+                    return;
                 isUnlocking = true;
-                vaultLockMechanism.classList.add('activating');
-                coreCrystal.classList.add('pulsing');
-                statusTextElement.textContent = statusTextElement.dataset.authenticating;
-                progressFill.style.width = '0%';
-    
-                setTimeout(() => { // Simulate progress
-                    progressFill.style.width = '33%';
-                    statusTextElement.textContent = statusTextElement.dataset.verifying;
+                vaultLockMechanism.classList.add("activating");
+                coreCrystal.classList.add("pulsing");
+                statusTextElement.textContent =
+                    statusTextElement.dataset.authenticating;
+                progressFill.style.width = "0%";
+                setTimeout(() => {
+                    progressFill.style.width = "33%";
+                    statusTextElement.textContent =
+                        statusTextElement.dataset.verifying;
                 }, 800);
-    
-                setTimeout(() => { // Simulate more progress
-                    progressFill.style.width = '75%';
+                setTimeout(() => {
+                    progressFill.style.width = "75%";
                 }, 1600);
-                
-                setTimeout(() => { // Access granted
-                    progressFill.style.width = '100%';
-                    statusTextElement.textContent = statusTextElement.dataset.granted;
-                    vaultLockMechanism.classList.remove('activating');
-                    vaultLockMechanism.classList.add('unlocked');
-                    coreCrystal.classList.remove('pulsing');
-                    coreCrystal.classList.add('accessed');
-    
-                    // Reveal content chamber
-                    vaultContentChamber.classList.add('revealed');
-                    
-                    // Trigger AOS for revealed content if not already visible
-                    if (typeof AOS !== 'undefined') {
-                        AOS.refreshHard(); // Recalculate positions and trigger animations for new elements
+                setTimeout(() => {
+                    progressFill.style.width = "100%";
+                    statusTextElement.textContent =
+                        statusTextElement.dataset.granted;
+                    vaultLockMechanism.classList.remove("activating");
+                    vaultLockMechanism.classList.add("unlocked");
+                    coreCrystal.classList.remove("pulsing");
+                    coreCrystal.classList.add("accessed");
+                    vaultContentChamber.classList.add("revealed");
+                    if (typeof AOS !== "undefined") {
+                        AOS.refreshHard(); 
                     }
-    
-                }, 2500); // Total unlock time
+                }, 2500); 
             });
         }
-    }
+    },
 };

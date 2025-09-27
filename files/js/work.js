@@ -1,5 +1,5 @@
 window.WorkContent = {
-    getHTML: function() {
+    getHTML: function () {
         return `
             <div class="container">
                 <h2 class="section-title" data-aos="fade-right">
@@ -521,8 +521,7 @@ window.WorkContent = {
             </div>
                 `;
     },
-    init: function() {
-        // Initialize high-end futuristic effects for work section
+    init: function () {
         setTimeout(() => {
             this.initTimeline();
             this.init3DInteractivity();
@@ -530,181 +529,132 @@ window.WorkContent = {
             this.initParallaxScrolling();
         }, 300);
     },
-    
-    initTimeline: function() {
-        const timelineItems = document.querySelectorAll('.timeline-item');
-        const workTimeline = document.querySelector('.work-timeline');
-        
+    initTimeline: function () {
+        const timelineItems = document.querySelectorAll(".timeline-item");
+        const workTimeline = document.querySelector(".work-timeline");
         if (!workTimeline) return;
-        
-        // Add animated class to work timeline for growth animation
-        workTimeline.classList.add('animated');
-        
-        // Create staggered reveal animation for timeline items
+        workTimeline.classList.add("animated");
         timelineItems.forEach((item, index) => {
-            // Detect when item is in viewport
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Add animation class with delay based on index
-                        item.style.animationDelay = `${0.2 * index}s`;
-                        item.classList.add('timeline-item-reveal');
-                        observer.disconnect(); // Stop observing once revealed
-                    }
-                });
-            }, { threshold: 0.2 });
-            
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            item.style.animationDelay = `${0.2 * index}s`;
+                            item.classList.add("timeline-item-reveal");
+                            observer.disconnect(); 
+                        }
+                    });
+                },
+                { threshold: 0.2 }
+            );
             observer.observe(item);
-            
-            // Add hover interaction to timeline dots
-            const dot = item.querySelector('.timeline-dot');
+            const dot = item.querySelector(".timeline-dot");
             if (dot) {
-                dot.addEventListener('mouseenter', function() {
-                    this.classList.add('dot-pulse');
+                dot.addEventListener("mouseenter", function () {
+                    this.classList.add("dot-pulse");
                 });
-                
-                dot.addEventListener('mouseleave', function() {
-                    this.classList.remove('dot-pulse');
+                dot.addEventListener("mouseleave", function () {
+                    this.classList.remove("dot-pulse");
                 });
             }
-            
-            // Add click interaction to timeline cards for expanded view
-            const timelineCard = item.querySelector('.timeline-card');
+            const timelineCard = item.querySelector(".timeline-card");
             if (timelineCard) {
-                timelineCard.addEventListener('click', function() {
-                    // Remove active class from all cards
-                    document.querySelectorAll('.timeline-card').forEach(card => {
-                        card.classList.remove('timeline-card-active');
-                    });
-                    
-                    // Add active class to clicked card
-                    this.classList.add('timeline-card-active');
+                timelineCard.addEventListener("click", function () {
+                    document
+                        .querySelectorAll(".timeline-card")
+                        .forEach((card) => {
+                            card.classList.remove("timeline-card-active");
+                        });
+                    this.classList.add("timeline-card-active");
                 });
             }
         });
     },
-    
-    init3DInteractivity: function() {
-        const cubes = document.querySelectorAll('.logo-cube');
-        
-        cubes.forEach(cube => {
-            const card = cube.closest('.timeline-card');
-            
+    init3DInteractivity: function () {
+        const cubes = document.querySelectorAll(".logo-cube");
+        cubes.forEach((cube) => {
+            const card = cube.closest(".timeline-card");
             if (card) {
-                // Pause animation on hover
-                card.addEventListener('mouseenter', () => {
-                    cube.style.animationPlayState = 'paused';
-                    cube.classList.add('cube-hover');
+                card.addEventListener("mouseenter", () => {
+                    cube.style.animationPlayState = "paused";
+                    cube.classList.add("cube-hover");
                 });
-                
-                card.addEventListener('mouseleave', () => {
-                    cube.style.animationPlayState = 'running';
-                    cube.classList.remove('cube-hover');
+                card.addEventListener("mouseleave", () => {
+                    cube.style.animationPlayState = "running";
+                    cube.classList.remove("cube-hover");
                 });
-                
-                // Add interactive rotation on mousemove
-                card.addEventListener('mousemove', (e) => {
-                    if (!cube.classList.contains('cube-hover')) return;
-                    
+                card.addEventListener("mousemove", (e) => {
+                    if (!cube.classList.contains("cube-hover")) return;
                     const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left; // x position within the card
-                    const y = e.clientY - rect.top;  // y position within the card
-                    
-                    // Calculate rotation based on mouse position
-                    const rotX = ((y / rect.height) - 0.5) * -40; // -20 to 20 degrees
-                    const rotY = ((x / rect.width) - 0.5) * 40;  // -20 to 20 degrees
-                    
+                    const x = e.clientX - rect.left; 
+                    const y = e.clientY - rect.top; 
+                    const rotX = (y / rect.height - 0.5) * -40; 
+                    const rotY = (x / rect.width - 0.5) * 40; 
                     cube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
                 });
             }
         });
     },
-    
-    initHolographicEffects: function() {
-        // Add holographic background to timeline cards
-        const cards = document.querySelectorAll('.timeline-card');
-        
-        cards.forEach(card => {
-            // Create holographic overlay
-            const holo = document.createElement('div');
-            holo.className = 'card-holographic-overlay';
+    initHolographicEffects: function () {
+        const cards = document.querySelectorAll(".timeline-card");
+        cards.forEach((card) => {
+            const holo = document.createElement("div");
+            holo.className = "card-holographic-overlay";
             card.prepend(holo);
-            
-            // Create glow effect on hover
-            card.addEventListener('mouseenter', function() {
-                card.classList.add('card-glow-effect');
+            card.addEventListener("mouseenter", function () {
+                card.classList.add("card-glow-effect");
             });
-            
-            card.addEventListener('mouseleave', function() {
-                card.classList.remove('card-glow-effect');
+            card.addEventListener("mouseleave", function () {
+                card.classList.remove("card-glow-effect");
             });
-            
-            // Create depth parallax effect
-            card.addEventListener('mousemove', function(e) {
+            card.addEventListener("mousemove", function (e) {
                 const rect = card.getBoundingClientRect();
                 const x = (e.clientX - rect.left) / rect.width;
                 const y = (e.clientY - rect.top) / rect.height;
-                
-                const items = card.querySelectorAll('.job-title, .job-company, .skill-tag, .achievement');
-                
+                const items = card.querySelectorAll(
+                    ".job-title, .job-company, .skill-tag, .achievement"
+                );
                 items.forEach((item, index) => {
-                    const depth = 0.5 + (index % 3) * 0.5; // 0.5, 1.0, or 1.5 depth
+                    const depth = 0.5 + (index % 3) * 0.5; 
                     const translateX = (x - 0.5) * 10 * depth;
                     const translateY = (y - 0.5) * 10 * depth;
-                    
                     item.style.transform = `translate3d(${translateX}px, ${translateY}px, 0)`;
                 });
-                
-                holo.style.opacity = 0.2 + (x * y) * 0.3;
+                holo.style.opacity = 0.2 + x * y * 0.3;
                 holo.style.backgroundPosition = `${x * 100}% ${y * 100}%`;
             });
-            
-            card.addEventListener('mouseleave', function() {
-                const items = card.querySelectorAll('.job-title, .job-company, .skill-tag, .achievement');
-                
-                items.forEach(item => {
-                    item.style.transform = 'translate3d(0, 0, 0)';
+            card.addEventListener("mouseleave", function () {
+                const items = card.querySelectorAll(
+                    ".job-title, .job-company, .skill-tag, .achievement"
+                );
+                items.forEach((item) => {
+                    item.style.transform = "translate3d(0, 0, 0)";
                 });
-                
                 holo.style.opacity = 0.1;
             });
         });
     },
-    
-    initParallaxScrolling: function() {
-        // Add subtle parallax effect to work section
-        const workSection = document.querySelector('.work-section');
-        
+    initParallaxScrolling: function () {
+        const workSection = document.querySelector(".work-section");
         if (!workSection) return;
-        
-        window.addEventListener('scroll', function() {
-            // Get scroll position
+        window.addEventListener("scroll", function () {
             const scrollTop = window.pageYOffset;
-            
-            // Get position of work section
             const sectionRect = workSection.getBoundingClientRect();
             const sectionTop = sectionRect.top + scrollTop;
             const sectionMiddle = sectionTop + sectionRect.height / 2;
-            
-            // Calculate relative scroll position within the section
-            const relativePos = (scrollTop - sectionTop + window.innerHeight) / (sectionRect.height + window.innerHeight);
-            
+            const relativePos =
+                (scrollTop - sectionTop + window.innerHeight) /
+                (sectionRect.height + window.innerHeight);
             if (relativePos > 0 && relativePos < 1) {
-                // Calculate parallax effect
-                const bgPosY = 50 + (relativePos - 0.5) * 30; // 35% to 65% background position
-                
-                // Apply parallax effect to section background
+                const bgPosY = 50 + (relativePos - 0.5) * 30; 
                 workSection.style.backgroundPositionY = `${bgPosY}%`;
-                
-                // Add subtle rotation to timeline
-                const timeline = workSection.querySelector('.work-timeline');
+                const timeline = workSection.querySelector(".work-timeline");
                 if (timeline) {
-                    const rotateZ = (relativePos - 0.5) * 0.5; // subtle rotation -0.25 to 0.25 degrees
-                    const translateY = (relativePos - 0.5) * -20; // move up/down slightly
-                    
+                    const rotateZ = (relativePos - 0.5) * 0.5; 
+                    const translateY = (relativePos - 0.5) * -20; 
                     timeline.style.transform = `rotateZ(${rotateZ}deg) translateY(${translateY}px)`;
                 }
             }
         });
-    }
+    },
 };

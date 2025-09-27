@@ -1,6 +1,5 @@
-// education.js - Contains HTML content and functionality for the education section
 window.EducationContent = {
-    getHTML: function() {
+    getHTML: function () {
         return `
             <div class="container">
                 <h2 class="section-title" data-aos="fade-right">Education</h2>
@@ -165,25 +164,17 @@ window.EducationContent = {
             </div>
         `;
     },
-    
-    init: function() {
-        // Initialize education-specific functionality here if needed
-        // This function will be called after the HTML has been inserted
-        
-        // Example: Add interactive elements to the education cards
-        const educationCards = document.querySelectorAll('.education-card');
+    init: function () {
+        const educationCards = document.querySelectorAll(".education-card");
         if (educationCards.length > 0) {
-            educationCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    // Toggle a class for interactive elements or animations
-                    this.classList.toggle('expanded');
+            educationCards.forEach((card) => {
+                card.addEventListener("click", function () {
+                    this.classList.toggle("expanded");
                 });
             });
         }
-        
-        // Initialize AOS animations if they're not automatically initialized elsewhere
-        if (typeof AOS !== 'undefined') {
+        if (typeof AOS !== "undefined") {
             AOS.refresh();
         }
-    }
+    },
 };

@@ -1,5 +1,5 @@
 window.SkillsContent = {
-    getHTML: function() {
+    getHTML: function () {
         return `
             <div class="section-background-glow"></div>
             <div class="container">
@@ -41,7 +41,6 @@ window.SkillsContent = {
                             </button>
                         </div>
                     </div>
-        
                     <div class="skills-displays">
                         <div class="skills-grid-display active">
                             <div class="skills-grid-container">
@@ -384,7 +383,6 @@ window.SkillsContent = {
                                             <i class="fas fa-chevron-left"></i>
                                         </button>
                                         <h3 class="category-title">
-
                                         </h3>
                                         <button class="radar-nav next-category">
                                             <i class="fas fa-chevron-right"></i>
@@ -470,27 +468,31 @@ window.SkillsContent = {
             </div>
                 `;
     },
-    init: function() {
-        const skillTabs = document.querySelectorAll('.skill-tab');
-        const skillCards = document.querySelectorAll('.skill-card');
-        const displayButtons = document.querySelectorAll('.display-btn');
-        const skillsDisplays = document.querySelectorAll('.skills-displays > div');
-        const skillsGridContainer = document.querySelector('.skills-grid-container');
-    
+    init: function () {
+        const skillTabs = document.querySelectorAll(".skill-tab");
+        const skillCards = document.querySelectorAll(".skill-card");
+        const displayButtons = document.querySelectorAll(".display-btn");
+        const skillsDisplays = document.querySelectorAll(
+            ".skills-displays > div"
+        );
+        const skillsGridContainer = document.querySelector(
+            ".skills-grid-container"
+        );
         // Intersection Observer for animations
         const observerOptions = {
             root: null,
-            rootMargin: '0px',
-            threshold: 0.1
+            rootMargin: "0px",
+            threshold: 0.1,
         };
-    
         const observerCallback = (entries, observer) => {
-            entries.forEach(entry => {
+            entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+                    entry.target.classList.add("visible");
                     // Animate progress bar for skill cards
-                    if (entry.target.classList.contains('skill-card')) {
-                        const progressBar = entry.target.querySelector('.skill-progress');
+                    if (entry.target.classList.contains("skill-card")) {
+                        const progressBar = entry.target.querySelector(
+                            ".skill-progress"
+                        );
                         if (progressBar) {
                             // The width is already set via inline style --progress-width
                             // The CSS transition will handle the animation.
@@ -498,225 +500,295 @@ window.SkillsContent = {
                         }
                     }
                     // Animate timeline progress line
-                    if (entry.target.classList.contains('skills-timeline')) {
-                        const progressLine = entry.target.querySelector('.timeline-progress-line');
+                    if (entry.target.classList.contains("skills-timeline")) {
+                        const progressLine = entry.target.querySelector(
+                            ".timeline-progress-line"
+                        );
                         if (progressLine) {
                             // Calculate total height of the track for accurate progress
-                            const trackHeight = entry.target.querySelector('.timeline-track').offsetHeight;
+                            const trackHeight = entry.target.querySelector(
+                                ".timeline-track"
+                            ).offsetHeight;
                             progressLine.style.height = `${trackHeight}px`;
                         }
                     }
                     // For timeline items, they become visible one by one
-                    if (entry.target.classList.contains('timeline-item')) {
-                         // Already handled by CSS transition on .visible
+                    if (entry.target.classList.contains("timeline-item")) {
+                        // Already handled by CSS transition on .visible
                     }
                     // No need to unobserve simple fade-ins, but for complex/repeating, you might.
-                    // observer.unobserve(entry.target); 
+                    // observer.unobserve(entry.target);
                 }
             });
         };
-        const observer = new IntersectionObserver(observerCallback, observerOptions);
-    
-        skillCards.forEach(card => observer.observe(card));
-        document.querySelectorAll('.timeline-item').forEach(item => observer.observe(item));
-        const skillsTimelineElement = document.querySelector('.skills-timeline');
+        const observer = new IntersectionObserver(
+            observerCallback,
+            observerOptions
+        );
+        skillCards.forEach((card) => observer.observe(card));
+        document
+            .querySelectorAll(".timeline-item")
+            .forEach((item) => observer.observe(item));
+        const skillsTimelineElement = document.querySelector(
+            ".skills-timeline"
+        );
         if (skillsTimelineElement) {
             observer.observe(skillsTimelineElement);
         }
-    
-    
         // Skill category filtering
-        skillTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                skillTabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
+        skillTabs.forEach((tab) => {
+            tab.addEventListener("click", () => {
+                skillTabs.forEach((t) => t.classList.remove("active"));
+                tab.classList.add("active");
                 const category = tab.dataset.category;
-    
-                skillsGridContainer.classList.add('filtering'); // For potential animation hook
-    
-                setTimeout(() => { // Allow time for fade-out or other transition
-                    skillCards.forEach(card => {
-                        card.style.display = 'none'; // Hide all first
-                        if (category === 'all' || card.dataset.category === category) {
+                skillsGridContainer.classList.add("filtering"); // For potential animation hook
+                setTimeout(() => {
+                    // Allow time for fade-out or other transition
+                    skillCards.forEach((card) => {
+                        card.style.display = "none"; // Hide all first
+                        if (
+                            category === "all" ||
+                            card.dataset.category === category
+                        ) {
                             // Re-trigger fade-in or layout animation
-                            card.style.display = ''; // Reset to default (flex/grid item)
-                            card.classList.remove('animate-out');
-                            card.classList.add('animate-in');
+                            card.style.display = ""; // Reset to default (flex/grid item)
+                            card.classList.remove("animate-out");
+                            card.classList.add("animate-in");
                         } else {
-                            card.classList.remove('animate-in');
-                            card.classList.add('animate-out'); // For CSS animation
-                             setTimeout(() => card.style.display = 'none', 300); // Hide after animation
+                            card.classList.remove("animate-in");
+                            card.classList.add("animate-out"); // For CSS animation
+                            setTimeout(
+                                () => (card.style.display = "none"),
+                                300
+                            ); // Hide after animation
                         }
                     });
                     // Force reflow for animations
                     void skillsGridContainer.offsetWidth;
-                    skillsGridContainer.classList.remove('filtering');
+                    skillsGridContainer.classList.remove("filtering");
                 }, 150); // Adjust timing based on CSS transitions
             });
         });
-        
         // Initial display for skill cards (fix for potential initial hide)
-        const activeCategoryTab = document.querySelector('.skill-tab.active');
+        const activeCategoryTab = document.querySelector(".skill-tab.active");
         if (activeCategoryTab) {
             const initialCategory = activeCategoryTab.dataset.category;
-            skillCards.forEach(card => {
-                if (initialCategory === 'all' || card.dataset.category === initialCategory) {
-                    card.style.display = ''; // Reset to default (flex/grid item)
+            skillCards.forEach((card) => {
+                if (
+                    initialCategory === "all" ||
+                    card.dataset.category === initialCategory
+                ) {
+                    card.style.display = ""; // Reset to default (flex/grid item)
                 } else {
-                    card.style.display = 'none';
+                    card.style.display = "none";
                 }
             });
         }
-    
-    
         // Display mode toggle (Grid, Chart, Timeline)
-        displayButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                displayButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
+        displayButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                displayButtons.forEach((btn) => btn.classList.remove("active"));
+                button.classList.add("active");
                 const displayMode = button.dataset.display;
-    
-                skillsDisplays.forEach(display => {
-                    if (display.classList.contains(`skills-${displayMode}-display`)) {
-                        display.classList.add('active');
-                        if (displayMode === 'chart' && !charts.isInitialized()) {
+                skillsDisplays.forEach((display) => {
+                    if (
+                        display.classList.contains(
+                            `skills-${displayMode}-display`
+                        )
+                    ) {
+                        display.classList.add("active");
+                        if (
+                            displayMode === "chart" &&
+                            !charts.isInitialized()
+                        ) {
                             charts.init();
                         }
                     } else {
-                        display.classList.remove('active');
+                        display.classList.remove("active");
                     }
                 });
             });
         });
-    
         // Chart.js functionality
         const charts = (() => {
             let skillsChartInstance = null;
-            let currentChartType = 'radar';
-            let currentChartCategory = 'all';
+            let currentChartType = "radar";
+            let currentChartCategory = "all";
             let initialized = false;
-    
             const chartColors = {
-                primary: 'rgba(0, 210, 255, 0.8)', // --primary-color
-                secondary: 'rgba(146, 86, 255, 0.8)', // --secondary-color
-                grid: 'rgba(224, 232, 255, 0.2)', // --text-color with alpha
-                ticks: 'rgba(176, 184, 217, 0.7)', // --text-color-light with alpha
-                tooltipBg: 'rgba(10, 15, 31, 0.9)', // --bg-color
-                tooltipText: '#e0e8ff' // --text-color
+                primary: "rgba(0, 210, 255, 0.8)", // --primary-color
+                secondary: "rgba(146, 86, 255, 0.8)", // --secondary-color
+                grid: "rgba(224, 232, 255, 0.2)", // --text-color with alpha
+                ticks: "rgba(176, 184, 217, 0.7)", // --text-color-light with alpha
+                tooltipBg: "rgba(10, 15, 31, 0.9)", // --bg-color
+                tooltipText: "#e0e8ff", // --text-color
             };
-            
             const categoryColors = [
-                'rgba(0, 210, 255, 0.7)',   // Cyan (Technical)
-                'rgba(255, 99, 132, 0.7)',  // Pink (Design)
-                'rgba(75, 192, 192, 0.7)',  // Teal (Programming)
-                'rgba(255, 205, 86, 0.7)',  // Yellow (Data)
-                'rgba(153, 102, 255, 0.7)', // Purple (Interpersonal)
-                'rgba(255, 159, 64, 0.7)'   // Orange
+                "rgba(0, 210, 255, 0.7)", // Cyan (Technical)
+                "rgba(255, 99, 132, 0.7)", // Pink (Design)
+                "rgba(75, 192, 192, 0.7)", // Teal (Programming)
+                "rgba(255, 205, 86, 0.7)", // Yellow (Data)
+                "rgba(153, 102, 255, 0.7)", // Purple (Interpersonal)
+                "rgba(255, 159, 64, 0.7)", // Orange
             ];
-    
-    
             function getSkillData() {
                 const data = [];
-                document.querySelectorAll('.skills-grid-container .skill-card').forEach(card => {
-                    const name = card.querySelector('.skill-name').textContent.trim();
-                    const percentageText = card.querySelector('.skill-percentage').textContent.trim();
-                    const percentage = parseInt(percentageText.replace('%', ''));
-                    const category = card.dataset.category;
-                    data.push({ name, percentage, category });
-                });
+                document
+                    .querySelectorAll(".skills-grid-container .skill-card")
+                    .forEach((card) => {
+                        const name = card
+                            .querySelector(".skill-name")
+                            .textContent.trim();
+                        const percentageText = card
+                            .querySelector(".skill-percentage")
+                            .textContent.trim();
+                        const percentage = parseInt(
+                            percentageText.replace("%", "")
+                        );
+                        const category = card.dataset.category;
+                        data.push({ name, percentage, category });
+                    });
                 return data;
             }
-    
-            function prepareChartData(category = 'all') {
+            function prepareChartData(category = "all") {
                 const allSkills = getSkillData();
-                const filteredSkills = category === 'all' 
-                    ? allSkills 
-                    : allSkills.filter(skill => skill.category === category);
-    
+                const filteredSkills =
+                    category === "all"
+                        ? allSkills
+                        : allSkills.filter(
+                              (skill) => skill.category === category
+                          );
                 // Sort skills by percentage for better visualization in bar/polar charts
                 filteredSkills.sort((a, b) => b.percentage - a.percentage);
-                
-                const labels = filteredSkills.map(skill => skill.name);
-                const data = filteredSkills.map(skill => skill.percentage);
-                
+                const labels = filteredSkills.map((skill) => skill.name);
+                const data = filteredSkills.map((skill) => skill.percentage);
                 let backgroundColors = [];
-                if (currentChartType === 'doughnut' || currentChartType === 'polarArea') {
-                     backgroundColors = filteredSkills.map((_, index) => categoryColors[index % categoryColors.length]);
+                if (
+                    currentChartType === "doughnut" ||
+                    currentChartType === "polarArea"
+                ) {
+                    backgroundColors = filteredSkills.map(
+                        (_, index) =>
+                            categoryColors[index % categoryColors.length]
+                    );
                 } else {
-                     backgroundColors = chartColors.primary; // Default for radar/bar
+                    backgroundColors = chartColors.primary; // Default for radar/bar
                 }
-    
-    
                 return {
                     labels: labels,
-                    datasets: [{
-                        label: category === 'all' ? 'Overall Skill Proficiency' : `${category.charAt(0).toUpperCase() + category.slice(1)} Skills`,
-                        data: data,
-                        backgroundColor: backgroundColors,
-                        borderColor: currentChartType === 'radar' ? chartColors.secondary : categoryColors.map(c => c.replace('0.7', '1')),
-                        borderWidth: currentChartType === 'doughnut' || currentChartType === 'polarArea' ? 1 : 2,
-                        pointBackgroundColor: chartColors.secondary,
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: chartColors.secondary,
-                        fill: currentChartType === 'radar' ? true : false, // Fill for radar
-                        tension: 0.1 // For line charts if used, smooths lines
-                    }]
+                    datasets: [
+                        {
+                            label:
+                                category === "all"
+                                    ? "Overall Skill Proficiency"
+                                    : `${
+                                          category.charAt(0).toUpperCase() +
+                                          category.slice(1)
+                                      } Skills`,
+                            data: data,
+                            backgroundColor: backgroundColors,
+                            borderColor:
+                                currentChartType === "radar"
+                                    ? chartColors.secondary
+                                    : categoryColors.map((c) =>
+                                          c.replace("0.7", "1")
+                                      ),
+                            borderWidth:
+                                currentChartType === "doughnut" ||
+                                currentChartType === "polarArea"
+                                    ? 1
+                                    : 2,
+                            pointBackgroundColor: chartColors.secondary,
+                            pointBorderColor: "#fff",
+                            pointHoverBackgroundColor: "#fff",
+                            pointHoverBorderColor: chartColors.secondary,
+                            fill: currentChartType === "radar" ? true : false, // Fill for radar
+                            tension: 0.1, // For line charts if used, smooths lines
+                        },
+                    ],
                 };
             }
-    
             function createOrUpdateChart() {
-                if (!document.getElementById('skills-mastery-chart')) return;
-    
+                if (!document.getElementById("skills-mastery-chart")) return;
                 const chartData = prepareChartData(currentChartCategory);
-    
                 if (skillsChartInstance) {
                     skillsChartInstance.destroy();
                 }
-    
                 const config = {
                     type: currentChartType,
                     data: chartData,
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        scales: (currentChartType === 'radar' || currentChartType === 'polarArea') ? {
-                            r: {
-                                angleLines: { color: chartColors.grid },
-                                grid: { color: chartColors.grid },
-                                pointLabels: { 
-                                    font: { size: 10, family: "'Roboto', sans-serif" },
-                                    color: chartColors.ticks
-                                },
-                                ticks: {
-                                    backdropColor: 'transparent', // 'rgba(10,15,31,0.8)'
-                                    color: chartColors.ticks,
-                                    stepSize: 20,
-                                    font: { family: "'Roboto', sans-serif" }
-                                },
-                                min: 0,
-                                max: 100
-                            }
-                        } : { // For Bar chart
-                            x: {
-                                grid: { color: chartColors.grid, drawOnChartArea: false },
-                                ticks: { color: chartColors.ticks, font: { family: "'Roboto', sans-serif" } }
-                            },
-                            y: {
-                                grid: { color: chartColors.grid },
-                                ticks: { color: chartColors.ticks, font: { family: "'Roboto', sans-serif" }, stepSize: 20 },
-                                min: 0,
-                                max: 100
-                            }
-                        },
+                        scales:
+                            currentChartType === "radar" ||
+                            currentChartType === "polarArea"
+                                ? {
+                                      r: {
+                                          angleLines: {
+                                              color: chartColors.grid,
+                                          },
+                                          grid: { color: chartColors.grid },
+                                          pointLabels: {
+                                              font: {
+                                                  size: 10,
+                                                  family:
+                                                      "'Roboto', sans-serif",
+                                              },
+                                              color: chartColors.ticks,
+                                          },
+                                          ticks: {
+                                              backdropColor: "transparent", // 'rgba(10,15,31,0.8)'
+                                              color: chartColors.ticks,
+                                              stepSize: 20,
+                                              font: {
+                                                  family:
+                                                      "'Roboto', sans-serif",
+                                              },
+                                          },
+                                          min: 0,
+                                          max: 100,
+                                      },
+                                  }
+                                : {
+                                      // For Bar chart
+                                      x: {
+                                          grid: {
+                                              color: chartColors.grid,
+                                              drawOnChartArea: false,
+                                          },
+                                          ticks: {
+                                              color: chartColors.ticks,
+                                              font: {
+                                                  family:
+                                                      "'Roboto', sans-serif",
+                                              },
+                                          },
+                                      },
+                                      y: {
+                                          grid: { color: chartColors.grid },
+                                          ticks: {
+                                              color: chartColors.ticks,
+                                              font: {
+                                                  family:
+                                                      "'Roboto', sans-serif",
+                                              },
+                                              stepSize: 20,
+                                          },
+                                          min: 0,
+                                          max: 100,
+                                      },
+                                  },
                         plugins: {
                             legend: {
-                                display: (currentChartType === 'doughnut' || currentChartType === 'polarArea'), // Show legend for multi-color charts
-                                position: 'bottom',
-                                labels: { 
+                                display:
+                                    currentChartType === "doughnut" ||
+                                    currentChartType === "polarArea", // Show legend for multi-color charts
+                                position: "bottom",
+                                labels: {
                                     color: chartColors.ticks,
-                                    font: { family: "'Roboto', sans-serif" }
-                                }
+                                    font: { family: "'Roboto', sans-serif" },
+                                },
                             },
                             tooltip: {
                                 backgroundColor: chartColors.tooltipBg,
@@ -726,68 +798,77 @@ window.SkillsContent = {
                                 borderWidth: 1,
                                 padding: 10,
                                 callbacks: {
-                                    label: function(context) {
-                                        let label = context.dataset.label || '';
+                                    label: function (context) {
+                                        let label = context.dataset.label || "";
                                         if (label) {
-                                            label += ': ';
+                                            label += ": ";
                                         }
-                                        if (context.parsed.r !== undefined) { // For radar/polar
-                                            label += context.parsed.r.toFixed(0) + '%';
-                                        } else { // For bar/doughnut
-                                            label += context.parsed.toFixed(0) + '%';
+                                        if (context.parsed.r !== undefined) {
+                                            // For radar/polar
+                                            label +=
+                                                context.parsed.r.toFixed(0) +
+                                                "%";
+                                        } else {
+                                            // For bar/doughnut
+                                            label +=
+                                                context.parsed.toFixed(0) + "%";
                                         }
                                         return label;
-                                    }
-                                }
-                            }
+                                    },
+                                },
+                            },
                         },
                         animation: {
                             duration: 1000,
-                            easing: 'easeInOutQuart'
-                        }
-                    }
+                            easing: "easeInOutQuart",
+                        },
+                    },
                 };
-                
                 // Specific options for doughnut chart to make it look better
-                if (currentChartType === 'doughnut') {
-                    config.options.cutout = '60%';
+                if (currentChartType === "doughnut") {
+                    config.options.cutout = "60%";
                 }
-    
-    
                 skillsChartInstance = new Chart(
-                    document.getElementById('skills-mastery-chart'),
+                    document.getElementById("skills-mastery-chart"),
                     config
                 );
                 initialized = true;
             }
-    
-            document.querySelectorAll('.chart-type-btn').forEach(button => {
-                button.addEventListener('click', () => {
-                    document.querySelectorAll('.chart-type-btn').forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
+            document.querySelectorAll(".chart-type-btn").forEach((button) => {
+                button.addEventListener("click", () => {
+                    document
+                        .querySelectorAll(".chart-type-btn")
+                        .forEach((btn) => btn.classList.remove("active"));
+                    button.classList.add("active");
                     currentChartType = button.dataset.chart;
                     createOrUpdateChart();
                 });
             });
-    
-            document.querySelectorAll('.chart-category-btn').forEach(button => {
-                button.addEventListener('click', () => {
-                    document.querySelectorAll('.chart-category-btn').forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    currentChartCategory = button.dataset.chartCategory;
-                    createOrUpdateChart();
+            document
+                .querySelectorAll(".chart-category-btn")
+                .forEach((button) => {
+                    button.addEventListener("click", () => {
+                        document
+                            .querySelectorAll(".chart-category-btn")
+                            .forEach((btn) => btn.classList.remove("active"));
+                        button.classList.add("active");
+                        currentChartCategory = button.dataset.chartCategory;
+                        createOrUpdateChart();
+                    });
                 });
-            });
-            
             return {
                 init: createOrUpdateChart,
-                isInitialized: () => initialized
+                isInitialized: () => initialized,
             };
         })();
-        
         // Initialize chart if chart view is active by default (though it's not in this HTML)
-        const activeDisplay = document.querySelector('.skills-displays > div.active');
-        if (activeDisplay && activeDisplay.classList.contains('skills-chart-display')) {
+        const activeDisplay = document.querySelector(
+            ".skills-displays > div.active"
+        );
+        if (
+            activeDisplay &&
+            activeDisplay.classList.contains("skills-chart-display")
+        ) {
             charts.init();
         }
         initSkillsVisualization();
@@ -797,34 +878,28 @@ window.SkillsContent = {
             const styleSheet = document.createElement("style");
             styleSheet.textContent = `
         /* Themed Utility Classes and Animations */
-        
         @keyframes pulse-glow {
             0% { box-shadow: 0 0 .5vh rgba(var(--primary-color-rgb), 0.6); }
             50% { box-shadow: 0 0 1.5vh rgba(var(--primary-color-rgb), 0.9); }
             100% { box-shadow: 0 0 .5vh rgba(var(--primary-color-rgb), 0.6); }
         }
-        
         @keyframes float {
             0% { transform: translateY(1vh); } /* Corrected vh unit */
             50% { transform: translateY(-1vh); }
             100% { transform: translateY(1vh); } /* Corrected vh unit */
         }
-        
         @keyframes shimmer {
             0% { background-position: -100% 0; }
             100% { background-position: 200% 0; }
         }
-        
         .ultra-shimmer {
             background: var(--bg-color);
             background-size: 250% 100%; /* Wider spread for smoother shimmer */
             animation: shimmer 2.5s infinite linear; /* Slightly adjusted timing */
         }
-        
         .floating-element {
             animation: float 6s ease-in-out infinite;
         }
-        
         .premium-button {
             position: relative;
             overflow: hidden;
@@ -837,13 +912,11 @@ window.SkillsContent = {
             padding: 1vh 2vh; /* Example padding */
             border-radius: var(--border-radius-soft); /* Themed radius */
         }
-        
         .premium-button:hover {
             transform: translateY(-.2vh) scale(1.02); /* Consistent hover transform */
             box-shadow: var(--card-shadow); /* Themed shadow */
             border-color: var(--primary-color);
         }
-        
         .premium-button::after { /* Sheen effect */
             content: '';
             position: absolute;
@@ -861,17 +934,14 @@ window.SkillsContent = {
             transition: transform var(--anim-speed-slow) ease; /* Theme transition */
             pointer-events: none; /* Ensure button is clickable */
         }
-        
         .premium-button:hover::after {
             transform: rotate(30deg) translate(25%, 25%) scale(1.1); /* Adjusted sheen movement */
         }
-        
         .premium-button.active {
             animation: pulse-glow 2s infinite;
             border-color: var(--primary-color);
             box-shadow: 0 0 1.5vh rgba(var(--primary-color-rgb), 0.5), var(--card-shadow);
         }
-        
         .premium-canvas {
             border-radius: var(--border-radius-soft); /* Themed radius */
             box-shadow: var(--card-shadow); /* Themed shadow */
@@ -881,13 +951,11 @@ window.SkillsContent = {
             transition: all var(--anim-speed-normal) ease; /* Theme transition */
             border: 0.1vh solid var(--card-border);
         }
-        
         .premium-canvas:hover {
             box-shadow: 0 1.5vh 4vh rgba(var(--primary-color-rgb), 0.15), /* Themed hover shadow */
                         0 0.5vh 1.5vh rgba(var(--primary-color-rgb), 0.1);
             transform: translateY(-0.3vh);
         }
-        
         .visualization-mode-badge {
             position: absolute;
             top: 1.5vh;
@@ -906,7 +974,6 @@ window.SkillsContent = {
             border: 0.1vh solid var(--card-border);
             box-shadow: 0 0.1vh 0.3vh rgba(0,0,0,0.2);
         }
-        
         .premium-skill-card {
             transition: all var(--anim-speed-normal) ease; /* Theme transition */
             backdrop-filter: var(--glass-effect);
@@ -922,13 +989,11 @@ window.SkillsContent = {
             box-shadow: var(--card-shadow);
             border-color: var(--primary-color);
         }
-        
         .skill-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(12vh, 1fr));
             gap: 1.2vh; /* Adjusted gap */
         }
-        
         .stat-item {
             background: rgba(var(--primary-color-rgb), 0.05); /* Subtle themed background */
             border-radius: var(--border-radius-sharp); /* Sharper radius for items */
@@ -942,14 +1007,12 @@ window.SkillsContent = {
             transition: all var(--anim-speed-fast) ease; /* Theme transition */
             color: var(--text-color);
         }
-        
         .stat-item:hover {
             background: rgba(var(--primary-color-rgb), 0.1);
             transform: translateY(-.2vh) scale(1.02);
             border-color: rgba(var(--primary-color-rgb), 0.3);
             box-shadow: 0 0.2vh 0.8vh rgba(var(--primary-color-rgb), 0.1);
         }
-        
         .stat-icon {
             background: var(--gradient-primary); /* Themed gradient */
             width: 3.5vh; /* Adjusted size */
@@ -965,7 +1028,6 @@ window.SkillsContent = {
         .stat-icon i { /* Assuming icons are used inside */
             font-size: 1.6vh;
         }
-        
         .masterpiece-title { /* Kept unique gradient, as it's a special class */
             background: linear-gradient(90deg, #FF8A00, #e52e71, #a36bdd, #4a9feb);
             background-size: 300% 300%;
@@ -976,13 +1038,11 @@ window.SkillsContent = {
             font-weight: 800;
             letter-spacing: .1vh;
         }
-        
         @keyframes gradient-shift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        
         /* Level classes - kept unique gradients. Ensure text on them has contrast. */
         .legendary-level, .expert-level, .advanced-level {
             padding: 0.3vh 0.8vh; /* Example padding */
@@ -995,7 +1055,6 @@ window.SkillsContent = {
         .legendary-level { background: linear-gradient(90deg, #FF8A00, #e52e71); }
         .expert-level { background: linear-gradient(90deg, #4776E6, #8E54E9); }
         .advanced-level { background: linear-gradient(90deg, #00c6ff, #0072ff); }
-        
         .progress-glow { /* White shimmer, generally theme-agnostic */
             position: absolute;
             top: 0;
@@ -1177,7 +1236,8 @@ window.SkillsContent = {
                             '<i class="fas fa-spinner fa-spin"></i>';
                         setTimeout(() => {
                             searchSkill(query);
-                            searchButton.innerHTML = '<i class="fas fa-bolt"></i>';
+                            searchButton.innerHTML =
+                                '<i class="fas fa-bolt"></i>';
                         }, 300);
                     } else {
                         searchInput.style.animation =
@@ -1214,52 +1274,59 @@ window.SkillsContent = {
                 const raycaster = new THREE.Raycaster();
                 const mouse = new THREE.Vector2();
                 let lastHoveredNode = null;
-                renderer.domElement.addEventListener("mousemove", function (event) {
-                    const rect = renderer.domElement.getBoundingClientRect();
-                    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-                    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-                    raycaster.setFromCamera(mouse, camera);
-                    const intersects = raycaster.intersectObjects(nodes);
-                    if (intersects.length > 0) {
-                        const hoveredNode = intersects[0].object;
-                        if (hoveredNode !== lastHoveredNode) {
-                            const nodeData = hoveredNode.userData;
-                            const color = clusterColors[nodeData.cluster] || 0xffffff;
-                            const colorHex = "#" + color.toString(16).padStart(6, "0");
-                            tooltip.innerHTML = `
+                renderer.domElement.addEventListener(
+                    "mousemove",
+                    function (event) {
+                        const rect = renderer.domElement.getBoundingClientRect();
+                        mouse.x =
+                            ((event.clientX - rect.left) / rect.width) * 2 - 1;
+                        mouse.y =
+                            -((event.clientY - rect.top) / rect.height) * 2 + 1;
+                        raycaster.setFromCamera(mouse, camera);
+                        const intersects = raycaster.intersectObjects(nodes);
+                        if (intersects.length > 0) {
+                            const hoveredNode = intersects[0].object;
+                            if (hoveredNode !== lastHoveredNode) {
+                                const nodeData = hoveredNode.userData;
+                                const color =
+                                    clusterColors[nodeData.cluster] || 0xffffff;
+                                const colorHex =
+                                    "#" + color.toString(16).padStart(6, "0");
+                                tooltip.innerHTML = `
                                 <div style="display: flex; align-items: center; margin-bottom: .5vh;">
                                     <div style="width: .8vh; height: .8vh; border-radius: 50%; background: ${colorHex}; margin-right: .6vh;"></div>
                                     <span style="font-weight: 600;">${nodeData.name}</span>
                                 </div>
                                 <div style="font-size: 1.2vh; opacity: 0.8;">Proficiency: ${nodeData.level}%</div>
                             `;
-                            tooltip.style.display = "block";
+                                tooltip.style.display = "block";
+                                tooltip.style.left = `${event.clientX + 10}px`;
+                                tooltip.style.top = `${event.clientY + 10}px`;
+                                lastHoveredNode = hoveredNode;
+                                hoveredNode.material.emissiveIntensity = 0.5;
+                                nodes.forEach((n) => {
+                                    if (
+                                        n !== hoveredNode &&
+                                        n.material.emissiveIntensity < 0.7
+                                    ) {
+                                        n.material.emissiveIntensity = 0.3;
+                                    }
+                                });
+                            }
                             tooltip.style.left = `${event.clientX + 10}px`;
                             tooltip.style.top = `${event.clientY + 10}px`;
-                            lastHoveredNode = hoveredNode;
-                            hoveredNode.material.emissiveIntensity = 0.5;
-                            nodes.forEach((n) => {
-                                if (
-                                    n !== hoveredNode &&
-                                    n.material.emissiveIntensity < 0.7
-                                ) {
-                                    n.material.emissiveIntensity = 0.3;
-                                }
-                            });
+                        } else {
+                            tooltip.style.display = "none";
+                            if (
+                                lastHoveredNode &&
+                                lastHoveredNode.material.emissiveIntensity < 0.7
+                            ) {
+                                lastHoveredNode.material.emissiveIntensity = 0.3;
+                            }
+                            lastHoveredNode = null;
                         }
-                        tooltip.style.left = `${event.clientX + 10}px`;
-                        tooltip.style.top = `${event.clientY + 10}px`;
-                    } else {
-                        tooltip.style.display = "none";
-                        if (
-                            lastHoveredNode &&
-                            lastHoveredNode.material.emissiveIntensity < 0.7
-                        ) {
-                            lastHoveredNode.material.emissiveIntensity = 0.3;
-                        }
-                        lastHoveredNode = null;
                     }
-                });
+                );
                 renderer.domElement.addEventListener("mouseleave", function () {
                     tooltip.style.display = "none";
                     if (
@@ -1271,17 +1338,23 @@ window.SkillsContent = {
                     lastHoveredNode = null;
                 });
             };
-            const toggleSwitches = document.querySelectorAll('input[type="checkbox"]');
+            const toggleSwitches = document.querySelectorAll(
+                'input[type="checkbox"]'
+            );
             toggleSwitches.forEach((toggle) => {
                 toggle.addEventListener("change", function () {
                     const switchLabel = this.nextElementSibling;
                     if (switchLabel) {
                         if (this.checked) {
-                            switchLabel.querySelector("span").style.left = "2.4vh";
-                            switchLabel.style.background = "rgba(142, 84, 233, 0.5)";
+                            switchLabel.querySelector("span").style.left =
+                                "2.4vh";
+                            switchLabel.style.background =
+                                "rgba(142, 84, 233, 0.5)";
                         } else {
-                            switchLabel.querySelector("span").style.left = ".2vh";
-                            switchLabel.style.background = "rgba(255, 255, 255, 0.1)";
+                            switchLabel.querySelector("span").style.left =
+                                ".2vh";
+                            switchLabel.style.background =
+                                "rgba(255, 255, 255, 0.1)";
                         }
                     }
                 });
@@ -1289,7 +1362,8 @@ window.SkillsContent = {
                     const switchLabel = toggle.nextElementSibling;
                     if (switchLabel) {
                         switchLabel.querySelector("span").style.left = "2.4vh";
-                        switchLabel.style.background = "rgba(142, 84, 233, 0.5)";
+                        switchLabel.style.background =
+                            "rgba(142, 84, 233, 0.5)";
                     }
                 }
             });
@@ -1354,7 +1428,7 @@ window.SkillsContent = {
                     console.log("THREE.js loaded successfully");
                     setTimeout(() => {
                         setupVisualization();
-                    }, 800); 
+                    }, 800);
                 }
             };
             threeScript.onload = checkAllLoaded;
@@ -1432,7 +1506,13 @@ window.SkillsContent = {
                             "Developed ML models",
                             "Created game systems",
                         ],
-                        tools: ["TensorFlow", "PyTorch", "NumPy", "Pandas", "Django"],
+                        tools: [
+                            "TensorFlow",
+                            "PyTorch",
+                            "NumPy",
+                            "Pandas",
+                            "Django",
+                        ],
                     },
                     {
                         id: "cpp",
@@ -1485,7 +1565,8 @@ window.SkillsContent = {
                         name: "OOP",
                         level: 90,
                         connections: [],
-                        description: "Applying object-oriented programming principles",
+                        description:
+                            "Applying object-oriented programming principles",
                         experience: "7+ years",
                         keyAchievements: [
                             "Designed modular systems",
@@ -1504,7 +1585,12 @@ window.SkillsContent = {
                         id: "webdev",
                         name: "Web Development",
                         level: 92,
-                        connections: ["frontend", "backend", "htmlcss", "wordpress"],
+                        connections: [
+                            "frontend",
+                            "backend",
+                            "htmlcss",
+                            "wordpress",
+                        ],
                         description:
                             "Full-stack web development with modern frameworks and technologies",
                         experience: "7+ years",
@@ -1553,7 +1639,10 @@ window.SkillsContent = {
                         description:
                             "WordPress design and development for content management systems",
                         experience: "6+ years",
-                        keyAchievements: ["Built custom themes", "Developed plugins"],
+                        keyAchievements: [
+                            "Built custom themes",
+                            "Developed plugins",
+                        ],
                         tools: [
                             "PHP",
                             "WordPress API",
@@ -1593,14 +1682,21 @@ window.SkillsContent = {
                             "Built scalable APIs",
                             "Implemented authentication systems",
                         ],
-                        tools: ["Node.js", "Express", "Django", "Laravel", "REST APIs"],
+                        tools: [
+                            "Node.js",
+                            "Express",
+                            "Django",
+                            "Laravel",
+                            "REST APIs",
+                        ],
                     },
                     {
                         id: "restapi",
                         name: "REST APIs",
                         level: 85,
                         connections: [],
-                        description: "Building and consuming RESTful web services",
+                        description:
+                            "Building and consuming RESTful web services",
                         experience: "5+ years",
                         keyAchievements: [
                             "Designed RESTful architectures",
@@ -1673,7 +1769,13 @@ window.SkillsContent = {
                             "Database migration project lead",
                             "Improved query performance by 70%",
                         ],
-                        tools: ["PostgreSQL", "MongoDB", "Redis", "MySQL", "Firebase"],
+                        tools: [
+                            "PostgreSQL",
+                            "MongoDB",
+                            "Redis",
+                            "MySQL",
+                            "Firebase",
+                        ],
                     },
                     {
                         id: "cloud",
@@ -1710,7 +1812,13 @@ window.SkillsContent = {
                             "Improved user satisfaction scores by 45%",
                             "Reduced bounce rates by 30%",
                         ],
-                        tools: ["Figma", "Adobe XD", "Sketch", "InVision", "Principle"],
+                        tools: [
+                            "Figma",
+                            "Adobe XD",
+                            "Sketch",
+                            "InVision",
+                            "Principle",
+                        ],
                     },
                     {
                         id: "graphicdesign",
@@ -1762,7 +1870,12 @@ window.SkillsContent = {
                             "Created architectural visualization library",
                             "Designed product prototypes",
                         ],
-                        tools: ["Blender", "Maya", "ZBrush", "Substance Painter"],
+                        tools: [
+                            "Blender",
+                            "Maya",
+                            "ZBrush",
+                            "Substance Painter",
+                        ],
                     },
                     {
                         id: "animation",
@@ -1792,7 +1905,12 @@ window.SkillsContent = {
                             "Developed recommendation engine",
                             "Implemented fraud detection system",
                         ],
-                        tools: ["Python", "scikit-learn", "TensorFlow", "PyTorch"],
+                        tools: [
+                            "Python",
+                            "scikit-learn",
+                            "TensorFlow",
+                            "PyTorch",
+                        ],
                     },
                     {
                         id: "deeplearning",
@@ -1862,7 +1980,13 @@ window.SkillsContent = {
                             "Built interactive dashboard solutions",
                             "Developed custom visualization library",
                         ],
-                        tools: ["D3.js", "Tableau", "Power BI", "Plotly", "Three.js"],
+                        tools: [
+                            "D3.js",
+                            "Tableau",
+                            "Power BI",
+                            "Plotly",
+                            "Three.js",
+                        ],
                     },
                 ],
                 gamedev: [
@@ -1878,7 +2002,12 @@ window.SkillsContent = {
                             "Designed core mechanics for indie games",
                             "Created level design framework",
                         ],
-                        tools: ["Unity", "Unreal Engine", "Adobe Suite", "Blender"],
+                        tools: [
+                            "Unity",
+                            "Unreal Engine",
+                            "Adobe Suite",
+                            "Blender",
+                        ],
                     },
                     {
                         id: "unreal",
@@ -1892,7 +2021,12 @@ window.SkillsContent = {
                             "Created VR prototype",
                             "Optimized rendering pipeline",
                         ],
-                        tools: ["Blueprints", "C++", "Material Editor", "Sequencer"],
+                        tools: [
+                            "Blueprints",
+                            "C++",
+                            "Material Editor",
+                            "Sequencer",
+                        ],
                     },
                     {
                         id: "unity",
@@ -1920,7 +2054,12 @@ window.SkillsContent = {
                             "Created custom physics solver",
                             "Optimized collision detection",
                         ],
-                        tools: ["PhysX", "Havok", "Unity Physics", "Custom solvers"],
+                        tools: [
+                            "PhysX",
+                            "Havok",
+                            "Unity Physics",
+                            "Custom solvers",
+                        ],
                     },
                 ],
                 soft: [
@@ -1972,7 +2111,13 @@ window.SkillsContent = {
                             "Facilitated integration of remote teams",
                             "Improved collaboration workflows",
                         ],
-                        tools: ["Agile", "Kanban", "Jira", "Confluence", "Slack"],
+                        tools: [
+                            "Agile",
+                            "Kanban",
+                            "Jira",
+                            "Confluence",
+                            "Slack",
+                        ],
                     },
                     {
                         id: "problemsolving",
@@ -2016,7 +2161,11 @@ window.SkillsContent = {
                         id: "ml_ai",
                         name: "Machine Learning",
                         level: 85,
-                        connections: ["deep_learning", "computer_vision", "knn"],
+                        connections: [
+                            "deep_learning",
+                            "computer_vision",
+                            "knn",
+                        ],
                         description:
                             "Building models that can learn from data and make predictions",
                         experience: "4+ years",
@@ -2024,7 +2173,12 @@ window.SkillsContent = {
                             "KNN Classifier for Breast Cancer Dataset",
                             "Predictive modeling",
                         ],
-                        tools: ["Python", "TensorFlow", "PyTorch", "Scikit-learn"],
+                        tools: [
+                            "Python",
+                            "TensorFlow",
+                            "PyTorch",
+                            "Scikit-learn",
+                        ],
                     },
                     {
                         id: "deep_learning",
@@ -2045,7 +2199,8 @@ window.SkillsContent = {
                         name: "Image Enhancement",
                         level: 84,
                         connections: [],
-                        description: "Using AI to improve image quality and resolution",
+                        description:
+                            "Using AI to improve image quality and resolution",
                         experience: "2+ years",
                         keyAchievements: [
                             "Real-ESRGAN implementation",
@@ -2116,7 +2271,8 @@ window.SkillsContent = {
                         name: "Bloch Sphere",
                         level: 72,
                         connections: [],
-                        description: "Visualization and manipulation of quantum states",
+                        description:
+                            "Visualization and manipulation of quantum states",
                         experience: "1+ year",
                         keyAchievements: [
                             "Created quantum state visualizations",
@@ -2185,7 +2341,12 @@ window.SkillsContent = {
                             "Advanced presentations using VBA",
                             "Automated data processing",
                         ],
-                        tools: ["Excel", "VBA", "Power Query", "Data visualization"],
+                        tools: [
+                            "Excel",
+                            "VBA",
+                            "Power Query",
+                            "Data visualization",
+                        ],
                     },
                     {
                         id: "data_handling",
@@ -2195,7 +2356,10 @@ window.SkillsContent = {
                         description:
                             "Processing and managing structured and unstructured data",
                         experience: "5+ years",
-                        keyAchievements: ["CSV handling", "Database management"],
+                        keyAchievements: [
+                            "CSV handling",
+                            "Database management",
+                        ],
                         tools: ["Python", "SQL", "Excel", "ETL processes"],
                     },
                     {
@@ -2203,13 +2367,18 @@ window.SkillsContent = {
                         name: "Google BigQuery",
                         level: 80,
                         connections: [],
-                        description: "Working with Google's big data query service",
+                        description:
+                            "Working with Google's big data query service",
                         experience: "2+ years",
                         keyAchievements: [
                             "From GCP NLP lab",
                             "Large dataset processing",
                         ],
-                        tools: ["SQL", "Google Cloud Platform", "Data warehousing"],
+                        tools: [
+                            "SQL",
+                            "Google Cloud Platform",
+                            "Data warehousing",
+                        ],
                     },
                     {
                         id: "gcp",
@@ -2219,8 +2388,16 @@ window.SkillsContent = {
                         description:
                             "Using Google Cloud Platform services for ML and data processing",
                         experience: "3+ years",
-                        keyAchievements: ["GCP NLP lab", "Cloud-based ML workflows"],
-                        tools: ["GCP", "BigQuery", "Cloud Functions", "ML APIs"],
+                        keyAchievements: [
+                            "GCP NLP lab",
+                            "Cloud-based ML workflows",
+                        ],
+                        tools: [
+                            "GCP",
+                            "BigQuery",
+                            "Cloud Functions",
+                            "ML APIs",
+                        ],
                     },
                     {
                         id: "visual_inspection",
@@ -2262,14 +2439,14 @@ window.SkillsContent = {
             const nodes = [];
             const nodeGeometry = new THREE.SphereGeometry(1, 32, 32);
             const clusterColors = {
-                programming: 0x4facfe, 
-                web: 0x00d184, 
-                creative: 0xff6b6b, 
-                ai_ml: 0x8a4fff, 
-                gamedev: 0xff9f1a, 
-                soft: 0xf9ca24, 
-                quantum: 0xe42ef5, 
-                tools: 0x2ef5e4, 
+                programming: 0x4facfe,
+                web: 0x00d184,
+                creative: 0xff6b6b,
+                ai_ml: 0x8a4fff,
+                gamedev: 0xff9f1a,
+                soft: 0xf9ca24,
+                quantum: 0xe42ef5,
+                tools: 0x2ef5e4,
             };
             Object.keys(skillClusters).forEach((clusterKey) => {
                 const cluster = skillClusters[clusterKey];
@@ -2394,7 +2571,9 @@ window.SkillsContent = {
                 }
             });
             window.changeVisualizationView = function (view) {
-                const viewModeBadge = document.getElementById("current-view-mode");
+                const viewModeBadge = document.getElementById(
+                    "current-view-mode"
+                );
                 if (viewModeBadge) {
                     const modeNames = {
                         sphere: "Orbital Sphere",
@@ -2406,7 +2585,7 @@ window.SkillsContent = {
                     viewModeBadge.textContent = modeNames[view] || view;
                 }
                 const useTween = typeof TWEEN !== "undefined";
-                let maxDistance = 0; 
+                let maxDistance = 0;
                 nodes.forEach((node) => {
                     let targetX, targetY, targetZ;
                     const nodeLevel = node.userData.level || 50;
@@ -2417,8 +2596,10 @@ window.SkillsContent = {
                             const phi = Math.acos(-1 + 2 * Math.random());
                             const theta = Math.random() * Math.PI * 2;
                             const orbitRadius = 30 - (nodeLevel / 100) * 15;
-                            targetX = orbitRadius * Math.sin(phi) * Math.cos(theta);
-                            targetY = orbitRadius * Math.sin(phi) * Math.sin(theta);
+                            targetX =
+                                orbitRadius * Math.sin(phi) * Math.cos(theta);
+                            targetY =
+                                orbitRadius * Math.sin(phi) * Math.sin(theta);
                             targetZ = orbitRadius * Math.cos(phi);
                             break;
                         case "clusters":
@@ -2439,7 +2620,7 @@ window.SkillsContent = {
                             };
                             targetX = basePos.x + (Math.random() - 0.5) * 10;
                             targetY = basePos.y + (Math.random() - 0.5) * 10;
-                            targetZ = basePos.z + (nodeLevel / 100) * 10; 
+                            targetZ = basePos.z + (nodeLevel / 100) * 10;
                             break;
                         case "tags":
                             const angle = Math.random() * Math.PI * 2;
@@ -2451,18 +2632,21 @@ window.SkillsContent = {
                         case "helix":
                             const idHash = nodeId
                                 .split("")
-                                .reduce((acc, char) => acc + char.charCodeAt(0), 0);
-                            const helix = idHash % 2; 
-                            const t = (nodeLevel / 100) * Math.PI * 6; 
+                                .reduce(
+                                    (acc, char) => acc + char.charCodeAt(0),
+                                    0
+                                );
+                            const helix = idHash % 2;
+                            const t = (nodeLevel / 100) * Math.PI * 6;
                             const helixRadius = 15;
                             if (helix === 0) {
                                 targetX = Math.cos(t) * helixRadius;
                                 targetZ = Math.sin(t) * helixRadius;
                             } else {
-                                targetX = Math.cos(t + Math.PI) * helixRadius; 
+                                targetX = Math.cos(t + Math.PI) * helixRadius;
                                 targetZ = Math.sin(t + Math.PI) * helixRadius;
                             }
-                            targetY = t * 2 - 20; 
+                            targetY = t * 2 - 20;
                             break;
                         case "showcase":
                             if (nodeLevel >= 90) {
@@ -2492,7 +2676,11 @@ window.SkillsContent = {
                         node.position &&
                         typeof node.position.distanceTo === "function"
                     ) {
-                        const newPos = new THREE.Vector3(targetX, targetY, targetZ);
+                        const newPos = new THREE.Vector3(
+                            targetX,
+                            targetY,
+                            targetZ
+                        );
                         const distance = node.position.distanceTo(newPos);
                         maxDistance = Math.max(maxDistance, distance);
                     }
@@ -2513,10 +2701,14 @@ window.SkillsContent = {
                             targetPos.z
                         );
                         const distance = startPos.distanceTo(endPos);
-                        const duration = 1000 + (distance / maxDistance) * 1500; 
+                        const duration = 1000 + (distance / maxDistance) * 1500;
                         new TWEEN.Tween(node.position)
                             .to(
-                                { x: targetPos.x, y: targetPos.y, z: targetPos.z },
+                                {
+                                    x: targetPos.x,
+                                    y: targetPos.y,
+                                    z: targetPos.z,
+                                },
                                 duration
                             )
                             .easing(TWEEN.Easing.Cubic.InOut)
@@ -2718,10 +2910,12 @@ window.SkillsContent = {
                                                     !relatedNode.userData
                                                 )
                                                     return "";
-                                                const nodeData = relatedNode.userData;
+                                                const nodeData =
+                                                    relatedNode.userData;
                                                 const nodeColor =
-                                                    clusterColors[nodeData.cluster] ||
-                                                    0xffffff;
+                                                    clusterColors[
+                                                        nodeData.cluster
+                                                    ] || 0xffffff;
                                                 const colorHex =
                                                     "#" +
                                                     nodeColor
@@ -2732,15 +2926,17 @@ window.SkillsContent = {
                                                         nodeData.id
                                                     }" 
                                                         style="background: rgba(${
-                                                            (nodeColor >> 16) & 255
-                                                        }, ${(nodeColor >> 8) & 255}, ${
-                                                    nodeColor & 255
-                                                }, 0.15); 
+                                                            (nodeColor >> 16) &
+                                                            255
+                                                        }, ${
+                                                    (nodeColor >> 8) & 255
+                                                }, ${nodeColor & 255}, 0.15); 
                                                         border: .1vh solid rgba(${
-                                                            (nodeColor >> 16) & 255
-                                                        }, ${(nodeColor >> 8) & 255}, ${
-                                                    nodeColor & 255
-                                                }, 0.3);
+                                                            (nodeColor >> 16) &
+                                                            255
+                                                        }, ${
+                                                    (nodeColor >> 8) & 255
+                                                }, ${nodeColor & 255}, 0.3);
                                                         padding: .8vh 1.2vh; border-radius: .6vh; cursor: pointer; transition: all 0.3s ease;
                                                         display: flex; align-items: center; gap: .8vh; color: var(--text-color);">
                                                         <div style="width: .8vh; height: .8vh; border-radius: 50%; background: ${colorHex};"></div>
@@ -2748,10 +2944,11 @@ window.SkillsContent = {
                                                             nodeData.name
                                                         }</span>
                                                         <span style="background: rgba(${
-                                                            (nodeColor >> 16) & 255
-                                                        }, ${(nodeColor >> 8) & 255}, ${
-                                                    nodeColor & 255
-                                                }, 0.2); 
+                                                            (nodeColor >> 16) &
+                                                            255
+                                                        }, ${
+                                                    (nodeColor >> 8) & 255
+                                                }, ${nodeColor & 255}, 0.2); 
                                                             font-size: 1vh; padding: .2vh .6vh; border-radius: 1vh;">${
                                                                 nodeData.level
                                                             }%</span>
@@ -2836,9 +3033,13 @@ window.SkillsContent = {
                         relatedSkillBadges.forEach((badge) => {
                             badge.addEventListener("click", () => {
                                 try {
-                                    const skillId = badge.getAttribute("data-id");
+                                    const skillId = badge.getAttribute(
+                                        "data-id"
+                                    );
                                     const clickedNode = nodes.find(
-                                        (n) => n.userData && n.userData.id === skillId
+                                        (n) =>
+                                            n.userData &&
+                                            n.userData.id === skillId
                                     );
                                     if (clickedNode) {
                                         badge.style.transform = "scale(0.95)";
@@ -2875,26 +3076,42 @@ window.SkillsContent = {
                                             ) {
                                                 const origScale =
                                                     0.5 +
-                                                    (node.userData.level / 100) * 0.5;
+                                                    (node.userData.level /
+                                                        100) *
+                                                        0.5;
                                                 if (window.TWEEN) {
-                                                    new TWEEN.Tween(node.material)
-                                                        .to(
-                                                            { emissiveIntensity: 0.8 },
-                                                            500
-                                                        )
-                                                        .easing(TWEEN.Easing.Cubic.Out)
-                                                        .start();
-                                                    new TWEEN.Tween(node.scale)
+                                                    new TWEEN.Tween(
+                                                        node.material
+                                                    )
                                                         .to(
                                                             {
-                                                                x: origScale * 1.2,
-                                                                y: origScale * 1.2,
-                                                                z: origScale * 1.2,
+                                                                emissiveIntensity: 0.8,
                                                             },
                                                             500
                                                         )
                                                         .easing(
-                                                            TWEEN.Easing.Elastic.Out
+                                                            TWEEN.Easing.Cubic
+                                                                .Out
+                                                        )
+                                                        .start();
+                                                    new TWEEN.Tween(node.scale)
+                                                        .to(
+                                                            {
+                                                                x:
+                                                                    origScale *
+                                                                    1.2,
+                                                                y:
+                                                                    origScale *
+                                                                    1.2,
+                                                                z:
+                                                                    origScale *
+                                                                    1.2,
+                                                            },
+                                                            500
+                                                        )
+                                                        .easing(
+                                                            TWEEN.Easing.Elastic
+                                                                .Out
                                                         )
                                                         .start();
                                                 } else {
@@ -2907,18 +3124,27 @@ window.SkillsContent = {
                                                 }
                                             } else {
                                                 const skillLevel =
-                                                    node.userData && node.userData.level
+                                                    node.userData &&
+                                                    node.userData.level
                                                         ? node.userData.level
                                                         : 50;
                                                 const origScale =
-                                                    0.5 + (skillLevel / 100) * 0.5;
+                                                    0.5 +
+                                                    (skillLevel / 100) * 0.5;
                                                 if (window.TWEEN) {
-                                                    new TWEEN.Tween(node.material)
+                                                    new TWEEN.Tween(
+                                                        node.material
+                                                    )
                                                         .to(
-                                                            { emissiveIntensity: 0.3 },
+                                                            {
+                                                                emissiveIntensity: 0.3,
+                                                            },
                                                             500
                                                         )
-                                                        .easing(TWEEN.Easing.Cubic.Out)
+                                                        .easing(
+                                                            TWEEN.Easing.Cubic
+                                                                .Out
+                                                        )
                                                         .start();
                                                     new TWEEN.Tween(node.scale)
                                                         .to(
@@ -2929,7 +3155,10 @@ window.SkillsContent = {
                                                             },
                                                             500
                                                         )
-                                                        .easing(TWEEN.Easing.Cubic.Out)
+                                                        .easing(
+                                                            TWEEN.Easing.Cubic
+                                                                .Out
+                                                        )
                                                         .start();
                                                 } else {
                                                     node.material.emissiveIntensity = 0.3;
@@ -2951,7 +3180,8 @@ window.SkillsContent = {
                             });
                             badge.addEventListener("mouseenter", () => {
                                 badge.style.transform = "translateY(-.2vh)";
-                                badge.style.boxShadow = "0 .5vh 1.5vh rgba(0,0,0,0.2)";
+                                badge.style.boxShadow =
+                                    "0 .5vh 1.5vh rgba(0,0,0,0.2)";
                             });
                             badge.addEventListener("mouseleave", () => {
                                 badge.style.transform = "translateY(0)";
@@ -2967,7 +3197,10 @@ window.SkillsContent = {
                         `;
                         document.head.appendChild(styleElement);
                     } catch (renderError) {
-                        console.error("Error rendering skill details:", renderError);
+                        console.error(
+                            "Error rendering skill details:",
+                            renderError
+                        );
                         detailsContainer.innerHTML = `
                             <div class="premium-prompt" style="display: flex; flex-direction: column; align-items: center; padding: 4vh 0; text-align: center;">
                                 <i class="fas fa-exclamation-triangle" style="font-size: 4vh; color: #e52e71; margin-bottom: 1.5vh;"></i>
@@ -2991,18 +3224,25 @@ window.SkillsContent = {
                         TWEEN.update();
                     }
                     const autoRotateEnabled =
-                        document.getElementById("auto-rotate")?.checked !== false;
+                        document.getElementById("auto-rotate")?.checked !==
+                        false;
                     const showLabelsEnabled =
-                        document.getElementById("show-labels")?.checked !== false;
+                        document.getElementById("show-labels")?.checked !==
+                        false;
                     if (autoRotateEnabled) {
                         scene.rotation.y += 0.0015;
                     }
                     const now = performance.now();
-                    if (!window.lastFpsUpdate || now - window.lastFpsUpdate > 500) {
+                    if (
+                        !window.lastFpsUpdate ||
+                        now - window.lastFpsUpdate > 500
+                    ) {
                         const fps = Math.round(
                             1000 / (now - (window.lastFrameTime || now))
                         );
-                        const fpsCounter = document.getElementById("fps-counter");
+                        const fpsCounter = document.getElementById(
+                            "fps-counter"
+                        );
                         if (fpsCounter) {
                             fpsCounter.textContent = fps;
                         }
@@ -3011,29 +3251,37 @@ window.SkillsContent = {
                     window.lastFrameTime = now;
                     nodes.forEach((node) => {
                         if (node.userData.targetPosition && !node._isTweening) {
-                            const ease = 0.05; 
+                            const ease = 0.05;
                             node.position.x +=
-                                (node.userData.targetPosition.x - node.position.x) *
+                                (node.userData.targetPosition.x -
+                                    node.position.x) *
                                 ease;
                             node.position.y +=
-                                (node.userData.targetPosition.y - node.position.y) *
+                                (node.userData.targetPosition.y -
+                                    node.position.y) *
                                 ease;
                             node.position.z +=
-                                (node.userData.targetPosition.z - node.position.z) *
+                                (node.userData.targetPosition.z -
+                                    node.position.z) *
                                 ease;
                             const time = Date.now() * 0.001;
                             const nodeId = node.userData.id || "";
                             const idHash = nodeId
                                 .split("")
-                                .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+                                .reduce(
+                                    (acc, char) => acc + char.charCodeAt(0),
+                                    0
+                                );
                             const oscillationScale = 0.05;
                             node.position.y +=
-                                Math.sin(time * 0.5 + idHash * 0.1) * oscillationScale;
+                                Math.sin(time * 0.5 + idHash * 0.1) *
+                                oscillationScale;
                             const skillLevel = node.userData.level || 50;
                             const pulseScale = 0.02 * (skillLevel / 100);
                             const baseScale = 0.5 + (skillLevel / 100) * 0.5;
                             const pulse =
-                                Math.sin(time * 0.8 + idHash * 0.2) * pulseScale;
+                                Math.sin(time * 0.8 + idHash * 0.2) *
+                                pulseScale;
                             if (
                                 node.material &&
                                 node.material.emissiveIntensity < 0.5
@@ -3064,7 +3312,10 @@ window.SkillsContent = {
                             );
                             const material = node.userData.label.material;
                             if (material && material.opacity !== undefined) {
-                                material.opacity = Math.min(1, 2 - distToCamera / 40);
+                                material.opacity = Math.min(
+                                    1,
+                                    2 - distToCamera / 40
+                                );
                             }
                         }
                         if (node.userData.lines) {
@@ -3079,9 +3330,12 @@ window.SkillsContent = {
                                             node.position,
                                             connection.target.position,
                                         ];
-                                        connection.line.geometry.setFromPoints(points);
+                                        connection.line.geometry.setFromPoints(
+                                            points
+                                        );
                                         connection.line.geometry.attributes.position.needsUpdate = true;
-                                        const material = connection.line.material;
+                                        const material =
+                                            connection.line.material;
                                         if (material) {
                                             const dist = node.position.distanceTo(
                                                 connection.target.position
@@ -3092,15 +3346,20 @@ window.SkillsContent = {
                                             );
                                             if (
                                                 (node.material &&
-                                                    node.material.emissiveIntensity >
+                                                    node.material
+                                                        .emissiveIntensity >
                                                         0.5) ||
                                                 (connection.target.material &&
                                                     connection.target.material
-                                                        .emissiveIntensity > 0.5)
+                                                        .emissiveIntensity >
+                                                        0.5)
                                             ) {
                                                 material.opacity =
                                                     0.3 +
-                                                    Math.sin(Date.now() * 0.002) * 0.2;
+                                                    Math.sin(
+                                                        Date.now() * 0.002
+                                                    ) *
+                                                        0.2;
                                             }
                                         }
                                     }
@@ -3131,7 +3390,10 @@ window.SkillsContent = {
                         connectionCounter.textContent = connectionCount;
                         connectionCounter._updated = true;
                     }
-                    if (!window._tooltipInitialized && window.initSkillTooltip) {
+                    if (
+                        !window._tooltipInitialized &&
+                        window.initSkillTooltip
+                    ) {
                         try {
                             window.initSkillTooltip(
                                 renderer,
@@ -3151,6 +3413,6 @@ window.SkillsContent = {
             }
             console.log("Starting 3D skills visualization animation");
             animate();
-        }  
-    }
+        }
+    },
 };
